@@ -645,46 +645,57 @@ function scrollTilKap(id, linkEl){
 }
 
 // ═══════════════════════════════════════════════════════════════
-// IFRAME – vis VEJ direkte fra retsinformation.dk
+// FALLBACK – VEJ kan ikke hentes (CORS/iframe begge blokeret)
 // ═══════════════════════════════════════════════════════════════
 function renderIframe(dok){
-  let url;
-  if(dok.aar && dok.nr && dok.kilde==='xml'){
-    url=`https://www.retsinformation.dk/eli/retsinfo/${dok.aar}/${dok.nr}`;
-  } else if(dok.soegUrl){
-    url=dok.soegUrl;
-  } else {
-    renderSoegFallback(dok);
-    return;
-  }
+  // retsinformation.dk blokerer både CORS-fetch og iframe-visning.
+  // Vis en klar besked med link til retsinformation.dk.
+  const riUrl = dok.aar && dok.nr
+    ? `https://www.retsinformation.dk/eli/retsinfo/${dok.aar}/${dok.nr}`
+    : dok.soegUrl || 'https://www.retsinformation.dk';
 
   const tekst=document.getElementById('viewerTekst');
-  tekst.style.padding='0';
+  tekst.style.padding='30px 40px';
   tekst.innerHTML=`
-    <div style="padding:10px 16px;background:#fffbeb;border-bottom:1px solid #fcd34d;font-size:.8rem;color:#78350f;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:8px">
-      <span>📄 Vejledningen vises direkte fra retsinformation.dk</span>
-      <a href="${url}" target="_blank" rel="noopener" style="color:#1a3a6b;font-weight:600">Åbn i ny fane ↗</a>
-    </div>
-    <iframe
-      src="${url}"
-      style="width:100%;height:calc(100vh - 160px);border:none;display:block"
-      sandbox="allow-scripts allow-same-origin allow-popups allow-forms allow-top-navigation"
-      title="${esc(dok.navn)}"
-      onload="this.style.background=''"
-    ></iframe>
-  `;
+    <div style="max-width:560px">
+      <div style="font-size:2.5rem;margin-bottom:16px">📋</div>
+      <h2 style="font-size:1.05rem;font-weight:700;color:#1a1a2e;margin-bottom:8px">${esc(dok.navn)}</h2>
+      <p style="font-size:.85rem;color:#666;margin-bottom:20px">${esc(dok.kortNavn)}</p>
+      ${dok.note?`<div class="vej-note" style="margin-bottom:20px">ℹ️ ${esc(dok.note)}</div>`:''}
+      <div class="info-boks" style="margin-bottom:20px">
+        <p style="font-weight:600;margin-bottom:8px">Vejledningen kan ikke vises direkte i denne version</p>
+        <p style="font-size:.85rem;color:#555">retsinformation.dk tillader ikke at vejledninger hentes eller vises fra en lokal HTML-fil. Brug én af mulighederne nedenfor.</p>
+      </div>
+      <a href="${riUrl}" target="_blank" rel="noopener"
+         style="display:inline-block;background:#1a3a6b;color:#fff;padding:10px 20px;border-radius:8px;font-weight:600;font-size:.9rem;text-decoration:none;margin-bottom:12px">
+        🔗 Åbn vejledningen på retsinformation.dk ↗
+      </a>
+      <div style="margin-top:20px;padding:14px;background:#f0f4ff;border-radius:8px;font-size:.82rem;color:#444;line-height:1.7">
+        <strong>Ønsker du at vejledninger åbner direkte med kapitler og søgning?</strong><br>
+        Der er to muligheder:<br>
+        <b>1.</b> Dobbeltklik på <code>start.bat</code> (kræver Python installeret)<br>
+        <b>2.</b> Læg programmet på GitHub Pages (gratis, virker fra alle enheder)
+      </div>
+    </div>`;
 }
 
 // ═══════════════════════════════════════════════════════════════
-// FALLBACK for dokumenter uden API/XML
+// FALLBACK for kilde:'soeg' (ingen accessionsnummer endnu)
 // ═══════════════════════════════════════════════════════════════
 function renderSoegFallback(dok, fejlMsg){
-  const url=dok.soegUrl||`https://www.retsinformation.dk/eli/lta/${dok.aar}/${dok.nr}`;
-  let html=`<div class="info-boks">`;
-  if(dok.note) html+=`<p style="margin-bottom:10px">ℹ️ ${esc(dok.note)}</p>`;
-  if(fejlMsg)  html+=`<p style="margin-bottom:10px;color:#c00">⚠️ ${esc(fejlMsg)}</p>`;
-  html+=`<p>Dette dokument kan ikke vises direkte her. Åbn det på:</p><p style="margin-top:10px"><a href="${url}" target="_blank" rel="noopener">🔗 Åbn på retsinformation.dk ↗</a></p></div>`;
-  document.getElementById('viewerTekst').innerHTML=html;
+  const url=dok.soegUrl||`https://www.retsinformation.dk`;
+  const tekst=document.getElementById('viewerTekst');
+  tekst.style.padding='30px 40px';
+  let html=`<div style="max-width:560px">
+    <div style="font-size:2.5rem;margin-bottom:16px">📋</div>
+    <h2 style="font-size:1.05rem;font-weight:700;color:#1a1a2e;margin-bottom:8px">${esc(dok.navn)}</h2>
+    <p style="font-size:.85rem;color:#666;margin-bottom:20px">${esc(dok.kortNavn)}</p>`;
+  if(dok.note) html+=`<div class="vej-note" style="margin-bottom:16px">ℹ️ ${esc(dok.note)}</div>`;
+  html+=`<a href="${url}" target="_blank" rel="noopener"
+     style="display:inline-block;background:#1a3a6b;color:#fff;padding:10px 20px;border-radius:8px;font-weight:600;font-size:.9rem;text-decoration:none">
+    🔗 Åbn på retsinformation.dk ↗
+  </a></div>`;
+  tekst.innerHTML=html;
 }
 
 function viewerFejl(msg){
