@@ -1,0 +1,731 @@
+<!DOCTYPE html>
+<html lang="da">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+<title>Dagpengeregler – Beskæftigelsesministeriet</title>
+<style>
+/* ═══════════════ RESET & BASE ═══════════════ */
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{font-size:15px;scroll-behavior:smooth}
+body{font-family:'Segoe UI',system-ui,sans-serif;background:#f2f4f8;color:#1a1a2e}
+a{color:#1a3a6b;text-decoration:none}
+a:hover{text-decoration:underline}
+
+/* ═══════════════ HEADER ═══════════════ */
+.hdr{background:#1a3a6b;color:#fff;padding:14px 24px;border-bottom:4px solid #c8a951;display:flex;align-items:center;gap:14px;position:sticky;top:0;z-index:100}
+.hdr-logo{font-size:1.6rem;flex-shrink:0}
+.hdr-tekst h1{font-size:1.1rem;font-weight:700}
+.hdr-tekst p{font-size:.78rem;opacity:.8;margin-top:1px}
+
+/* ═══════════════ HOME – layout ═══════════════ */
+.home-wrap{max-width:860px;margin:0 auto;padding:28px 20px}
+
+/* Søg – site-wide */
+.site-soeg{display:flex;gap:10px;margin-bottom:28px}
+.site-soeg input{flex:1;padding:10px 16px;border:1.5px solid #c5cfe0;border-radius:8px;font-size:.95rem;outline:none}
+.site-soeg input:focus{border-color:#1a3a6b}
+
+/* Kategori-sektion */
+.kat-sektion{margin-bottom:32px}
+.kat-titel{font-size:1rem;font-weight:700;color:#1a3a6b;padding:8px 0 6px;border-bottom:2px solid #1a3a6b;margin-bottom:12px}
+.kat-desc{font-size:.82rem;color:#666;margin-bottom:14px}
+
+/* Dokument-kort (home) */
+.dok-kort{background:#fff;border:1px solid #dde3ed;border-radius:9px;padding:14px 16px;margin-bottom:10px;display:flex;align-items:flex-start;gap:12px;cursor:pointer;transition:box-shadow .15s,border-color .15s}
+.dok-kort:hover{border-color:#1a3a6b;box-shadow:0 2px 10px rgba(26,58,107,.12)}
+.dok-kort .badge{flex-shrink:0;padding:3px 9px;border-radius:5px;font-size:.72rem;font-weight:700;letter-spacing:.04em;margin-top:2px}
+.badge-LBK,.badge-LBKH{background:#fde8d3;color:#7a3400}
+.badge-BEK{background:#dbeafe;color:#1e40af}
+.badge-VEJ{background:#d1fae5;color:#065f46}
+.dok-info{flex:1}
+.dok-navn{font-weight:600;font-size:.92rem;color:#1a1a2e;line-height:1.35}
+.dok-kortnavn{font-size:.77rem;color:#888;margin-top:3px}
+.dok-arrow{flex-shrink:0;color:#aaa;font-size:1.2rem;margin-top:2px}
+.dok-kort[data-hidden]{display:none}
+
+/* ═══════════════ VIEWER ═══════════════ */
+#viewer{display:none;height:100vh;flex-direction:column}
+.viewer-top{background:#1a3a6b;color:#fff;padding:10px 18px;display:flex;align-items:center;gap:12px;flex-wrap:wrap;border-bottom:3px solid #c8a951;flex-shrink:0}
+.btn-terug{background:rgba(255,255,255,.15);border:none;color:#fff;padding:6px 13px;border-radius:6px;cursor:pointer;font-size:.83rem;font-weight:600}
+.btn-terug:hover{background:rgba(255,255,255,.25)}
+.viewer-titel{flex:1;font-size:.92rem;font-weight:600;min-width:0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.viewer-links a{color:#c8d8f5;font-size:.8rem;margin-left:12px;white-space:nowrap}
+
+/* Søgeboks i viewer */
+.soeg-bar{background:#f7f8fc;border-bottom:1px solid #dde3ed;padding:8px 18px;display:flex;align-items:center;gap:10px;flex-shrink:0}
+.soeg-bar input{flex:1;padding:7px 12px;border:1.5px solid #c5cfe0;border-radius:7px;font-size:.88rem;outline:none}
+.soeg-bar input:focus{border-color:#1a3a6b}
+.soeg-count{font-size:.78rem;color:#888;white-space:nowrap;min-width:80px}
+.soeg-nav button{background:#1a3a6b;color:#fff;border:none;padding:5px 10px;border-radius:5px;cursor:pointer;font-size:.8rem;margin-left:4px}
+.soeg-nav button:disabled{background:#aaa;cursor:not-allowed}
+
+/* Viewer kroppen */
+.viewer-body{display:flex;flex:1;overflow:hidden}
+
+/* Sidebar */
+.kap-sidebar{width:240px;flex-shrink:0;background:#fff;border-right:1px solid #dde3ed;overflow-y:auto;padding:14px 0}
+.sidebar-label{font-size:.68rem;font-weight:700;letter-spacing:.08em;color:#888;text-transform:uppercase;padding:6px 16px 4px}
+.kap-link{display:block;padding:6px 16px;font-size:.82rem;color:#333;cursor:pointer;border-left:3px solid transparent;line-height:1.35;transition:background .1s,border-color .1s,color .1s}
+.kap-link:hover{background:#f0f4ff;color:#1a3a6b}
+.kap-link.aktiv{background:#e8effe;color:#1a3a6b;font-weight:600;border-left-color:#1a3a6b}
+.sidebar-divider{height:1px;background:#eee;margin:6px 16px}
+
+/* Hoved-tekst */
+.viewer-tekst{flex:1;overflow-y:auto;padding:30px 40px 60px}
+
+/* Ministerium */
+.min-tag{display:inline-block;background:#f0fdf4;border:1px solid #6ee7b7;color:#065f46;padding:4px 14px;border-radius:20px;font-size:.78rem;font-weight:600;margin-bottom:18px}
+
+/* Hjemmel */
+.hjemmel{background:#f8f9fd;border-left:3px solid #1a3a6b;padding:10px 14px;font-style:italic;color:#555;font-size:.84rem;border-radius:0 6px 6px 0;margin-bottom:22px;line-height:1.6}
+
+/* Kapitel */
+.kap-overskrift{font-size:1.05rem;font-weight:700;color:#1a3a6b;margin:28px 0 10px;padding-bottom:5px;border-bottom:1.5px solid #e0e8f5;scroll-margin-top:90px}
+
+/* Paragraf */
+.para{margin-bottom:14px}
+.para-nr{font-weight:700;color:#1a3a6b;font-size:.92rem}
+.stk{margin-left:16px;margin-top:4px;line-height:1.7;font-size:.9rem}
+.stk-nr{font-weight:600;color:#666}
+
+/* Highlight af søgeord */
+mark{background:#fff176;border-radius:2px;padding:0 1px}
+mark.aktiv-match{background:#ff9800;color:#fff}
+
+/* Spinner */
+.spinner{display:inline-block;width:18px;height:18px;border:2.5px solid #c5cfe0;border-top-color:#1a3a6b;border-radius:50%;animation:spin .7s linear infinite;vertical-align:middle;margin-right:8px}
+@keyframes spin{to{transform:rotate(360deg)}}
+
+/* Fejl/info */
+.info-boks{background:#f0f4ff;border:1px solid #c5cfe0;border-radius:8px;padding:18px 22px;color:#444;font-size:.9rem;line-height:1.7}
+.info-boks a{font-weight:600}
+
+/* VEJ note */
+.vej-note{background:#fffbeb;border:1px solid #fcd34d;border-radius:7px;padding:10px 14px;font-size:.8rem;color:#78350f;margin-bottom:14px}
+
+/* Mobil */
+@media(max-width:700px){
+  .kap-sidebar{display:none}
+  .viewer-tekst{padding:18px}
+  .viewer-titel{font-size:.82rem}
+}
+@media(max-width:700px){
+  .kap-sidebar.mob-aaben{display:block;position:fixed;top:0;left:0;width:80%;height:100vh;z-index:200;box-shadow:4px 0 20px rgba(0,0,0,.2)}
+}
+</style>
+</head>
+<body>
+
+<!-- ═══════════════ HEADER ═══════════════ -->
+<div class="hdr" id="globalHdr">
+  <div class="hdr-logo">⚖️</div>
+  <div class="hdr-tekst">
+    <h1 id="hdrTitel">Bekendtgørelser &amp; Vejledninger</h1>
+    <p id="hdrDesc">Beskæftigelsesministeriet · Dagpengeregler</p>
+  </div>
+</div>
+
+<!-- ═══════════════ HOME ═══════════════ -->
+<div id="home">
+  <div class="home-wrap">
+
+    <div class="site-soeg">
+      <input type="text" id="sitesoegInput" placeholder="🔍  Søg i titler og dokumenttyper…" oninput="sitesoeg(this.value)"/>
+    </div>
+
+    <div id="homeIndhold"></div>
+  </div>
+</div>
+
+<!-- ═══════════════ VIEWER ═══════════════ -->
+<div id="viewer">
+  <div class="viewer-top">
+    <button class="btn-terug" onclick="gaaTilbage()">← Luk</button>
+    <span class="viewer-titel" id="viewerTitel">Indlæser…</span>
+    <div class="viewer-links">
+      <a id="retsinfoLink" href="#" target="_blank" rel="noopener">🔗 Retsinformation.dk</a>
+    </div>
+  </div>
+
+  <div class="soeg-bar">
+    <input type="text" id="docSoegInput" placeholder="Søg i dette dokument…" oninput="docSoeg(this.value)"/>
+    <span class="soeg-count" id="soegCount"></span>
+    <div class="soeg-nav">
+      <button id="soegForrige" onclick="naestMatch(-1)" disabled>▲</button>
+      <button id="soegNaeste" onclick="naestMatch(1)" disabled>▼</button>
+    </div>
+  </div>
+
+  <div class="viewer-body">
+    <div class="kap-sidebar" id="kapSidebar">
+      <div class="sidebar-label">Indholdsfortegnelse</div>
+      <div id="kapListe"></div>
+    </div>
+    <div class="viewer-tekst" id="viewerTekst">
+      <span class="spinner"></span> Henter dokument…
+    </div>
+  </div>
+</div>
+
+<script>
+// ═══════════════════════════════════════════════════════════════
+// DATA
+// ═══════════════════════════════════════════════════════════════
+const API   = 'https://retsinformation-api.dk/v1/lovgivning/';
+const RIXML = 'https://www.retsinformation.dk/eli/accn/';
+
+// Accessionsnumre til VEJ-dokumenter: mønsteret er C + år + nr(5 cifre) + 60
+// Disse er verificeret at returnere XML fra retsinformation.dk
+const KATEGORIER = [
+  {
+    id:'lov', titel:'⚖️ Lov om arbejdsløshedsforsikring m.v.',
+    desc:'Grundloven for dagpengesystemet – LBK nr. 1077 af 28/08/2025.',
+    dokumenter:[
+      {type:'LBK',visType:'LBK',navn:'Lov om arbejdsløshedsforsikring m.v.',kortNavn:'LBK nr. 1077 af 28/08/2025',kilde:'api',aar:2025,nr:1077}
+    ]
+  },
+  {
+    id:'1', titel:'1. Indkomst- og beskæftigelseskravet',
+    desc:'Regler om hvilke krav der stilles til indkomst og beskæftigelse for at have ret til dagpenge.',
+    dokumenter:[
+      {type:'BEK',navn:'Bekendtgørelse om indkomst- og beskæftigelseskravet for ret til dagpenge',kortNavn:'BEK nr. 876 af 24/06/2025',kilde:'api',aar:2025,nr:876},
+      {type:'VEJ',navn:'Vejledning om indkomst- og beskæftigelseskravet for ret til dagpenge',kortNavn:'VEJ (2025 – afventer officielt nummer)',kilde:'soeg',soegUrl:'https://www.retsinformation.dk/documents?search=indkomst+besk%C3%A6ftigelseskravet+dagpenge&dokumentType=VEJ',note:'Denne vejledning er endnu ikke tildelt officielt VEJ-nummer på retsinformation.dk.'}
+    ]
+  },
+  {
+    id:'2', titel:'2. Beregning af dagpengesatsen',
+    desc:'Regler om hvordan dagpengesatsen beregnes.',
+    dokumenter:[
+      {type:'BEK',navn:'Bekendtgørelse om beregning af dagpengesatsen',kortNavn:'BEK nr. 874 af 24/06/2025',kilde:'api',aar:2025,nr:874},
+      {type:'VEJ',navn:'Vejledning om beregning af dagpengesatsen',kortNavn:'VEJ (2025 – afventer officielt nummer)',kilde:'soeg',soegUrl:'https://www.retsinformation.dk/documents?search=beregning+dagpengesatsen&dokumentType=VEJ',note:'Denne vejledning er endnu ikke tildelt officielt VEJ-nummer på retsinformation.dk.'}
+    ]
+  },
+  {
+    id:'3', titel:'3. Udbetaling af dagpenge',
+    desc:'Regler om udbetaling, fradrag og kontrol.',
+    dokumenter:[
+      {type:'BEK',navn:'Bekendtgørelse om udbetaling af dagpenge',kortNavn:'BEK nr. 875 af 24/06/2025',kilde:'api',aar:2025,nr:875},
+      {type:'VEJ',navn:'Vejledning om udbetaling af dagpenge',kortNavn:'VEJ nr. 9979 af 28/11/2023',kilde:'xml',accn:'C20230997960',aar:2023,nr:9979,note:'Ny vejledning for BEK 875/2025 er under publicering. Denne version (2023) er gældende indtil da.'}
+    ]
+  },
+  {
+    id:'4', titel:'4. Medlemskab af en a-kasse',
+    desc:'Regler om betingelserne for at blive og være medlem af en a-kasse.',
+    dokumenter:[
+      {type:'BEK',navn:'Bekendtgørelse om medlemskab af en a-kasse',kortNavn:'BEK nr. 947 af 24/06/2025',kilde:'api',aar:2025,nr:947},
+      {type:'VEJ',navn:'Vejledning om medlemskab af en a-kasse',kortNavn:'VEJ nr. 9746 af 25/09/2023',kilde:'xml',accn:'C20230974660',aar:2023,nr:9746,note:'Ny vejledning for BEK 947/2025 er under publicering. Denne version (2023) er gældende indtil da.'}
+    ]
+  },
+  {
+    id:'5', titel:'5. Selvforskyldt ledighed',
+    desc:'Regler om karantæne og karens ved selvforskyldt ledighed.',
+    dokumenter:[
+      {type:'BEK',navn:'Bekendtgørelse om selvforskyldt ledighed',kortNavn:'BEK nr. 45 af 13/01/2026 (ikraft 01/02/2026)',kilde:'api',aar:2026,nr:45},
+      {type:'VEJ',navn:'Vejledning om selvforskyldt ledighed',kortNavn:'VEJ nr. 9627 af 19/08/2021',kilde:'xml',accn:'C20210962760',aar:2021,nr:9627,note:'Ny vejledning for BEK 45/2026 er under publicering. Denne version (2021) er gældende indtil da.'}
+    ]
+  },
+  {
+    id:'6', titel:'6. Rådighed',
+    desc:'Regler om rådighedskravet – hvornår et dagpengemedlem anses for at stå til rådighed.',
+    dokumenter:[
+      {type:'BEK',navn:'Bekendtgørelse om rådighed',kortNavn:'BEK nr. 1590 af 12/12/2023',kilde:'api',aar:2023,nr:1590},
+      {type:'VEJ',navn:'Vejledning om rådighed (A-kasse og dagpengeret)',kortNavn:'VEJ nr. 10048 af 15/12/2023',kilde:'xml',accn:'C20231004860',aar:2023,nr:10048}
+    ]
+  },
+  {
+    id:'7', titel:'7. Selvstændig virksomhed i dagpengesystemet',
+    desc:'Regler for selvstændigt erhvervsdrivende i relation til dagpengesystemet.',
+    dokumenter:[
+      {type:'BEK',navn:'Bekendtgørelse om selvstændig virksomhed i dagpengesystemet',kortNavn:'BEK nr. 1176 af 20/09/2023',kilde:'api',aar:2023,nr:1176},
+      {type:'VEJ',navn:'Vejledning om selvstændig virksomhed i dagpengesystemet',kortNavn:'VEJ nr. 9750 af 26/09/2023',kilde:'xml',accn:'C20230975060',aar:2023,nr:9750}
+    ]
+  },
+  {
+    id:'8', titel:'8. Betaling af medlems- og efterlønsbidrag',
+    desc:'Regler om betaling af bidrag til a-kassen.',
+    dokumenter:[
+      {type:'BEK',navn:'Bekendtgørelse om betaling af medlems- og efterlønsbidrag til en a-kasse',kortNavn:'BEK nr. 1518 af 09/12/2024',kilde:'api',aar:2024,nr:1518},
+      {type:'VEJ',navn:'Vejledning om betaling af medlems- og efterlønsbidrag til en a-kasse',kortNavn:'VEJ nr. 9829 af 2021',kilde:'xml',accn:'C20210982960',aar:2021,nr:9829}
+    ]
+  },
+  {
+    id:'9', titel:'9. G-dage',
+    desc:'Regler om dagpengegodtgørelse for 1. og 2. ledighedsdag som arbejdsgiver betaler.',
+    dokumenter:[
+      {type:'BEK',navn:'Bekendtgørelse om dagpengegodtgørelse for 1. og 2. ledighedsdag (G-dage)',kortNavn:'BEK nr. 400 af 26/04/2017',kilde:'api',aar:2017,nr:400},
+      {type:'VEJ',navn:'Vejledning til bekendtgørelse om G-dage',kortNavn:'VEJ (søg på retsinformation.dk)',kilde:'soeg',soegUrl:'https://www.retsinformation.dk/documents?search=dagpengegodtg%C3%B8relse+G-dage&dokumentType=VEJ'}
+    ]
+  }
+];
+
+// ═══════════════════════════════════════════════════════════════
+// HOME – RENDER
+// ═══════════════════════════════════════════════════════════════
+function visHome(){
+  document.getElementById('home').style.display='block';
+  document.getElementById('viewer').style.display='none';
+  document.getElementById('hdrTitel').textContent='Bekendtgørelser & Vejledninger';
+  document.getElementById('hdrDesc').textContent='Beskæftigelsesministeriet · Dagpengeregler';
+
+  const container=document.getElementById('homeIndhold');
+  container.innerHTML=KATEGORIER.map(kat=>`
+    <div class="kat-sektion" data-kat="${esc(kat.id)}">
+      <div class="kat-titel">${esc(kat.titel)}</div>
+      ${kat.desc?`<div class="kat-desc">${esc(kat.desc)}</div>`:''}
+      ${kat.dokumenter.map((dok,i)=>`
+        <div class="dok-kort" onclick="aabDok('${esc(kat.id)}',${i})" title="Åbn dokument i ny fane">
+          <span class="badge badge-${dok.visType||dok.type}">${dok.visType||dok.type}</span>
+          <div class="dok-info">
+            <div class="dok-navn">${esc(dok.navn)}</div>
+            <div class="dok-kortnavn">${esc(dok.kortNavn)}</div>
+          </div>
+          <span class="dok-arrow">↗</span>
+        </div>
+      `).join('')}
+    </div>
+  `).join('');
+}
+
+// ═══════════════════════════════════════════════════════════════
+// SITE-WIDE SEARCH (filtrer kort)
+// ═══════════════════════════════════════════════════════════════
+function sitesoeg(q){
+  q=q.trim().toLowerCase();
+  document.querySelectorAll('.kat-sektion').forEach(sek=>{
+    let nogetSynligt=false;
+    sek.querySelectorAll('.dok-kort').forEach(k=>{
+      const txt=(k.querySelector('.dok-navn').textContent+' '+k.querySelector('.dok-kortnavn').textContent+' '+k.querySelector('.badge').textContent).toLowerCase();
+      const vis=!q||txt.includes(q);
+      k.style.display=vis?'':'none';
+      if(vis)nogetSynligt=true;
+    });
+    sek.style.display=(!q||nogetSynligt)?'':'none';
+  });
+}
+
+// ═══════════════════════════════════════════════════════════════
+// ÅBEN DOKUMENT (ny fane)
+// ═══════════════════════════════════════════════════════════════
+function aabDok(katId, docIdx){
+  const base=location.href.replace(/#.*$/,'');
+  window.open(`${base}#viewer/${katId}/${docIdx}`,'_blank');
+}
+
+// ═══════════════════════════════════════════════════════════════
+// VIEWER – LOAD
+// ═══════════════════════════════════════════════════════════════
+async function visViewer(katId, docIdx){
+  document.getElementById('home').style.display='none';
+  const v=document.getElementById('viewer');
+  v.style.display='flex';
+
+  // Find dokument
+  const kat=KATEGORIER.find(k=>k.id===katId);
+  if(!kat||!kat.dokumenter[docIdx]){
+    viewerFejl('Dokument ikke fundet.');return;
+  }
+  const dok=kat.dokumenter[docIdx];
+
+  // Header
+  document.getElementById('hdrTitel').textContent=dok.navn;
+  document.getElementById('hdrDesc').textContent=dok.kortNavn;
+  document.getElementById('viewerTitel').textContent=dok.navn;
+
+  // Retsinformation-link
+  const riLink=document.getElementById('retsinfoLink');
+  if(dok.kilde==='api'){
+    riLink.href=`https://www.retsinformation.dk/eli/lta/${dok.aar}/${dok.nr}`;
+  } else if(dok.kilde==='xml'){
+    riLink.href=`https://www.retsinformation.dk/eli/retsinfo/${dok.aar}/${dok.nr}`;
+  } else {
+    riLink.href=dok.soegUrl||'https://www.retsinformation.dk';
+  }
+
+  // Reset søgning
+  document.getElementById('docSoegInput').value='';
+  document.getElementById('soegCount').textContent='';
+  document.getElementById('soegForrige').disabled=true;
+  document.getElementById('soegNaeste').disabled=true;
+
+  // Loader
+  const tekst=document.getElementById('viewerTekst');
+  tekst.innerHTML='<span class="spinner"></span> Henter dokument…';
+  document.getElementById('kapListe').innerHTML='';
+
+  try {
+    let data;
+    if(dok.kilde==='api')      data=await hentFraAPI(dok.aar,dok.nr);
+    else if(dok.kilde==='xml') data=await hentFraXML(dok.accn,dok);
+    else                       data=null;
+
+    if(data){
+      renderDokument(data,dok);
+    } else {
+      // kilde:'soeg' – ingen accessionsnummer, vis iframe/link
+      renderIframe(dok);
+    }
+  } catch(err){
+    console.error(err);
+    // XML-fetch fejlede (CORS eller andet) – prøv iframe i stedet
+    if(dok.kilde==='xml'){
+      renderIframe(dok);
+    } else {
+      renderSoegFallback(dok, err.message);
+    }
+  }
+}
+
+// ═══════════════════════════════════════════════════════════════
+// API – retsinformation-api.dk
+// ═══════════════════════════════════════════════════════════════
+async function hentFraAPI(aar,nr){
+  const r=await fetch(`${API}${aar}/${nr}`);
+  if(!r.ok) throw new Error(`API fejl: ${r.status}`);
+  const d=await r.json();
+  if(!d||!d.structure) throw new Error('Ingen indholdsstruktur');
+
+  const str=d.structure;
+  return {
+    titel:    d.title||'',
+    kortnavn: d.short_name||'',
+    min:      d.ministry||'',
+    indledning: (str.preamble||[]).join('\n\n'),
+    kapitler: (str.chapters||[]).map(kap=>({
+      nr:    kap.chapter_number||'',
+      titel: kap.chapter_title ||'',
+      para:  (kap.paragraph_groups||[]).flatMap(g=>(g.paragraphs||[]).map(p=>({
+        nr:  p.number||'',
+        stk: (p.stk||[]).map(s=>({nr:s.number||'',tekst:s.text||''}))
+      })))
+    }))
+  };
+}
+
+// ═══════════════════════════════════════════════════════════════
+// XML – retsinformation.dk (prøver direkte, proxy, og iframe)
+// ═══════════════════════════════════════════════════════════════
+async function hentFraXML(accn,dok){
+  const direkteUrl=`${RIXML}${accn}/xml`;
+  const erLocalhost=location.hostname==='localhost'||location.hostname==='127.0.0.1';
+
+  // URL-rækkefølge: direkte → lokal proxy (localhost) → corsproxy.io
+  const urls=[];
+  urls.push(direkteUrl); // Prøv altid direkte (virker hvis retsinformation.dk har CORS *)
+  if(erLocalhost) urls.push(`/vej?accn=${accn}`); // Lokal Python-proxy
+  // corsproxy.io er gratis fra github.io, replit.com, localhost m.fl.
+  urls.push(`https://corsproxy.io/?url=${encodeURIComponent(direkteUrl)}`);
+
+  let sidsteFejl;
+  for(const url of urls){
+    try{
+      const r=await fetch(url,{signal:AbortSignal.timeout(12000)});
+      if(!r.ok) throw new Error(`HTTP ${r.status}`);
+      const tekst=await r.text();
+      if(tekst&&tekst.length>100&&tekst.includes('<'))
+        return parseRetsinformationXML(tekst,dok);
+    } catch(e){
+      sidsteFejl=e;
+    }
+  }
+  throw sidsteFejl||new Error('Ingen URL virkede');
+}
+
+// Parser til retsinformations XML-format
+function parseRetsinformationXML(xmlTekst, dokMeta){
+  const parser=new DOMParser();
+  const doc=parser.parseFromString(xmlTekst,'text/xml');
+
+  const ge=(names,root)=>{
+    for(const n of names){
+      const els=root?root.querySelectorAll(n):(doc.querySelectorAll(n));
+      if(els.length) return Array.from(els);
+    }
+    return [];
+  };
+  const gt=(names,root)=>{
+    const els=ge(names,root);
+    return els.length ? els[0].textContent.trim() : '';
+  };
+
+  // Titel og ministerium
+  const titel= gt(['Titel','title','DokumentTitel','LovTitel','Emne'])||dokMeta.navn;
+  const min=   gt(['Ressort','Omraade','Ministry','Myndighed','Udsteder'])||'Beskæftigelsesministeriet';
+  const kortNavn=gt(['KortTitel','ShortTitle','Nummer','DokumentNummer'])||dokMeta.kortNavn||'';
+
+  // Indledning/hjemmel
+  const indledningEl=ge(['Indledning','hjemmel','Hjemmel','Ikrafttraeden','preamble']);
+  const indledning=indledningEl.length ? indledningEl.map(e=>e.textContent.trim()).join('\n\n') : '';
+
+  // Kapitler
+  const kapEls=ge(['Kapitel','kapitel','chapter','Chapter','Afsnit','afsnit','Part','part']);
+  const kapitler=kapEls.map(kap=>{
+    const nr=   gt(['KapitelNummer','kapitelNummer','KapitelNr','num','number','Nummer'],kap);
+    const titEl=ge(['KapitelOverskrift','KapitelTitel','kapitelTitel','heading','subheading','Overskrift','Titel'],kap);
+    const titl= titEl.length ? titEl[0].textContent.trim() : '';
+
+    const paraEls=ge(['Paragraf','paragraf','section','Section','article','Article','Para','para'],kap);
+    const para=paraEls.map(p=>{
+      const pNr=gt(['ParagrafNummer','ParagrafNr','num','number','Nummer','Nr'],p);
+      const stkEls=ge(['Stykke','Stk','stk','paragraph','subsection','Subsection'],p);
+      const stk=stkEls.length ? stkEls.map(s=>({
+        nr:   gt(['StykkeNummer','StkkNr','num','number'],s),
+        tekst:gt(['Tekst','tekst','content','Content','text','p'],s)
+      })) : [{nr:'',tekst:p.textContent.trim()}];
+      return {nr:pNr,stk};
+    });
+
+    return {nr,titel:titl,para};
+  });
+
+  // Hvis ingen kapitler, prøv at strukturere fladt
+  if(!kapitler.length){
+    const allTekst=doc.documentElement.textContent.replace(/\s+/g,' ').trim();
+    return {
+      titel,kortnavn:kortNavn,min,indledning,
+      kapitler:[{nr:'',titel:'Indhold',para:[{nr:'',stk:[{nr:'',tekst:allTekst}]}]}]
+    };
+  }
+
+  return {titel,kortnavn:kortNavn,min,indledning,kapitler};
+}
+
+// ═══════════════════════════════════════════════════════════════
+// RENDER DOKUMENT
+// ═══════════════════════════════════════════════════════════════
+function renderDokument(data, dokMeta){
+  // Sidebar
+  const kapListe=document.getElementById('kapListe');
+  kapListe.innerHTML='';
+
+  // Tekst-HTML
+  const tekst=document.getElementById('viewerTekst');
+  let html='';
+
+  // Note om gammel version
+  if(dokMeta.note){
+    html+=`<div class="vej-note">ℹ️ ${esc(dokMeta.note)}</div>`;
+  }
+
+  // Ministerium
+  if(data.min){
+    html+=`<div class="min-tag">🏛️ ${esc(data.min)}</div>`;
+  }
+
+  // Indledning
+  if(data.indledning){
+    html+=`<div class="hjemmel">${esc(data.indledning)}</div>`;
+  }
+
+  // Kapitler
+  data.kapitler.forEach((kap,ki)=>{
+    const kapId=`kap-${ki}`;
+    const kapLabel=[(kap.nr||'').trim(),(kap.titel||'').trim()].filter(Boolean).join(' ');
+
+    if(kapLabel){
+      html+=`<div class="kap-overskrift" id="${kapId}">${esc(kapLabel)}</div>`;
+
+      // Sidebar link
+      const a=document.createElement('a');
+      a.className='kap-link';
+      a.textContent=kapLabel;
+      a.dataset.target=kapId;
+      a.onclick=()=>scrollTilKap(kapId,a);
+      kapListe.appendChild(a);
+    }
+
+    kap.para.forEach(p=>{
+      if(!p.nr && p.stk.length===1 && !p.stk[0].nr && !p.stk[0].tekst) return;
+      html+=`<div class="para">`;
+      if(p.nr) html+=`<div class="para-nr">${esc(p.nr)}</div>`;
+      p.stk.forEach(s=>{
+        if(s.tekst){
+          html+=`<div class="stk"><span class="stk-nr">${s.nr?esc(s.nr)+' ':''}</span>${esc(s.tekst)}</div>`;
+        }
+      });
+      html+='</div>';
+    });
+  });
+
+  tekst.innerHTML=html;
+
+  // Aktiver første sidebar-link
+  const forste=kapListe.querySelector('.kap-link');
+  if(forste) forste.classList.add('aktiv');
+
+  // Scroll-observer til sidebar
+  observerKapitler();
+}
+
+// ═══════════════════════════════════════════════════════════════
+// SØGEFUNKTION I DOKUMENT
+// ═══════════════════════════════════════════════════════════════
+let matchEls=[], matchIdx=-1;
+
+function docSoeg(q){
+  // Fjern tidligere marks
+  const tekst=document.getElementById('viewerTekst');
+  tekst.querySelectorAll('mark').forEach(m=>{
+    m.replaceWith(document.createTextNode(m.textContent));
+  });
+  tekst.normalize();
+
+  matchEls=[];
+  matchIdx=-1;
+
+  if(!q.trim()){
+    document.getElementById('soegCount').textContent='';
+    document.getElementById('soegForrige').disabled=true;
+    document.getElementById('soegNaeste').disabled=true;
+    return;
+  }
+
+  // Highlight alle forekomster
+  highlightTekst(tekst, q.trim());
+  matchEls=Array.from(tekst.querySelectorAll('mark'));
+
+  document.getElementById('soegCount').textContent=matchEls.length ? `${matchEls.length} fund` : 'Ingen fund';
+  document.getElementById('soegForrige').disabled=matchEls.length<1;
+  document.getElementById('soegNaeste').disabled=matchEls.length<1;
+
+  if(matchEls.length) naestMatch(1);
+}
+
+function highlightTekst(el, q){
+  if(el.nodeType===3){
+    const idx=el.nodeValue.toLowerCase().indexOf(q.toLowerCase());
+    if(idx<0) return;
+    const mark=document.createElement('mark');
+    mark.textContent=el.nodeValue.substring(idx,idx+q.length);
+    const efter=document.createTextNode(el.nodeValue.substring(idx+q.length));
+    el.nodeValue=el.nodeValue.substring(0,idx);
+    el.parentNode.insertBefore(mark,el.nextSibling);
+    el.parentNode.insertBefore(efter,mark.nextSibling);
+    // Rekursivt resten
+    highlightTekst(efter,q);
+  } else if(el.nodeType===1 && !['mark','script','style'].includes(el.tagName.toLowerCase())){
+    Array.from(el.childNodes).forEach(c=>highlightTekst(c,q));
+  }
+}
+
+function naestMatch(retning){
+  if(!matchEls.length) return;
+  if(matchIdx>=0) matchEls[matchIdx].classList.remove('aktiv-match');
+  matchIdx=(matchIdx+retning+matchEls.length)%matchEls.length;
+  matchEls[matchIdx].classList.add('aktiv-match');
+  matchEls[matchIdx].scrollIntoView({behavior:'smooth',block:'center'});
+  document.getElementById('soegCount').textContent=`${matchIdx+1}/${matchEls.length}`;
+}
+
+// ═══════════════════════════════════════════════════════════════
+// KAPITEL-SIDEBAR – OBSERVER
+// ═══════════════════════════════════════════════════════════════
+let observer;
+function observerKapitler(){
+  if(observer) observer.disconnect();
+  observer=new IntersectionObserver(entries=>{
+    entries.forEach(entry=>{
+      if(entry.isIntersecting){
+        const id=entry.target.id;
+        document.querySelectorAll('#kapListe .kap-link').forEach(a=>{
+          a.classList.toggle('aktiv',a.dataset.target===id);
+        });
+      }
+    });
+  },{root:document.getElementById('viewerTekst'),threshold:.3});
+
+  document.querySelectorAll('.kap-overskrift').forEach(el=>observer.observe(el));
+}
+
+function scrollTilKap(id, linkEl){
+  const el=document.getElementById(id);
+  if(el) el.scrollIntoView({behavior:'smooth'});
+  document.querySelectorAll('#kapListe .kap-link').forEach(a=>a.classList.remove('aktiv'));
+  linkEl.classList.add('aktiv');
+}
+
+// ═══════════════════════════════════════════════════════════════
+// IFRAME – vis VEJ direkte fra retsinformation.dk
+// ═══════════════════════════════════════════════════════════════
+function renderIframe(dok){
+  let url;
+  if(dok.aar && dok.nr && dok.kilde==='xml'){
+    url=`https://www.retsinformation.dk/eli/retsinfo/${dok.aar}/${dok.nr}`;
+  } else if(dok.soegUrl){
+    url=dok.soegUrl;
+  } else {
+    renderSoegFallback(dok);
+    return;
+  }
+
+  const tekst=document.getElementById('viewerTekst');
+  tekst.style.padding='0';
+  tekst.innerHTML=`
+    <div style="padding:10px 16px;background:#fffbeb;border-bottom:1px solid #fcd34d;font-size:.8rem;color:#78350f;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:8px">
+      <span>📄 Vejledningen vises direkte fra retsinformation.dk</span>
+      <a href="${url}" target="_blank" rel="noopener" style="color:#1a3a6b;font-weight:600">Åbn i ny fane ↗</a>
+    </div>
+    <iframe
+      src="${url}"
+      style="width:100%;height:calc(100vh - 160px);border:none;display:block"
+      sandbox="allow-scripts allow-same-origin allow-popups allow-forms allow-top-navigation"
+      title="${esc(dok.navn)}"
+      onload="this.style.background=''"
+    ></iframe>
+  `;
+}
+
+// ═══════════════════════════════════════════════════════════════
+// FALLBACK for dokumenter uden API/XML
+// ═══════════════════════════════════════════════════════════════
+function renderSoegFallback(dok, fejlMsg){
+  const url=dok.soegUrl||`https://www.retsinformation.dk/eli/lta/${dok.aar}/${dok.nr}`;
+  let html=`<div class="info-boks">`;
+  if(dok.note) html+=`<p style="margin-bottom:10px">ℹ️ ${esc(dok.note)}</p>`;
+  if(fejlMsg)  html+=`<p style="margin-bottom:10px;color:#c00">⚠️ ${esc(fejlMsg)}</p>`;
+  html+=`<p>Dette dokument kan ikke vises direkte her. Åbn det på:</p><p style="margin-top:10px"><a href="${url}" target="_blank" rel="noopener">🔗 Åbn på retsinformation.dk ↗</a></p></div>`;
+  document.getElementById('viewerTekst').innerHTML=html;
+}
+
+function viewerFejl(msg){
+  document.getElementById('viewerTekst').innerHTML=`<div class="info-boks">❌ ${esc(msg)}</div>`;
+}
+
+// ═══════════════════════════════════════════════════════════════
+// NAVIGATION
+// ═══════════════════════════════════════════════════════════════
+function gaaTilbage(){
+  history.back();
+}
+
+function router(){
+  const hash=location.hash.replace(/^#/,'');
+  if(!hash||hash==='/'){
+    visHome();
+  } else {
+    const dele=hash.split('/');
+    if(dele[0]==='viewer' && dele.length>=3){
+      visViewer(dele[1], parseInt(dele[2],10)||0);
+    } else {
+      visHome();
+    }
+  }
+}
+
+// ═══════════════════════════════════════════════════════════════
+// HJÆLPER
+// ═══════════════════════════════════════════════════════════════
+function esc(s){
+  return String(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+}
+
+// ═══════════════════════════════════════════════════════════════
+// START
+// ═══════════════════════════════════════════════════════════════
+window.addEventListener('hashchange', router);
+window.addEventListener('DOMContentLoaded', ()=>{
+  router(); // Tjek hash: vis viewer hvis #viewer/…, ellers home
+});
+</script>
+</body>
+</html>
