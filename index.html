@@ -259,6 +259,21 @@ mark.aktiv-match{background:var(--gold);color:#fff}
   .kap-sidebar.mob-aaben{display:block;position:fixed;top:0;left:0;width:84%;height:100vh;z-index:200;box-shadow:4px 0 24px rgba(0,0,0,.25)}
 }
 
+.vej-side{flex:none;width:0;overflow:hidden;background:var(--panel-2);border-left:1px solid var(--gold);display:flex;flex-direction:column}
+.vej-side.skjult{width:0;border-left:none}
+.vej-side.aaben{width:min(46%,560px);min-width:340px}
+.vej-side-top{background:linear-gradient(180deg,#17273f,#101d31);color:#fff;padding:14px 20px;display:flex;align-items:flex-start;justify-content:space-between;gap:14px;border-bottom:2px solid var(--gold);flex:none}
+.vej-side-tag{font-size:.64rem;letter-spacing:.16em;text-transform:uppercase;color:var(--gold-soft);font-weight:700;margin-bottom:4px}
+.vej-side-titel{font-family:var(--serif);font-size:1rem;font-weight:600;line-height:1.25}
+.vej-side-luk{background:rgba(255,255,255,.12);border:1px solid rgba(201,173,125,.45);color:#fff;width:30px;height:30px;border-radius:7px;cursor:pointer;font-size:.78rem;flex:none}
+.vej-side-luk:hover{background:rgba(176,141,87,.32)}
+.vej-side-body{flex:1;overflow-y:auto;padding:20px 24px}
+.vej-side-body .vej-guide{max-width:none}
+.vej-side-tom{color:var(--muted-text);font-style:italic;font-family:var(--read)}
+.vej-side-bund{flex:none;border-top:1px solid var(--line);padding:12px 20px;background:var(--panel)}
+.vej-side-aabn{width:100%;background:var(--brand);color:#fff;border:none;padding:11px 18px;border-radius:8px;font-size:.85rem;font-weight:600;cursor:pointer;font-family:var(--sans);transition:background .15s}
+.vej-side-aabn:hover{background:var(--brand-2)}
+@media(max-width:860px){.vej-side.aaben{position:fixed;top:0;right:0;width:92%;max-width:520px;height:100vh;z-index:300;box-shadow:-8px 0 40px rgba(0,0,0,.3);min-width:0}}
 </style>
 </head>
 <body>
@@ -399,6 +414,7 @@ mark.aktiv-match{background:var(--gold);color:#fff}
     <div class="viewer-tekst" id="viewerTekst">
       <span class="spinner"></span> Henter dokument…
     </div>
+    <div class="vej-side skjult" id="vejSide"></div>
   </div>
 </div>
 
@@ -1749,8 +1765,12 @@ function sitesoeg(q){
 function aabDok(katId, docIdx){
   const kat=KATEGORIER.find(k=>k.id===katId);
   if(!kat||!kat.dokumenter[docIdx]) return;
-  const dok=kat.dokumenter[docIdx];
-  // Alle dokumenter (BEK/LBK/VEJ) åbnes i intern viewer i SAMME fane
+  // Shift/Ctrl/⌘+klik åbner i ny fane (som på normale hjemmesider); ellers samme fane
+  const ev=window.event;
+  if(ev&&(ev.shiftKey||ev.ctrlKey||ev.metaKey)){
+    window.open(location.href.replace(/#.*$/,'')+'#viewer/'+katId+'/'+docIdx,'_blank');
+    return;
+  }
   location.hash='viewer/'+katId+'/'+docIdx;
 }
 
@@ -1761,6 +1781,7 @@ async function visViewer(katId, docIdx){
   document.getElementById('home').style.display='none';
   const v=document.getElementById('viewer');
   v.style.display='flex';
+  const _vs=document.getElementById('vejSide'); if(_vs){_vs.className='vej-side skjult';_vs.innerHTML='';}
 
   // Find dokument
   const kat=KATEGORIER.find(k=>k.id===katId);
@@ -2078,6 +2099,64 @@ function _findVejRefId(vejId,paragrafNr){
   }
   return null;
 }
+
+function _vejBlokPopup(b){
+  if(b.t==='ref')   return '<div class="vg-ref">'+esc(b.x)+'</div>';
+  if(b.t==='theme') return '<div class="vg-theme">'+esc(b.x)+'</div>';
+  if(b.t==='p')     return '<p>'+esc(b.x)+'</p>';
+  if(b.t==='ol')    return '<ol>'+(Array.isArray(b.x)?b.x:[b.x]).map(li=>'<li>'+esc(li)+'</li>').join('')+'</ol>';
+  if(b.t==='ex')    return '<div class="vg-ex"><span class="lbl">Eksempel</span>'+(Array.isArray(b.x)?b.x:[b.x]).map(p=>'<p>'+esc(p)+'</p>').join('')+'</div>';
+  return '';
+}
+function _vejSektionerForParagraf(vejId,paraNr){
+  const guide=(typeof VEJ_GUIDES!=='undefined')&&VEJ_GUIDES[vejId];
+  if(!guide) return [];
+  const nm=String(paraNr).match(/§\s*(\d+[a-z]?)/i);
+  if(!nm) return [];
+  const num=nm[1].toLowerCase();
+  const flat=[]; let bi=0;
+  guide.chapters.forEach(ch=>ch.blocks.forEach(b=>{flat.push({b,bi}); bi++;}));
+  const matchRef=b=>b.t==='ref'&&_refParaNums(b.x).has(num);
+  const sektioner=[]; let i=0;
+  while(i<flat.length){
+    if(matchRef(flat[i].b)){
+      const refId='vs-'+flat[i].bi;
+      const grp=[flat[i].b]; let j=i+1;
+      // medtag ALT (stk-underafsnit, tekst, lister, eksempler) indtil næste ref for en ANDEN paragraf
+      while(j<flat.length && !(flat[j].b.t==='ref' && !_refParaNums(flat[j].b.x).has(num))){ grp.push(flat[j].b); j++; }
+      while(grp.length && grp[grp.length-1].t==='theme') grp.pop();
+      sektioner.push({refId, blocks:grp});
+      i=j;
+    } else i++;
+  }
+  return sektioner;
+}
+function visVejPopup(katId,vejDocIdx,vejId,paraNr,vRefId){
+  const guide=(typeof VEJ_GUIDES!=='undefined')&&VEJ_GUIDES[vejId];
+  const sek=_vejSektionerForParagraf(vejId,paraNr);
+  let body;
+  if(!sek.length){
+    body='<p class="vej-side-tom">Der findes ikke et specifikt afsnit i vejledningen for '+esc(paraNr)+'. Åbn hele vejledningen nedenfor.</p>';
+  } else {
+    body='<div class="vej-guide">'+sek.map(s=>s.blocks.map(_vejBlokPopup).join('')).join('')+'</div>';
+  }
+  const panel=document.getElementById('vejSide');
+  if(!panel) return;
+  panel.innerHTML='<div class="vej-side-top"><div>'
+      +'<div class="vej-side-tag">Vejledning · '+esc(paraNr)+'</div>'
+      +'<div class="vej-side-titel">'+esc((guide&&guide.title)||'Vejledning')+'</div>'
+    +'</div><button class="vej-side-luk" onclick="lukVejPopup()" title="Luk">✕</button></div>'
+    +'<div class="vej-side-body">'+body+'</div>'
+    +'<div class="vej-side-bund"><button class="vej-side-aabn" onclick="springTilVej(\''+katId+'\','+vejDocIdx+',\''+vRefId+'\')">Åbn hele vejledningen →</button></div>';
+  panel.className='vej-side aaben';
+  document.addEventListener('keydown',_vejPopEsc);
+}
+function lukVejPopup(){
+  const panel=document.getElementById('vejSide');
+  if(panel){ panel.className='vej-side skjult'; panel.innerHTML=''; }
+  document.removeEventListener('keydown',_vejPopEsc);
+}
+function _vejPopEsc(e){ if(e.key==='Escape') lukVejPopup(); }
 
 function _visToast(tekst){
   let t=document.getElementById('krydsToast');
@@ -2899,7 +2978,7 @@ function renderStrukturetDok(data, dokMeta){
       if(_bekVejPair&&p.nr){
         const vRefId=_findVejRefId(_bekVejPair.vejId,p.nr);
         if(vRefId){
-          vejBtn=`<button class="kryds-link" onclick="springTilVej('${_bekVejPair.katId}',${_bekVejPair.vejDocIdx},'${vRefId}')" title="Gå til ${esc(p.nr)} i vejledningen">📖 VEJ</button>`;
+          vejBtn=`<button class="kryds-link" onclick="visVejPopup('${_bekVejPair.katId}',${_bekVejPair.vejDocIdx},'${_bekVejPair.vejId}','${esc(p.nr)}','${vRefId}')" title="Vis vejledningen til ${esc(p.nr)}">📖 VEJ</button>`;
         } else {
           vejBtn=`<button class="kryds-link kryds-ingen" onclick="ingenVejRef('${esc(p.nr)}')" title="${esc(p.nr)} er ikke specifikt forklaret i vejledningen">📖 VEJ</button>`;
         }
