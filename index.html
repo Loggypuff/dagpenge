@@ -53,6 +53,7 @@ a:hover{color:var(--gold)}
 .badge-BEK{background:#eaf0fb;color:#284c86;border-color:#d3def3}
 .badge-VEJ{background:#eaf2ec;color:#2f6b4a;border-color:#cfe3d6}
 .badge-PDF{background:#f6e9ec;color:#8a2333;border-color:#ecd2d8}
+.badge-LINK,.badge-DOK{background:#eef0f6;color:#3a4a66;border-color:#d7deee}
 .dok-info{flex:1;min-width:0}
 .dok-navn{font-weight:600;font-size:.98rem;color:var(--ink);line-height:1.4}
 .dok-kortnavn{font-size:.78rem;color:var(--muted-text);margin-top:3px;letter-spacing:.01em}
@@ -85,7 +86,7 @@ a:hover{color:var(--gold)}
 .kap-link{display:block;padding:6px 20px;font-size:.82rem;color:var(--text);cursor:pointer;border-left:2px solid transparent;line-height:1.4;transition:background .12s,border-color .12s,color .12s}
 .kap-link:hover{background:var(--hover-bg);color:var(--brand)}
 .kap-link.aktiv{background:var(--aktiv-bg);color:var(--brand);font-weight:600;border-left-color:var(--gold)}
-.kap-link.para-link{padding-left:34px;font-size:.78rem;color:var(--muted-text);border-left-color:transparent}
+.kap-link.para-link{padding-left:46px;font-size:.78rem;color:var(--muted-text);border-left-color:transparent}
 .kap-link.para-link:hover{background:var(--hover-bg);color:var(--brand)}
 .kap-link.para-link.aktiv{background:var(--aktiv-bg);color:var(--brand);font-weight:600;border-left-color:var(--gold-soft)}
 .kryds-link{display:inline-flex;align-items:center;gap:3px;margin-left:8px;padding:1px 8px;font-size:.7rem;font-weight:600;background:var(--aktiv-bg);color:var(--brand);border:1px solid var(--line-cool);border-radius:4px;cursor:pointer;vertical-align:middle;white-space:nowrap;line-height:1.6}
@@ -104,6 +105,13 @@ a:hover{color:var(--gold)}
 .para-nr{font-weight:700;color:var(--brand);font-size:.94rem}
 .stk{margin-left:16px;margin-top:4px;line-height:1.75;font-size:.95rem;font-family:var(--read)}
 .stk-nr{font-weight:600;color:var(--muted-text)}
+.kap-undertitel{font-family:var(--serif);font-size:1.08rem;font-weight:600;color:var(--brand);margin:26px 0 7px;scroll-margin-top:90px}
+.litra{margin:4px 0 6px 18px}
+.litra-item{display:flex;gap:10px;margin:3px 0;font-family:var(--read);font-size:.95rem;line-height:1.6;color:#283039}
+.litra-nr{color:var(--gold);font-weight:600;flex:none;min-width:24px}
+.kap-link.grp-link{padding-left:30px;font-size:.79rem;color:#46505e;font-weight:500;border-left-color:transparent}
+.kap-link.grp-link:hover{background:var(--hover-bg);color:var(--brand)}
+.kap-link.grp-link.aktiv{background:var(--aktiv-bg);color:var(--brand);font-weight:600;border-left-color:var(--gold-soft)}
 
 mark{background:#f3e2b8;border-radius:2px;padding:0 1px}
 mark.aktiv-match{background:var(--gold);color:#fff}
@@ -145,7 +153,26 @@ mark.aktiv-match{background:var(--gold);color:#fff}
 
 /* ═══════════════ TILES – landing ═══════════════ */
 .tiles-page{min-height:calc(100vh - 70px);padding:48px 48px;display:flex;flex-direction:column;background:var(--paper)}
-.tiles-grid{flex:1;display:grid;grid-template-columns:1fr 1fr 1fr;gap:26px;align-items:stretch;max-width:1180px;margin:0 auto;width:100%}
+.tiles-grid{display:grid;grid-template-columns:1fr 1fr 1fr;gap:26px;align-items:stretch;max-width:1180px;margin:0 auto;width:100%}
+.tile-card{min-height:248px}
+.hero{max-width:1180px;margin:0 auto 30px;width:100%}
+.hero-inner{background:linear-gradient(160deg,#19293f 0%,#0d1828 100%);border:1.5px solid var(--gold);border-radius:18px;padding:56px 40px 48px;text-align:center;box-shadow:0 22px 60px rgba(11,22,40,.22)}
+.hero-eyebrow{font-size:.7rem;letter-spacing:.22em;text-transform:uppercase;color:var(--gold-soft);font-weight:600;margin-bottom:14px}
+.hero-title{font-family:var(--serif);font-size:2.5rem;font-weight:600;color:#fff;line-height:1.12;margin-bottom:10px;letter-spacing:.01em}
+.hero-sub{color:#bcc9da;font-size:1.02rem;margin-bottom:30px}
+.hero-search{position:relative;max-width:680px;margin:0 auto}
+.hero-search-ikon{position:absolute;left:20px;top:50%;transform:translateY(-50%);font-size:1.05rem;opacity:.55;pointer-events:none}
+.hero-search input{width:100%;padding:18px 22px 18px 52px;border:2px solid var(--gold);border-radius:13px;font-size:1.06rem;font-family:var(--sans);outline:none;background:#fff;color:var(--ink);box-shadow:0 10px 30px rgba(0,0,0,.2)}
+.hero-search input::placeholder{color:#9aa6b5}
+.hero-search input:focus{border-color:var(--gold-soft);box-shadow:0 0 0 4px rgba(176,141,87,.32),0 10px 30px rgba(0,0,0,.22)}
+.hero-resultater{max-width:680px;margin:12px auto 0;text-align:left;display:none}
+.hero-resultater.vis{display:block}
+.hero-res-item{background:#fff;border:1px solid var(--line);border-radius:10px;padding:11px 16px;margin-bottom:8px;display:flex;align-items:center;gap:12px;cursor:pointer;transition:transform .14s,box-shadow .14s,border-color .14s}
+.hero-res-item:hover{border-color:var(--gold-soft);box-shadow:var(--shadow);transform:translateY(-1px)}
+.hero-res-navn{font-weight:600;color:var(--ink);font-size:.94rem}
+.hero-res-kort{color:var(--muted-text);font-size:.78rem;margin-left:auto;white-space:nowrap}
+.hero-res-tom{color:#c4d0e0;font-size:.92rem;text-align:center;padding:8px}
+@media(max-width:700px){.hero-inner{padding:34px 18px 28px}.hero-title{font-size:1.7rem}.hero-res-kort{display:none}}
 .tile-card{background:var(--panel);border-radius:14px;border:1px solid var(--line);box-shadow:var(--shadow);padding:38px 34px;cursor:pointer;display:flex;flex-direction:column;position:relative;overflow:hidden;transition:transform .2s,box-shadow .2s,border-color .2s}
 .tile-card:hover{transform:translateY(-5px);box-shadow:0 18px 50px rgba(16,29,54,.13);border-color:var(--gold-soft)}
 .tile-card::before{content:'';position:absolute;top:0;left:0;right:0;height:3px}
@@ -251,6 +278,20 @@ mark.aktiv-match{background:var(--gold);color:#fff}
   <!-- LANDING: 3 store entry-bokse -->
   <div id="homeTiles">
     <div class="tiles-page">
+
+      <div class="hero">
+        <div class="hero-inner">
+          <div class="hero-eyebrow">Beskæftigelsesministeriet · Dagpengeregler</div>
+          <h2 class="hero-title">Love, bekendtgørelser &amp; vejledninger</h2>
+          <p class="hero-sub">Søg i alle dokumenter på området – ét samlet sted</p>
+          <div class="hero-search">
+            <span class="hero-search-ikon">🔍</span>
+            <input id="forsideSoegInput" type="text" autocomplete="off" placeholder="Søg i bekendtgørelser, vejledninger, egne dokumenter og links…" oninput="forsideSoeg(this.value)" onkeydown="forsideSoegKey(event)">
+          </div>
+          <div id="forsideResultater" class="hero-resultater"></div>
+        </div>
+      </div>
+
       <div class="tiles-grid">
 
         <div class="tile-card tile-bek" onclick="visSektion('bek')">
@@ -1561,6 +1602,8 @@ function visTiles(){
   document.getElementById('homeTiles').style.display='';
   ['sektionBek','sektionMine','sektionLinks'].forEach(id=>
     document.getElementById(id).style.display='none');
+  const fi=document.getElementById('forsideSoegInput'); if(fi) fi.value='';
+  const fr=document.getElementById('forsideResultater'); if(fr){fr.className='hero-resultater';fr.innerHTML='';}
   renderTilesPreviews();
 }
 
@@ -1574,6 +1617,45 @@ function visSektion(s){
   if(s==='links'&&!document.getElementById('linksIndhold').childElementCount) renderLinksSektion();
 }
 
+function aabLink(i){ const l=RELEVANTE_LINKS[i]; if(l&&l.url) window.open(l.url,'_blank'); }
+function _alleSoegeposter(){
+  const out=[];
+  KATEGORIER.forEach(kat=>(kat.dokumenter||[]).forEach((dok,i)=>out.push({
+    navn:dok.navn||'', kort:dok.kortNavn||'', type:dok.type||'DOK', kat:kat.titel||'',
+    onclick:"aabDok('"+kat.id+"',"+i+")"
+  })));
+  (typeof RELEVANTE_LINKS!=='undefined'?RELEVANTE_LINKS:[]).forEach((l,i)=>out.push({
+    navn:l.navn||'', kort:l.kortNavn||'Relevant link', type:'LINK', kat:'Relevante Links',
+    onclick:"aabLink("+i+")"
+  }));
+  (typeof _mineDok!=='undefined'?_mineDok:[]).forEach((m,i)=>out.push({
+    navn:m.navn||m.kortNavn||('Dokument '+(i+1)), kort:m.kortNavn||'Uploadet fil', type:'PDF', kat:'Mine Dokumenter',
+    onclick:"aabMinDok("+i+")"
+  }));
+  return out;
+}
+function forsideSoeg(q){
+  const box=document.getElementById('forsideResultater');
+  if(!box) return;
+  q=(q||'').trim().toLowerCase();
+  if(q.length<2){box.className='hero-resultater';box.innerHTML='';return;}
+  const res=_alleSoegeposter().filter(x=>(
+    x.navn+' '+x.kort+' '+x.kat+' '+x.type
+  ).toLowerCase().includes(q)).slice(0,14);
+  box.className='hero-resultater vis';
+  if(!res.length){box.innerHTML='<div class="hero-res-tom">Ingen resultater for »'+esc(q)+'«</div>';return;}
+  box.innerHTML=res.map(x=>
+    '<div class="hero-res-item" onclick="'+x.onclick+'">'
+    +'<span class="badge badge-'+esc(x.type)+'">'+esc(x.type)+'</span>'
+    +'<span class="hero-res-navn">'+esc(x.navn)+'</span>'
+    +'<span class="hero-res-kort">'+esc(x.kort||x.kat)+'</span>'
+    +'</div>'
+  ).join('');
+}
+function forsideSoegKey(ev){
+  if(ev.key==='Enter'){const f=document.querySelector('#forsideResultater .hero-res-item');if(f)f.click();}
+  else if(ev.key==='Escape'){const i=document.getElementById('forsideSoegInput');if(i)i.value='';forsideSoeg('');}
+}
 function renderTilesPreviews(){
   // BEK: første 5 kategorier
   const bekPrev=document.getElementById('tileBekPreview');
@@ -1662,15 +1744,14 @@ function sitesoeg(q){
 }
 
 // ═══════════════════════════════════════════════════════════════
-// ÅBEN DOKUMENT (ny fane)
+// ÅBEN DOKUMENT (samme fane)
 // ═══════════════════════════════════════════════════════════════
 function aabDok(katId, docIdx){
   const kat=KATEGORIER.find(k=>k.id===katId);
   if(!kat||!kat.dokumenter[docIdx]) return;
   const dok=kat.dokumenter[docIdx];
-  // Alle dokumenter (BEK/LBK/VEJ) åbnes i intern viewer i ny fane
-  const base=location.href.replace(/#.*$/,'');
-  window.open(`${base}#viewer/${katId}/${docIdx}`,'_blank');
+  // Alle dokumenter (BEK/LBK/VEJ) åbnes i intern viewer i SAMME fane
+  location.hash='viewer/'+katId+'/'+docIdx;
 }
 
 // ═══════════════════════════════════════════════════════════════
@@ -1968,20 +2049,30 @@ function _buildBekVejPairs(){
 }
 
 // Find det element-id i VEJ der forklarer en given paragraf ("§ 3")
+function _refParaNums(refText){
+  // Udtræk ALLE paragrafnumre en VEJ-reference dækker, fx "Til §§ 7 og 12" -> {7,12},
+  // "Til § 9, stk. 2 og 3, og § 10, stk. 3 og 4" -> {9,10}. Kun §-numre (ikke stk./nr.).
+  const nums=new Set();
+  const parts=String(refText||'').split('§');
+  for(let i=1;i<parts.length;i++){
+    const seg=parts[i];
+    const stop=seg.search(/\b(stk|nr|litra|pkt)\b/i);
+    const head=stop>=0?seg.slice(0,stop):seg;
+    const m=head.match(/\d+[a-z]?/gi);
+    if(m) m.forEach(x=>nums.add(x.toLowerCase()));
+  }
+  return nums;
+}
 function _findVejRefId(vejId,paragrafNr){
   const guide=(typeof VEJ_GUIDES!=='undefined')&&VEJ_GUIDES[vejId];
   if(!guide) return null;
   const nm=String(paragrafNr).match(/§\s*(\d+[a-z]?)/i);
   if(!nm) return null;
-  const num=nm[1];
+  const num=nm[1].toLowerCase();
   let bi=0;
   for(const ch of guide.chapters){
     for(const b of ch.blocks){
-      if(b.t==='ref'){
-        const txt=String(b.x||'');
-        const rm=txt.match(/^Til\s+§\s*(\d+[a-z]?)/i);
-        if(rm&&rm[1]===num) return 'vs-'+bi;
-      }
+      if(b.t==='ref' && _refParaNums(b.x).has(num)) return 'vs-'+bi;
       bi++;
     }
   }
@@ -2018,8 +2109,8 @@ function vejBlockHTML(b, idx){
     let bekBtn='';
     if(_currentVejId&&VEJ_BEK_PAIRS[_currentVejId]){
       const pair=VEJ_BEK_PAIRS[_currentVejId];
-      const rm=String(b.x||'').match(/^Til\s+§\s*(\d+[a-z]?)/i);
-      if(rm) bekBtn=`<button class="kryds-link" onclick="springTilBek('${pair.katId}',${pair.bekDocIdx},'${rm[1]}')" title="Gå til § ${rm[1]} i bekendtgørelsen">⚖️ BEK § ${rm[1]}</button>`;
+      const nums=[..._refParaNums(b.x)];
+      bekBtn=nums.map(n=>`<button class="kryds-link" onclick="springTilBek('${pair.katId}',${pair.bekDocIdx},'${n}')" title="Gå til § ${n} i bekendtgørelsen">⚖️ BEK § ${n}</button>`).join('');
     }
     return `<div class="vg-ref" id="vs-${idx}">${e(b.x)}${bekBtn}</div>`;
   }
@@ -2611,10 +2702,14 @@ async function hentFraAPI(aar,nr){
       kapitler: (str.chapters||[]).map(kap=>({
         nr:    kap.chapter_number||'',
         titel: kap.chapter_title ||'',
-        para:  (kap.paragraph_groups||[]).flatMap(g=>(g.paragraphs||[]).map(p=>({
-          nr:  p.number||'',
-          stk: (p.stk||[]).map(s=>({nr:s.number||'',tekst:s.text||''}))
-        })))
+        para:  (kap.paragraph_groups||[]).flatMap(g=>{
+          const arr=(g.paragraphs||[]).map(p=>({
+            nr:  p.number||'',
+            stk: (p.stk||[]).map(s=>({nr:s.number||'',tekst:s.text||'',litra:(s.litra||[]).map(l=>({nr:l.number||'',tekst:l.text||''}))}))
+          }));
+          if(g.heading) arr.unshift({_heading:g.heading});
+          return arr;
+        })
       }))
     };
   } else {
@@ -2786,7 +2881,18 @@ function renderStrukturetDok(data, dokMeta){
     }
 
     kap.para.forEach((p,pi)=>{
-      if(!p.nr && p.stk.length===1 && !p.stk[0].nr && !p.stk[0].tekst) return;
+      if(p._heading){
+        const grpId=`grp-${ki}-${pi}`;
+        html+=`<div class="kap-undertitel" id="${grpId}">${esc(p._heading)}</div>`;
+        const gLink=document.createElement('a');
+        gLink.className='kap-link grp-link';
+        gLink.textContent=p._heading;
+        gLink.dataset.target=grpId;
+        gLink.onclick=(()=>{const id=grpId;return ()=>scrollTilKap(id,gLink);})();
+        kapListe.appendChild(gLink);
+        return;
+      }
+      if(!p.nr && (!p.stk || p.stk.length===0 || (p.stk.length===1 && !p.stk[0].nr && !p.stk[0].tekst))) return;
       const paraId=`para-${ki}-${pi}`;
       // VEJ cross-link knap
       let vejBtn='';
@@ -2813,6 +2919,9 @@ function renderStrukturetDok(data, dokMeta){
         if(s.tekst){
           html+=`<div class="stk"><span class="stk-nr">${s.nr?esc(s.nr)+' ':''}</span>${esc(s.tekst)}</div>`;
         }
+        if(s.litra&&s.litra.length){
+          html+=`<div class="litra">`+s.litra.map(l=>`<div class="litra-item"><span class="litra-nr">${esc(l.nr||'')}</span><span>${esc(l.tekst||'')}</span></div>`).join('')+`</div>`;
+        }
       });
       html+='</div>';
     });
@@ -2831,7 +2940,8 @@ function renderStrukturetDok(data, dokMeta){
   if(_pendingScrollId&&_pendingScrollId.startsWith('_bek_§')){
     const num=_pendingScrollId.slice(6); _pendingScrollId=null;
     setTimeout(()=>{
-      const el=document.querySelector(`[data-para-nr="§ ${num}"]`);
+      let el=document.querySelector(`[data-para-nr="§ ${num}"]`)||document.querySelector(`[data-para-nr="§ ${num}."]`);
+      if(!el){ el=[...document.querySelectorAll('[data-para-nr]')].find(x=>{const m=(x.getAttribute('data-para-nr')||'').match(/§\s*(\d+[a-z]?)/i);return m&&m[1].toLowerCase()===String(num).toLowerCase();}); }
       if(el){
         const container=document.getElementById('viewerTekst');
         if(container){
@@ -3000,7 +3110,19 @@ function viewerFejl(msg){
 // NAVIGATION
 // ═══════════════════════════════════════════════════════════════
 function gaaTilbage(){
-  history.back();
+  // Tilbage til OVERSIGTEN over bekendtgørelser & vejledninger – ikke forsiden.
+  // Ryd #viewer fra URL uden at trigge routeren (som ellers ville vise forsiden).
+  history.replaceState(null,'',location.pathname+location.search);
+  const v=document.getElementById('viewer');
+  v.style.display='none';
+  ['pdf-modus','vej-pdf-modus','vej-iframe-modus'].forEach(c=>v.classList.remove(c));
+  document.getElementById('vejVersionBar').className='vej-version-bar skjult';
+  _vejVersionKontekst=null;
+  document.getElementById('home').style.display='block';
+  document.getElementById('hdrTitel').textContent='Bekendtgørelser & Vejledninger';
+  document.getElementById('hdrDesc').textContent='Beskæftigelsesministeriet · Dagpengeregler';
+  visSektion('bek');
+  window.scrollTo(0,0);
 }
 
 function router(){
