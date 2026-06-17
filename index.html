@@ -274,6 +274,37 @@ mark.aktiv-match{background:var(--gold);color:#fff}
 .vej-side-aabn{width:100%;background:var(--brand);color:#fff;border:none;padding:11px 18px;border-radius:8px;font-size:.85rem;font-weight:600;cursor:pointer;font-family:var(--sans);transition:background .15s}
 .vej-side-aabn:hover{background:var(--brand-2)}
 @media(max-width:860px){.vej-side.aaben{position:fixed;top:0;right:0;width:92%;max-width:520px;height:100vh;z-index:300;box-shadow:-8px 0 40px rgba(0,0,0,.3);min-width:0}}
+
+/* ── Gratis søge-assistent (chat) ── */
+.chat-fab{position:fixed;right:22px;bottom:22px;width:56px;height:56px;border-radius:50%;border:2px solid var(--gold,#b08d57);background:var(--brand,#15233b);color:#fff;font-size:1.5rem;cursor:pointer;box-shadow:0 6px 20px rgba(0,0,0,.28);z-index:9000;display:flex;align-items:center;justify-content:center;transition:transform .15s}
+.chat-fab:hover{transform:scale(1.06)}
+.chat-panel{position:fixed;right:22px;bottom:88px;width:min(380px,calc(100vw - 32px));max-height:min(70vh,620px);background:var(--panel,#fff);border:1px solid var(--line,#e6e1d6);border-radius:16px;box-shadow:0 18px 50px rgba(13,25,45,.30);z-index:9001;display:none;flex-direction:column;overflow:hidden}
+.chat-panel.aaben{display:flex}
+.chat-top{background:var(--brand,#15233b);color:#fff;padding:13px 16px;display:flex;align-items:center;gap:10px;border-bottom:3px solid var(--gold,#b08d57)}
+.chat-top-titel{font-weight:700;font-size:.98rem;letter-spacing:.2px}
+.chat-luk{margin-left:auto;background:transparent;border:none;color:#fff;font-size:1rem;cursor:pointer;opacity:.85}
+.chat-luk:hover{opacity:1}
+.chat-beskeder{flex:1;overflow-y:auto;padding:14px;display:flex;flex-direction:column;gap:10px;background:var(--panel-2,#faf8f4)}
+.chat-msg{font-size:.86rem;line-height:1.45}
+.chat-msg.bruger{align-self:flex-end;background:var(--brand,#15233b);color:#fff;padding:8px 12px;border-radius:13px 13px 3px 13px;max-width:85%}
+.chat-msg.bot{align-self:flex-start;width:100%}
+.chat-bub{background:#fff;border:1px solid var(--line,#e6e1d6);padding:9px 12px;border-radius:13px 13px 13px 3px;color:var(--ink,#15233b)}
+.chat-forslag{display:flex;flex-wrap:wrap;gap:6px;margin-top:6px}
+.chat-forslag button{background:#fff;border:1px solid var(--gold-soft,#c9ad7d);color:var(--brand-2,#26406a);padding:6px 10px;border-radius:14px;font-size:.78rem;cursor:pointer;text-align:left}
+.chat-forslag button:hover{background:var(--gold-bg,#f6efe1)}
+.chat-kort{background:#fff;border:1px solid var(--line,#e6e1d6);border-left:3px solid var(--gold,#b08d57);border-radius:8px;padding:9px 11px;margin-top:7px;cursor:pointer;transition:background .12s,border-color .12s}
+.chat-kort:hover{background:var(--gold-bg,#f6efe1);border-left-color:var(--brand,#15233b)}
+.chat-kort-crumb{font-size:.7rem;text-transform:uppercase;letter-spacing:.4px;color:#9a7b45;font-weight:700;margin-bottom:2px}
+.chat-kort-titel{font-weight:600;color:var(--brand,#15233b);font-size:.85rem}
+.chat-kort-uddrag{font-size:.8rem;color:#54606e;margin-top:3px}
+.chat-kort-aabn{font-size:.76rem;color:var(--brand-2,#26406a);font-weight:700;margin-top:5px}
+.chat-note{font-size:.7rem;color:#8a8170;margin-top:8px;font-style:italic}
+.chat-input-rk{display:flex;gap:8px;padding:10px;border-top:1px solid var(--line,#e6e1d6);background:#fff}
+.chat-input{flex:1;border:1px solid var(--line,#d9d2c4);border-radius:10px;padding:9px 12px;font-size:.86rem;font-family:inherit;outline:none}
+.chat-input:focus{border-color:var(--gold,#b08d57)}
+.chat-send{background:var(--brand,#15233b);color:#fff;border:none;border-radius:10px;width:42px;font-size:1rem;cursor:pointer}
+.chat-send:hover{background:var(--brand-2,#26406a)}
+@media(max-width:600px){.chat-panel{right:8px;left:8px;width:auto;bottom:80px}.chat-fab{right:14px;bottom:14px}}
 </style>
 </head>
 <body>
@@ -423,6 +454,7 @@ mark.aktiv-match{background:var(--gold);color:#fff}
 // DATA
 // ═══════════════════════════════════════════════════════════════
 const API = 'https://retsinformation-api.dk/v1/lovgivning/';
+const PROXY_URL = ''; // valgfrit: URL til din Cloudflare version-proxy (worker.js). Tom = tjek direkte i browseren.
 
 // Alle dokumenter (BEK/LBK/VEJ) hentes via retsinformation-api.dk (kilde:'api')
 // VEJ markeres med isVej:true – brug eli/retsinfo-URL til retsinformation.dk
@@ -1830,6 +1862,7 @@ async function visViewer(katId, docIdx){
       try{
         renderVejGuide(guide,dok);
         visVejVersionBar(dok.aar,dok.nr,'api',guide.doc||null);
+        autoTjekVej(dok.aar,dok.nr);
       }catch(err){
         console.error('[VEJ] renderVejGuide fejlede:',err);
         renderVejPlaceholder(dok);
@@ -1843,6 +1876,7 @@ async function visViewer(katId, docIdx){
       const dynamiskGuide=await hentVejSomBlocks(dok);
       renderVejGuide(dynamiskGuide,dok);
       visVejVersionBar(dok.aar,dok.nr,'pdf-tekst',null);
+      autoTjekVej(dok.aar,dok.nr);
     }catch(e){
       console.warn('[VEJ] Dynamisk udtræk fejlede:',e);
       renderVejPlaceholder(dok);
@@ -2667,7 +2701,105 @@ function visVejVersionBar(aar,nr,kilde,dato){
   }
 }
 
+// -- Automatisk gaeldende-tjek pr. vejledning (laeser PDF-forside: status + "Senere aendringer") --
+const _RI_PDF = 'https://www.retsinformation.dk/eli/retsinfo/';
+
+async function _hentVejForsideTekst(aar,nr){
+  if(typeof PROXY_URL==='string' && PROXY_URL){
+    try{
+      const r=await fetch(PROXY_URL.replace(/\/$/,'')+'?eli=retsinfo/'+aar+'/'+nr,{signal:AbortSignal.timeout(20000)});
+      if(r.ok){ const j=await r.json(); if(j && !j.error) return {viaProxy:true, data:j}; }
+    }catch(e){ /* falder tilbage til browser-hentning */ }
+  }
+  const pdfUrl=_RI_PDF+aar+'/'+nr+'/pdf';
+  const lib=await laadPdfJs();
+  let buf=null;
+  for(const pu of ['https://corsproxy.io/?url='+encodeURIComponent(pdfUrl),
+                   'https://api.allorigins.win/raw?url='+encodeURIComponent(pdfUrl)]){
+    try{ const r=await fetch(pu,{signal:AbortSignal.timeout(20000)}); if(r.ok){ buf=await r.arrayBuffer(); break; } }catch(e){}
+  }
+  if(!buf) throw new Error('PDF utilgaengelig');
+  const pdf=await lib.getDocument({data:buf}).promise;
+  const side=await pdf.getPage(1);
+  const content=await side.getTextContent();
+  const yMap=new Map();
+  content.items.forEach(it=>{ if(!it.str.trim())return; const y=Math.round(it.transform[5]); if(!yMap.has(y))yMap.set(y,[]); yMap.get(y).push({x:Math.round(it.transform[4]),str:it.str}); });
+  const tekst=[...yMap.keys()].sort((a,b)=>b-a).map(y=>yMap.get(y).sort((a,b)=>a.x-b.x).map(i=>i.str).join('')).join('\n');
+  return {viaProxy:false, tekst};
+}
+
+function _parseVejStatus(t){
+  const s=String(t||'').replace(/­/g,'').replace(/ /g,' ');
+  const selv=s.match(/VEJ\s*nr\.?\s*(\d+)\s*af\s*(\d{2}\/\d{2}\/\d{4})\s*\((Gældende|Historisk)\)/i);
+  let ny=null;
+  const i=s.indexOf('Senere ændringer');
+  if(i>=0){
+    const blok=s.slice(i,i+220);
+    const m=blok.match(/VEJ\s*nr\.?\s*(\d+)\s*af\s*(\d{2}\/\d{2}\/\d{4})/i);
+    if(m && (!selv || m[1]!==selv[1])) ny={nr:m[1],dato:m[2]};
+  }
+  return { status: selv?selv[3]:null, selvNr: selv?selv[1]:null, selvDato: selv?selv[2]:null, ny };
+}
+
+function _visVejStatusResultat(aar,nr,r){
+  const bar=document.getElementById('vejVersionBar');
+  const tekst=document.getElementById('vejVersionTekst');
+  const btn=document.getElementById('vejTjekBtn');
+  if(!bar||!tekst||!btn) return;
+  const forny=function(){ try{ sessionStorage.removeItem('vejstatus_'+aar+'_'+nr); }catch(e){} autoTjekVej(aar,nr); };
+  if(r.status==='Gældende' && !r.ny){
+    bar.className='vej-version-bar ok';
+    tekst.textContent='✓ Gældende udgave – bekræftet på retsinformation.dk';
+    btn.textContent='↺ Tjek igen'; btn.disabled=false; btn.onclick=forny;
+  } else if(r.status==='Historisk' || r.ny){
+    bar.className='vej-version-bar opdatering';
+    tekst.innerHTML = r.ny
+      ? '⚠️ Ny udgave findes: <strong>VEJ nr. '+r.ny.nr+' af '+r.ny.dato+'</strong> – denne visning er ikke den gældende'
+      : '⚠️ Denne udgave er markeret <strong>Historisk</strong> på retsinformation.dk';
+    btn.textContent='↗ Åbn nyeste'; btn.disabled=false;
+    btn.onclick=function(){ const e=r.ny?('retsinfo/'+r.ny.dato.split('/')[2]+'/'+r.ny.nr):('retsinfo/'+aar+'/'+nr); window.open('https://www.retsinformation.dk/eli/'+e,'_blank'); };
+  } else {
+    bar.className='vej-version-bar';
+    tekst.textContent='Kunne ikke bekræfte gældende udgave';
+    btn.textContent='↺ Prøv igen'; btn.disabled=false; btn.onclick=forny;
+  }
+}
+
+async function autoTjekVej(aar,nr){
+  const bar=document.getElementById('vejVersionBar');
+  const tekst=document.getElementById('vejVersionTekst');
+  if(!bar||!tekst) return;
+  const key='vejstatus_'+aar+'_'+nr;
+  const stadig=()=> _vejVersionKontekst && (+_vejVersionKontekst.aar===+aar) && (+_vejVersionKontekst.nr===+nr);
+  try{
+    const raw=sessionStorage.getItem(key);
+    if(raw){ const c=JSON.parse(raw); if(c && (Date.now()-c.t)<6*3600*1000){ if(stadig()) _visVejStatusResultat(aar,nr,c.r); return; } }
+  }catch(e){}
+  tekst.textContent='↺ Tjekker gældende udgave…';
+  bar.className='vej-version-bar';
+  try{
+    const res=await _hentVejForsideTekst(aar,nr);
+    const r = res.viaProxy ? { status:res.data.status, selvNr:res.data.selvNr, selvDato:res.data.selvDato, ny:res.data.ny||null } : _parseVejStatus(res.tekst);
+    try{ sessionStorage.setItem(key,JSON.stringify({t:Date.now(),r})); }catch(e){}
+    if(stadig()) _visVejStatusResultat(aar,nr,r);
+  }catch(e){
+    if(stadig()){
+      bar.className='vej-version-bar';
+      tekst.textContent='Kunne ikke tjekke gældende udgave automatisk';
+      const btn=document.getElementById('vejTjekBtn');
+      if(btn){ btn.textContent='↺ Prøv igen'; btn.disabled=false; btn.onclick=function(){ try{sessionStorage.removeItem(key);}catch(_){} autoTjekVej(aar,nr); }; }
+    }
+  }
+}
+
 async function tjekVejVersion(){
+  if(!_vejVersionKontekst) return;
+  const {aar,nr}=_vejVersionKontekst;
+  try{ sessionStorage.removeItem('vejstatus_'+aar+'_'+nr); }catch(e){}
+  return autoTjekVej(aar,nr);
+}
+
+async function _tjekVejFingerprintUBRUGT(){
   if(!_vejVersionKontekst) return;
   const {aar,nr}=_vejVersionKontekst;
   const bar=document.getElementById('vejVersionBar');
@@ -3234,6 +3366,159 @@ window.addEventListener('DOMContentLoaded', ()=>{
   initUpload();
   router();
 });
+
+// ═══════════════════════════════════════════════════════════════
+// GRATIS SØGE-ASSISTENT (client-side, ingen API/tokens)
+// ═══════════════════════════════════════════════════════════════
+let _chatIdx=null;
+function _chatVejMap(){
+  const m={};
+  (typeof KATEGORIER!=='undefined'?KATEGORIER:[]).forEach(kat=>(kat.dokumenter||[]).forEach((dok,i)=>{
+    if(dok.isVej) m[dok.aar+'-'+dok.nr]={katId:kat.id,docIdx:i};
+  }));
+  return m;
+}
+function _cnorm(x){ return String(x||'').toLowerCase().replace(/­/g,'').replace(/-/g,''); }
+function _chatBygIndeks(){
+  if(_chatIdx) return _chatIdx;
+  const out=[]; const vmap=_chatVejMap();
+  if(typeof VEJ_GUIDES!=='undefined'){
+    Object.keys(VEJ_GUIDES).forEach(vejId=>{
+      const g=VEJ_GUIDES[vejId], ref=vmap[vejId];
+      if(!g||!ref) return;
+      out.push({katId:ref.katId,docIdx:ref.docIdx,anchor:'vch-0',emne:g.title||'',kapitel:'',sektion:g.title||'',
+        tekst:_cnorm((g.title||'')+' '+(g.desc||'')+' '+((g.intro||[]).join(' '))),
+        visText:((g.intro||[])[0]||g.desc||g.title||'')});
+      let idx=0, cur=null;
+      const flush=()=>{ if(cur && cur._t.trim()){ cur.tekst=_cnorm(cur._t); if(!cur.visText)cur.visText=cur.sektion; delete cur._t; out.push(cur);} cur=null; };
+      (g.chapters||[]).forEach((ch,ci)=>{
+        const kapLbl=(ch.n?ch.n+' · ':'')+(ch.t||'');
+        (ch.blocks||[]).forEach(b=>{
+          const bx=Array.isArray(b.x)?b.x.join(' '):String(b.x||'');
+          if(b.t==='theme'||b.t==='ref'){
+            flush();
+            cur={katId:ref.katId,docIdx:ref.docIdx,anchor:'vs-'+idx,emne:g.title||'',kapitel:ch.t||'',sektion:bx,_t:kapLbl+' '+bx+' ',visText:''};
+          } else {
+            if(!cur) cur={katId:ref.katId,docIdx:ref.docIdx,anchor:'vch-'+ci,emne:g.title||'',kapitel:ch.t||'',sektion:ch.t||'',_t:kapLbl+' ',visText:''};
+            cur._t+=bx+' ';
+            if(!cur.visText && (b.t==='p'||b.t==='ex')) cur.visText=bx;
+          }
+          idx++;
+        });
+        flush();
+      });
+    });
+  }
+  (typeof KATEGORIER!=='undefined'?KATEGORIER:[]).forEach(kat=>(kat.dokumenter||[]).forEach((dok,i)=>{
+    if(dok.isVej) return;
+    out.push({katId:kat.id,docIdx:i,erDok:true,emne:kat.titel||'',kapitel:'',sektion:dok.navn||'',
+      tekst:_cnorm((dok.navn||'')+' '+(dok.kortNavn||'')+' '+(kat.titel||'')+' '+(kat.desc||'')),
+      visText:(kat.desc||dok.navn||'')});
+  }));
+  (typeof RELEVANTE_LINKS!=='undefined'?RELEVANTE_LINKS:[]).forEach((l,i)=>{
+    out.push({linkIdx:i,erLink:true,emne:'Relevant link',kapitel:'',sektion:l.navn||'',
+      tekst:_cnorm((l.navn||'')+' '+(l.kortNavn||'')),visText:l.kortNavn||l.navn||''});
+  });
+  _chatIdx=out; return out;
+}
+const _CHAT_STOP=new Set('og i på til en et den det der som af for med er at om kan skal vil må har være blev bliver jeg du man vi de min mit mine dine hvad hvordan hvornår hvor hvem hvilke hvilken hvis så ved fra under over efter før mod uden mellem dette disse denne men også samt eller ikke kun'.split(' '));
+const _CHAT_SYN={karantæne:['karens'],karens:['karantæne'],fyret:['afskediget','opsigelse','selvforskyldt'],fyring:['afskediget','opsigelse'],opsagt:['opsigelse','afskediget'],sygdom:['syg','sygemeldt'],syg:['sygdom'],sats:['beregning','dagpengesats'],beregn:['beregning','sats'],gdage:['ledighedsdag'],gdag:['ledighedsdag'],rådighed:['rådig'],periode:['dagpengeperiode']};
+function _chatTokens(q){
+  const raw=String(q||'').toLowerCase().replace(/[^a-z0-9æøå\s-]/g,' ').replace(/-/g,'').split(/\s+/).filter(Boolean);
+  const toks=new Set();
+  raw.forEach(w=>{
+    if(w.length<2||_CHAT_STOP.has(w)) return;
+    toks.add(w);
+    if(w.length>5) toks.add(w.replace(/(erne|ende|ede|en|et|er|e|t)$/,''));
+    (_CHAT_SYN[w]||[]).forEach(sy=>toks.add(sy));
+  });
+  return [...toks].filter(t=>t&&t.length>=2);
+}
+function _chatSoeg(q){
+  const toks=_chatTokens(q); if(!toks.length) return [];
+  const idx=_chatBygIndeks(); const res=[];
+  idx.forEach(e=>{
+    let score=0; const hay=e.tekst||''; const sek=_cnorm(e.sektion); const em=_cnorm(e.emne);
+    toks.forEach(t=>{
+      let from=0,c=0; while(c<8){ const k=hay.indexOf(t,from); if(k<0)break; c++; from=k+t.length; }
+      score+=c;
+      if(sek.indexOf(t)>=0) score+=4;
+      if(em.indexOf(t)>=0) score+=2;
+    });
+    if(score>0) res.push({e,score});
+  });
+  res.sort((a,b)=>b.score-a.score);
+  return res.slice(0,5).map(r=>r.e);
+}
+function _chatUddrag(e,toks){
+  let txt=String(e.visText||e.sektion||'').replace(/\s+/g,' ').trim();
+  if(txt.length>220){
+    const low=txt.toLowerCase(); let pos=-1;
+    for(const t of toks){ const k=low.indexOf(t); if(k>=0){pos=k;break;} }
+    if(pos>50) txt='…'+txt.slice(pos-50);
+    txt=txt.slice(0,220).trim()+'…';
+  }
+  return txt;
+}
+function chatToggle(){
+  const p=document.getElementById('chatPanel'); if(!p) return;
+  const aaben=p.classList.toggle('aaben');
+  if(aaben){ _chatVelkomst(); setTimeout(()=>{const i=document.getElementById('chatInput'); if(i)i.focus();},60); }
+}
+function chatMinimer(){ const p=document.getElementById('chatPanel'); if(p)p.classList.remove('aaben'); }
+function _chatVelkomst(){
+  const b=document.getElementById('chatBeskeder'); if(!b||b.dataset.init) return;
+  b.dataset.init='1';
+  _chatBot('Hej! Jeg søger i dagpengereglerne og finder de relevante steder i vejledningerne og bekendtgørelserne. Stil et spørgsmål nedenfor. Svarene er uddrag fra teksterne – ikke juridisk rådgivning.');
+  const ex=['Hvornår er jeg selvforskyldt ledig?','Hvad er G-dage?','Hvordan beregnes dagpengesatsen?','Hvor længe er dagpengeperioden?'];
+  const d=document.createElement('div'); d.className='chat-forslag';
+  d.innerHTML=ex.map(t=>'<button onclick="chatStil(this.textContent)">'+esc(t)+'</button>').join('');
+  b.appendChild(d); _chatScroll();
+}
+function chatTast(ev){ if(ev.key==='Enter'){ ev.preventDefault(); chatSend(); } }
+function chatSend(){ const i=document.getElementById('chatInput'); const q=(i.value||'').trim(); if(!q)return; i.value=''; chatStil(q); }
+function chatStil(q){ _chatBruger(q); const toks=_chatTokens(q); const res=_chatSoeg(q); _chatSvar(q,res,toks); }
+function _chatBruger(t){ const b=document.getElementById('chatBeskeder'); const d=document.createElement('div'); d.className='chat-msg bruger'; d.textContent=t; b.appendChild(d); _chatScroll(); }
+function _chatBot(t){ const b=document.getElementById('chatBeskeder'); const d=document.createElement('div'); d.className='chat-msg bot'; d.innerHTML='<div class="chat-bub">'+esc(t)+'</div>'; b.appendChild(d); _chatScroll(); }
+function _chatSvar(q,res,toks){
+  const b=document.getElementById('chatBeskeder');
+  const d=document.createElement('div'); d.className='chat-msg bot';
+  if(!res.length){
+    d.innerHTML='<div class="chat-bub">Jeg fandt ikke noget om »'+esc(q)+'«. Prøv andre eller færre ord – fx »opsigelse«, »sats« eller »rådighed«. Du kan også bruge søgefeltet på forsiden.</div>';
+    b.appendChild(d); _chatScroll(); return;
+  }
+  let h='<div class="chat-bub">Her er de mest relevante steder om »'+esc(q)+'«:</div>';
+  res.forEach(e=>{
+    const crumb=[e.emne,e.kapitel].filter(Boolean).map(esc).join(' › ');
+    const uddrag=esc(_chatUddrag(e,toks));
+    let onclick;
+    if(e.erLink) onclick='aabLink('+e.linkIdx+');chatMinimer()';
+    else if(e.erDok) onclick="aabDok('"+e.katId+"',"+e.docIdx+');chatMinimer()';
+    else onclick="springTilVej('"+e.katId+"',"+e.docIdx+",'"+e.anchor+"');chatMinimer()";
+    h+='<div class="chat-kort" onclick="'+onclick+'">'
+      +(crumb?'<div class="chat-kort-crumb">'+crumb+'</div>':'')
+      +'<div class="chat-kort-titel">'+esc(e.sektion||e.emne)+'</div>'
+      +(uddrag?'<div class="chat-kort-uddrag">'+uddrag+'</div>':'')
+      +'<div class="chat-kort-aabn">Åbn →</div></div>';
+  });
+  h+='<div class="chat-note">Uddrag fra teksterne – ikke juridisk rådgivning.</div>';
+  d.innerHTML=h; b.appendChild(d); _chatScroll();
+}
+function _chatScroll(){ const b=document.getElementById('chatBeskeder'); if(b) b.scrollTop=b.scrollHeight; }
 </script>
+
+<!-- Gratis søge-assistent -->
+<button id="chatFab" class="chat-fab" onclick="chatToggle()" title="Spørg assistenten" aria-label="Spørg assistenten">&#128172;</button>
+<div id="chatPanel" class="chat-panel" role="dialog" aria-label="Dagpenge-assistent">
+  <div class="chat-top">
+    <div class="chat-top-titel">Dagpenge-assistent</div>
+    <button class="chat-luk" onclick="chatToggle()" aria-label="Luk">&#10005;</button>
+  </div>
+  <div id="chatBeskeder" class="chat-beskeder"></div>
+  <div class="chat-input-rk">
+    <input id="chatInput" class="chat-input" type="text" placeholder="Stil et sp&oslash;rgsm&aring;l&hellip;" onkeydown="chatTast(event)" autocomplete="off">
+    <button class="chat-send" onclick="chatSend()" aria-label="Send">&#10148;</button>
+  </div>
+</div>
 </body>
 </html>
