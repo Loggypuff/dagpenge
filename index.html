@@ -454,7 +454,8 @@ mark.aktiv-match{background:var(--gold);color:#fff}
 // DATA
 // ═══════════════════════════════════════════════════════════════
 const API = 'https://retsinformation-api.dk/v1/lovgivning/';
-const PROXY_URL = ''; // valgfrit: URL til din Cloudflare version-proxy (worker.js). Tom = tjek direkte i browseren.
+const PROXY_URL = 'https://vej-version-proxy.mortenhansen1990.workers.dev'; // din Cloudflare-proxy (worker.js).
+const LIVE_HENT = true; // true = hent vejledningernes indhold live (XML) fra retsinformation; false = brug kun indbygget kopi.
 
 // Alle dokumenter (BEK/LBK/VEJ) hentes via retsinformation-api.dk (kilde:'api')
 // VEJ markeres med isVej:true – brug eli/retsinfo-URL til retsinformation.dk
@@ -1859,15 +1860,7 @@ async function visViewer(katId, docIdx){
     const vejId=dok.aar+'-'+dok.nr;
     const guide=(typeof VEJ_GUIDES!=='undefined')&&VEJ_GUIDES[vejId];
     if(guide){
-      try{
-        renderVejGuide(guide,dok);
-        visVejVersionBar(dok.aar,dok.nr,'api',guide.doc||null);
-        autoTjekVej(dok.aar,dok.nr);
-      }catch(err){
-        console.error('[VEJ] renderVejGuide fejlede:',err);
-        renderVejPlaceholder(dok);
-        visVejVersionBar(dok.aar,dok.nr,null,null);
-      }
+      _visVejMedLive(dok, guide);
       return;
     }
     // Ingen hardkodet data – udtræk fra PDF og vis i samme blocks-format
@@ -2696,6 +2689,9 @@ function visVejVersionBar(aar,nr,kilde,dato){
   } else if(kilde==='pdf-tekst'){
     tekst.textContent='📄 Tekst hentet fra vejledning';
     bar.classList.add('ok');
+  } else if(kilde==='live'){
+    tekst.textContent='✓ Live fra retsinformation.dk'+(dato?' · '+dato:'');
+    bar.classList.add('ok');
   } else { // pdf-canvas fallback
     tekst.textContent='📋 Vises som PDF-billede';
   }
@@ -3370,6 +3366,185 @@ window.addEventListener('DOMContentLoaded', ()=>{
 // ═══════════════════════════════════════════════════════════════
 // GRATIS SØGE-ASSISTENT (client-side, ingen API/tokens)
 // ═══════════════════════════════════════════════════════════════
+// ═══════════════════════════════════════════════════════════════
+// LIVE-HENTNING AF VEJLEDNINGER (LexDania-XML fra retsinformation)
+// ═══════════════════════════════════════════════════════════════
+function _lexFirstText(el,tag){ if(!el) return ''; const n=el.getElementsByTagName(tag); return (n&&n.length)?(n[0].textContent||'').trim():''; }
+function lexExtractMeta(doc){
+  const meta=doc.getElementsByTagName('Meta')[0]||doc;
+  let regulation='';
+  const refTexts=meta.getElementsByTagName('Ref_Text');
+  for(let i=0;i<refTexts.length;i++){ const tx=(refTexts[i].textContent||'').trim(); if(/^Bekendtg/i.test(tx)){ regulation=tx; break; } }
+  return {
+    title:_lexFirstText(meta,'DocumentTitle'),
+    number:_lexFirstText(meta,'Number'),
+    dies:_lexFirstText(meta,'DiesSigni'),
+    ministry:_lexFirstText(meta,'Ministry'),
+    authority:_lexFirstText(meta,'AdministrativeAuthority'),
+    journal:_lexFirstText(meta,'JournalNumber').replace(/\\n/g,' ').replace(/\s+/g,' ').trim(),
+    status:_lexFirstText(meta,'Status'),
+    regulation
+  };
+}
+function lexExtractItems(doc){
+  const tg=doc.getElementsByTagName('TekstGruppe')[0];
+  const exs=tg?tg.getElementsByTagName('Exitus'):[];
+  const items=[];
+  for(let i=0;i<exs.length;i++){
+    const ex=exs[i];
+    const center=(ex.getAttribute('formaEx')||'')==='Center';
+    const lineas=ex.getElementsByTagName('Linea');
+    const lines=[]; let anyItalic=false, allItalic=true, anyBold=false;
+    for(let j=0;j<lineas.length;j++){
+      const chars=lineas[j].getElementsByTagName('Char');
+      let lt='', lineItalic=false;
+      for(let k=0;k<chars.length;k++){
+        const c=chars[k], f=c.getAttribute('formaChar')||'';
+        if(/Italic/i.test(f)) lineItalic=true;
+        if(/Bold/i.test(f)) anyBold=true;
+        lt+=(c.textContent||'');
+      }
+      lt=lt.replace(/\s+/g,' ').trim();
+      if(lt){ lines.push(lt); if(lineItalic)anyItalic=true; else allItalic=false; }
+    }
+    if(lines.length) items.push({center,italic:anyItalic,bold:anyBold,allItalic,text:lines.join(' '),lines});
+  }
+  return items;
+}
+function lexBuildGuide(meta, items, dok){
+  const status=/valid/i.test(meta.status||'')?'Gældende':(meta.status?'Historisk':'');
+  let docStr='';
+  if(meta.number&&meta.dies){ const p=meta.dies.split('-'); if(p.length===3) docStr='VEJ nr. '+meta.number+' af '+p[2]+'/'+p[1]+'/'+p[0]; }
+  const guide={
+    id: dok?(dok.aar+'-'+dok.nr):(meta.number?('x-'+meta.number):''),
+    title: meta.title||(dok&&dok.navn)||'',
+    doc: docStr, ministry: meta.ministry||'', authority: meta.authority||'',
+    journal: meta.journal||'', status, regulation: meta.regulation||'',
+    source: dok?('https://www.retsinformation.dk/eli/retsinfo/'+dok.aar+'/'+dok.nr):'',
+    intro:[], chapters:[]
+  };
+  let cur=null, introMode=true, olBuf=null;
+  const pushChap=(n,t)=>{ cur={n:n||'',t:t||'',blocks:[]}; guide.chapters.push(cur); introMode=false; };
+  const ensureChap=()=>{ if(!cur) pushChap('',''); };
+  const flushOl=()=>{ if(olBuf&&olBuf.length){ ensureChap(); cur.blocks.push({t:'ol',x:olBuf.slice()}); } olBuf=null; };
+  for(let i=0;i<items.length;i++){
+    const it=items[i];
+    if(it.center && it.italic && /^Kapitel\b/i.test(it.text)){
+      flushOl();
+      let t='';
+      if(i+1<items.length && items[i+1].center && items[i+1].italic && !/^Kapitel\b/i.test(items[i+1].text)){ t=items[i+1].text; i++; }
+      pushChap(it.text.replace(/[:\s]+$/,''), t);
+      continue;
+    }
+    if(it.center && it.italic){ flushOl(); pushChap('', it.text); continue; }
+    if(it.center && it.bold){ flushOl(); ensureChap(); cur.blocks.push({t:'ref',x:it.text}); continue; }
+    if(introMode){ if(!/^Kapitel\s+\d+\s*:/i.test(it.text)) guide.intro.push(it.text); continue; }
+    if(!it.center && it.allItalic && it.italic){
+      if(/^Til\s+§/i.test(it.text)){ flushOl(); ensureChap(); cur.blocks.push({t:'ref',x:it.text}); }
+      else if(it.lines.length===1 && it.text.length<=70){ flushOl(); ensureChap(); cur.blocks.push({t:'theme',x:it.text}); }
+      else { flushOl(); ensureChap(); cur.blocks.push({t:'ex',x:it.text}); }
+      continue;
+    }
+    if(/^\d+\)\s/.test(it.text)){ if(!olBuf)olBuf=[]; olBuf.push(it.text.replace(/^\d+\)\s*/,'')); continue; }
+    flushOl(); ensureChap(); cur.blocks.push({t:'p',x:it.text});
+  }
+  flushOl();
+  return guide;
+}
+function lexToGuide(doc, dok){ return lexBuildGuide(lexExtractMeta(doc), lexExtractItems(doc), dok); }
+
+async function hentVejFraXml(dok){
+  const xmlUrl='https://www.retsinformation.dk/eli/retsinfo/'+dok.aar+'/'+dok.nr+'/xml';
+  const kilder=[];
+  if(typeof PROXY_URL==='string' && PROXY_URL) kilder.push(PROXY_URL.replace(/\/$/,'')+'?xml=retsinfo/'+dok.aar+'/'+dok.nr);
+  kilder.push('https://corsproxy.io/?url='+encodeURIComponent(xmlUrl));
+  kilder.push('https://api.allorigins.win/raw?url='+encodeURIComponent(xmlUrl));
+  let txt=null;
+  for(const u of kilder){
+    try{ const r=await fetch(u,{signal:AbortSignal.timeout(20000)}); if(r.ok){ const t=await r.text(); if(t && t.indexOf('<Dokument')>=0){ txt=t; break; } } }catch(e){}
+  }
+  if(!txt) throw new Error('XML utilgængelig');
+  const doc=new DOMParser().parseFromString(txt,'text/xml');
+  if(doc.getElementsByTagName('parsererror').length) throw new Error('XML parse-fejl');
+  const g=lexToGuide(doc,dok);
+  if(!g.chapters.length) throw new Error('Tomt resultat');
+  return g;
+}
+function _vejXmlCache(aar,nr){ try{ const r=localStorage.getItem('vejxml_'+aar+'_'+nr); return r?JSON.parse(r):null; }catch(e){ return null; } }
+function _vejXmlFrisk(c){ return !!(c && c.t && (Date.now()-c.t) < 24*3600*1000); }
+function _visVejMedLive(dok, hardcoded){
+  const aar=dok.aar, nr=dok.nr;
+  const cached=_vejXmlCache(aar,nr);
+  const visGuide=(cached && cached.guide)?cached.guide:hardcoded;
+  try{
+    renderVejGuide(visGuide,{aar:aar,nr:nr,navn:(visGuide.title||dok.navn)});
+    visVejVersionBar(aar,nr,(cached && cached.guide)?'live':'api',visGuide.doc||null);
+  }catch(err){
+    console.error('[VEJ] render fejlede, falder tilbage til indbygget:',err);
+    try{ renderVejGuide(hardcoded,dok); visVejVersionBar(aar,nr,'api',hardcoded.doc||null); }
+    catch(e){ renderVejPlaceholder(dok); visVejVersionBar(aar,nr,null,null); }
+  }
+  if(typeof LIVE_HENT!=='undefined' && LIVE_HENT){
+    if(cached && cached.guide && _vejXmlFrisk(cached)){ _live_saetKnap(dok); }
+    else { _vejLiveFlow(dok,false); }
+  } else {
+    autoTjekVej(aar,nr);
+  }
+}
+
+// Status (gældende/historisk + evt. nyere udgave) for et dokument.
+async function _vejStatusData(aar,nr){
+  const res=await _hentVejForsideTekst(aar,nr);
+  if(res && res.viaProxy && res.data) return {status:res.data.status, ny:res.data.ny||null};
+  return _parseVejStatus(res?res.tekst:'');
+}
+
+// Følger kæden af "Senere ændringer" frem til den gældende udgave.
+async function _resolveGaeldende(aar,nr){
+  let a=aar, n=nr, guard=0;
+  while(guard++<5){
+    let st=null;
+    try{ st=await _vejStatusData(a,n); }catch(e){ break; }
+    if(st && st.ny && st.ny.nr){
+      const yr=(st.ny.dato && st.ny.dato.split('/')[2]) || a;
+      a=parseInt(yr,10)||a; n=parseInt(st.ny.nr,10)||n;
+    } else break;
+  }
+  return {aar:a, nr:n};
+}
+
+function _live_saetKnap(dok){
+  const btn=document.getElementById('vejTjekBtn');
+  if(btn){
+    btn.textContent='↺ Hent nyeste igen'; btn.disabled=false;
+    btn.onclick=function(){
+      try{localStorage.removeItem('vejxml_'+dok.aar+'_'+dok.nr);}catch(_){}
+      try{sessionStorage.removeItem('vejstatus_'+dok.aar+'_'+dok.nr);}catch(_){}
+      _vejLiveFlow(dok,true);
+    };
+  }
+}
+
+function _live_render(dok, guide){
+  renderVejGuide(guide,{aar:dok.aar,nr:dok.nr,navn:(guide.title||dok.navn)});
+  visVejVersionBar(dok.aar,dok.nr,'live',guide.doc||null);
+  _live_saetKnap(dok);
+}
+
+// Baggrund: find gældende udgave, hent dens tekst (XML) og vis den.
+async function _vejLiveFlow(dok, force){
+  try{
+    const g=await _resolveGaeldende(dok.aar,dok.nr);
+    const guide=await hentVejFraXml({aar:g.aar, nr:g.nr, navn:dok.navn});
+    guide.source='https://www.retsinformation.dk/eli/retsinfo/'+g.aar+'/'+g.nr;
+    try{ localStorage.setItem('vejxml_'+dok.aar+'_'+dok.nr, JSON.stringify({t:Date.now(),guide})); }catch(e){}
+    if(_vejVersionKontekst && +_vejVersionKontekst.aar===+dok.aar && +_vejVersionKontekst.nr===+dok.nr){
+      const el=document.getElementById('viewerTekst');
+      if(force || !el || el.scrollTop<200) _live_render(dok,guide);
+    }
+  }catch(e){ /* behold den viste tekst */ }
+}
+
 let _chatIdx=null;
 function _chatVejMap(){
   const m={};
