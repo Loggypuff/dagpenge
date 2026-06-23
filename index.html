@@ -74,7 +74,7 @@ a:hover{color:var(--gold)}
 .hero.froda .hero-search{max-width:460px;margin:0 auto}
 .hero.froda .hero-search input{border:2px solid var(--gold);background:#fffdf7;box-shadow:0 8px 22px rgba(40,30,10,.16)}
 .hero.froda .hero-resultater{max-width:460px;margin:12px auto 0}
-.froda-nav{display:grid;grid-template-columns:1fr 1fr;gap:0 24px;max-width:none;margin:26px auto 0}
+.froda-nav{display:grid;grid-template-columns:repeat(3,1fr);gap:0 22px;max-width:none;margin:26px auto 0}
 .froda-nav .hero-nav-link{border-top:2px solid rgba(122,90,42,.5)}
 .froda-nav .hero-nav-link:hover{border-top-color:var(--gold)}
 .froda-nav .hero-nav-t{color:#2f5530;font-family:var(--fantasy);font-size:1.12rem;letter-spacing:.03em}
@@ -389,6 +389,28 @@ mark.aktiv-match{background:var(--gold);color:#fff}
 .vej-guide h2.vg-kap{font-family:var(--fantasy);color:#2f5530;border-bottom-color:var(--gold)}
 .vej-guide .vg-theme{color:#3a6b41}
 .sektion-soeg input:focus{border-color:var(--gold);box-shadow:0 0 0 3px rgba(176,141,87,.18)}
+.froda-chat{max-width:780px;margin:0 auto}
+.froda-chat-intro{font-family:var(--quote);font-style:italic;color:#5a3f23;font-size:1.18rem;margin-bottom:14px}
+#frodaStatus{display:none;font-size:.8rem;color:#6b563a;background:rgba(255,255,255,.7);border:1px solid #d9c9a3;border-radius:8px;padding:9px 13px;margin-bottom:12px}
+.froda-msgs{display:flex;flex-direction:column;gap:12px;margin-bottom:16px}
+.froda-msg{font-size:.92rem;line-height:1.5;max-width:88%}
+.froda-msg.bruger{align-self:flex-end;background:#33502f;color:#fff;padding:9px 14px;border-radius:14px 14px 3px 14px}
+.froda-msg.bot{align-self:flex-start;width:100%}
+.froda-bub{background:rgba(255,255,255,.93);border:1px solid #d9c9a3;border-radius:14px 14px 14px 3px;padding:11px 15px;color:#3a2f22}
+.froda-kort{background:rgba(255,255,255,.96);border:1px solid #d9c9a3;border-left:3px solid var(--gold);border-radius:8px;padding:10px 13px;margin-top:8px;cursor:pointer;transition:background .12s,border-color .12s}
+.froda-kort:hover{background:#fffdf6;border-left-color:#33502f}
+.froda-kort-crumb{font-size:.68rem;text-transform:uppercase;letter-spacing:.4px;color:#7a5a2a;font-weight:700}
+.froda-kort-titel{font-family:var(--fantasy);color:#2f5530;font-size:.92rem;margin-top:2px}
+.froda-kort-uddrag{font-size:.83rem;color:#54514a;margin-top:3px}
+.froda-kort-aabn{font-size:.74rem;color:#33502f;font-weight:700;margin-top:5px}
+.froda-input-rk{display:flex;gap:8px}
+.froda-input{flex:1;border:2px solid var(--gold);border-radius:11px;padding:12px 15px;font-size:.95rem;font-family:inherit;background:#fffdf7;outline:none}
+.froda-input:focus{border-color:#33502f}
+.froda-send{background:#33502f;color:#fff;border:none;border-radius:11px;padding:0 22px;font-weight:600;cursor:pointer;font-family:var(--sans);letter-spacing:.02em}
+.froda-send:hover{background:#26401f}
+.froda-note{font-size:.72rem;color:#8a7a5a;font-style:italic;margin-top:10px}
+.froda-typer{display:inline-flex;gap:4px}.froda-typer i{width:6px;height:6px;border-radius:50%;background:#7a5a2a;opacity:.5;animation:frodaDot 1s infinite}.froda-typer i:nth-child(2){animation-delay:.2s}.froda-typer i:nth-child(3){animation-delay:.4s}
+@keyframes frodaDot{0%,60%,100%{opacity:.3;transform:translateY(0)}30%{opacity:1;transform:translateY(-3px)}}
 </style>
 </head>
 <body>
@@ -426,6 +448,7 @@ mark.aktiv-match{background:var(--gold);color:#fff}
           <nav class="hero-nav froda-nav">
             <a class="hero-nav-link" onclick="visSektion('bek')"><span><span class="hero-nav-t">Lovgivning</span><span class="hero-nav-d">Bekendtgørelser &amp; vejledninger</span></span><span class="hero-nav-ar">→</span></a>
             <a class="hero-nav-link" onclick="visSektion('res')"><span><span class="hero-nav-t">Ressourcer</span><span class="hero-nav-d">Egne dokumenter &amp; relevante links</span></span><span class="hero-nav-ar">→</span></a>
+            <a class="hero-nav-link" onclick="visSektion('chat')"><span><span class="hero-nav-t">Chat med Froda</span><span class="hero-nav-d">Spørg og søg intelligent i teksterne</span></span><span class="hero-nav-ar">→</span></a>
           </nav>
         </div>
       </div>
@@ -467,6 +490,26 @@ mark.aktiv-match{background:var(--gold);color:#fff}
         <span class="upload-zone-knap">Vælg filer</span>
       </div>
       <div id="mineDokListe"></div>
+    </div>
+  </div>
+
+  <!-- SEKTION: Chat med Froda (semantisk søgning) -->
+  <div id="sektionChat" class="hjem-sektion">
+    <div class="sektion-nav">
+      <button class="btn-sektion-tilbage" onclick="visTiles()">← Forside</button>
+      <span class="sektion-nav-titel">🧙&nbsp; Chat med Froda</span>
+    </div>
+    <div class="sektion-indhold">
+      <div class="froda-chat">
+        <p class="froda-chat-intro">Spørg Froda til råds om dagpengereglerne — han søger i selve lovteksterne og finder de mest relevante steder.</p>
+        <div id="frodaStatus"></div>
+        <div id="frodaMsgs" class="froda-msgs"></div>
+        <div class="froda-input-rk">
+          <input id="frodaInput" class="froda-input" type="text" placeholder="Stil et spørgsmål…" onkeydown="frodaChatTast(event)" autocomplete="off">
+          <button class="froda-send" onclick="frodaChatSend()">Spørg</button>
+        </div>
+        <p class="froda-note">Froda viser de mest relevante steder i lovteksterne — ikke juridisk rådgivning. Klik på et kort for at læse kilden.</p>
+      </div>
     </div>
   </div>
 
@@ -1708,7 +1751,7 @@ function visHome(){
 
 function visTiles(){
   document.getElementById('homeTiles').style.display='';
-  ['sektionBek','sektionRes'].forEach(id=>
+  ['sektionBek','sektionRes','sektionChat'].forEach(id=>
     document.getElementById(id).style.display='none');
   const fi=document.getElementById('forsideSoegInput'); if(fi) fi.value='';
   const fr=document.getElementById('forsideResultater'); if(fr){fr.className='hero-resultater';fr.innerHTML='';}
@@ -1717,15 +1760,16 @@ function visTiles(){
 
 function visSektion(s){
   document.getElementById('homeTiles').style.display='none';
-  ['sektionBek','sektionRes'].forEach(id=>
+  ['sektionBek','sektionRes','sektionChat'].forEach(id=>
     document.getElementById(id).style.display='none');
-  const ids={bek:'sektionBek',res:'sektionRes'};
+  const ids={bek:'sektionBek',res:'sektionRes',chat:'sektionChat'};
   document.getElementById(ids[s]).style.display='block';
   if(s==='bek'&&!document.getElementById('bekIndhold').childElementCount) renderBekSektion();
   if(s==='res'){
     if(!document.getElementById('linksIndhold').childElementCount) renderLinksSektion();
     renderMineDok();
   }
+  if(s==='chat') frodaChatInit();
 }
 
 function aabLink(i){ const l=RELEVANTE_LINKS[i]; if(l&&l.url) window.open(l.url,'_blank'); }
@@ -3616,6 +3660,56 @@ async function _vejLiveFlow(dok, force){
   }catch(e){ /* behold den viste tekst */ }
 }
 
+// ── Chat med Froda (semantisk søgning; nøgleords-fallback) ──
+let _frodaInited=false;
+function _frodaVent(ms){return new Promise(r=>{const t0=Date.now();(function chk(){ if(window.froda&&window.froda.search) return r(true); if(Date.now()-t0>ms) return r(false); setTimeout(chk,200); })();});}
+window._frodaStatus=function(tekst){ const el=document.getElementById('frodaStatus'); if(!el)return; el.textContent=tekst||''; el.style.display=tekst?'block':'none'; };
+function frodaChatInit(){
+  if(_frodaInited) return; _frodaInited=true;
+  _frodaBot('Goddag! Jeg er Froda. Stil mig et spørgsmål om dagpengereglerne, så leder jeg i selve lovteksterne og finder de mest relevante steder. Første gang henter jeg lidt sproglig visdom — det tager et øjeblik.');
+  setTimeout(()=>{const i=document.getElementById('frodaInput'); if(i)i.focus();},60);
+  _frodaVent(20000).then(ok=>{ if(ok){ try{ window.froda.buildIndex(); }catch(e){} } });
+}
+function frodaChatTast(ev){ if(ev.key==='Enter'){ ev.preventDefault(); frodaChatSend(); } }
+function frodaChatSend(){ const i=document.getElementById('frodaInput'); const q=(i.value||'').trim(); if(!q)return; i.value=''; _frodaBruger(q); _frodaSvar(q); }
+function _frodaMsgEl(){ return document.getElementById('frodaMsgs'); }
+function _frodaScroll(){ const b=_frodaMsgEl(); if(b) b.scrollTop=b.scrollHeight; }
+function _frodaBruger(t){ const b=_frodaMsgEl(); const d=document.createElement('div'); d.className='froda-msg bruger'; d.textContent=t; b.appendChild(d); _frodaScroll(); }
+function _frodaBot(t){ const b=_frodaMsgEl(); const d=document.createElement('div'); d.className='froda-msg bot'; d.innerHTML='<div class="froda-bub">'+esc(t)+'</div>'; b.appendChild(d); _frodaScroll(); }
+function _frodaTyper(){ const b=_frodaMsgEl(); const d=document.createElement('div'); d.className='froda-msg bot'; d.innerHTML='<div class="froda-bub"><span class="froda-typer"><i></i><i></i><i></i></span></div>'; b.appendChild(d); _frodaScroll(); return d; }
+function _frodaUddrag(p){ let t=String((p&&(p.visText||p.sektion))||'').replace(/\s+/g,' ').trim(); if(t.length>210) t=t.slice(0,210).trim()+'…'; return t; }
+async function _frodaSvar(q){
+  const tip=_frodaTyper();
+  let poster=null, semantisk=false;
+  const ok=await _frodaVent(20000);
+  if(ok){
+    try{ const r=await window.froda.search(q,5); poster=r.map(x=>x.post); semantisk=true; }
+    catch(e){ poster=null; }
+  }
+  if(!poster){ poster=(typeof _chatSoeg==='function')?_chatSoeg(q):[]; semantisk=false; }
+  if(tip&&tip.parentNode) tip.parentNode.removeChild(tip);
+  const b=_frodaMsgEl(); const d=document.createElement('div'); d.className='froda-msg bot';
+  if(!poster||!poster.length){
+    d.innerHTML='<div class="froda-bub">Jeg fandt ikke noget om »'+esc(q)+'«. Prøv at omformulere, fx »opsigelse på grund af sygdom« eller »hvornår er jeg selvforskyldt ledig«.</div>';
+    b.appendChild(d); _frodaScroll(); return;
+  }
+  let h='<div class="froda-bub">'+(semantisk?'Froda fandt disse steder i lovteksterne:':'Her er de mest relevante steder (tekstsøgning):')+'</div>';
+  poster.forEach(p=>{
+    const crumb=[p.emne,p.kapitel].filter(Boolean).map(esc).join(' › ');
+    const ud=esc(_frodaUddrag(p));
+    let onclick;
+    if(p.erLink) onclick='aabLink('+p.linkIdx+')';
+    else if(p.erDok) onclick="aabDok('"+p.katId+"',"+p.docIdx+')';
+    else onclick="springTilVej('"+p.katId+"',"+p.docIdx+",'"+p.anchor+"')";
+    h+='<div class="froda-kort" onclick="'+onclick+'">'
+      +(crumb?'<div class="froda-kort-crumb">'+crumb+'</div>':'')
+      +'<div class="froda-kort-titel">'+esc(p.sektion||p.emne||'Afsnit')+'</div>'
+      +(ud?'<div class="froda-kort-uddrag">'+ud+'</div>':'')
+      +'<div class="froda-kort-aabn">Åbn →</div></div>';
+  });
+  d.innerHTML=h; b.appendChild(d); _frodaScroll();
+}
+
 let _chatIdx=null;
 function _chatVejMap(){
   const m={};
@@ -3766,5 +3860,53 @@ function _chatScroll(){ const b=document.getElementById('chatBeskeder'); if(b) b
     <button class="chat-send" onclick="chatSend()" aria-label="Send">&#10148;</button>
   </div>
 </div>
+<script type="module">
+import { pipeline, env } from 'https://cdn.jsdelivr.net/npm/@xenova/transformers@2.17.2';
+env.allowLocalModels=false;
+const MODEL='Xenova/multilingual-e5-small';
+const DIM=384;
+let _ex=null,_mat=null,_posts=null;
+const _stat=(s)=>{ try{ if(window._frodaStatus) window._frodaStatus(s); }catch(e){} };
+function _idb(mode,fn){ return new Promise((res,rej)=>{ const o=indexedDB.open('froda-db',1); o.onupgradeneeded=()=>{ try{o.result.createObjectStore('kv');}catch(e){} }; o.onsuccess=()=>{ try{ const tx=o.result.transaction('kv',mode); const st=tx.objectStore('kv'); fn(st,res,rej); }catch(e){ res(null); } }; o.onerror=()=>res(null); }); }
+function idbGet(k){ return _idb('readonly',(st,res)=>{ const g=st.get(k); g.onsuccess=()=>res(g.result); g.onerror=()=>res(null); }); }
+function idbSet(k,v){ return _idb('readwrite',(st,res)=>{ st.put(v,k); res(true); }); }
+async function getEx(){
+  if(_ex) return _ex;
+  _stat('Vækker Froda — henter sproglig visdom (engangsdownload) …');
+  _ex=await pipeline('feature-extraction', MODEL, { quantized:true, progress_callback:(p)=>{ if(p&&p.status==='progress'&&typeof p.progress==='number') _stat('Henter Frodas sprogmodel … '+Math.round(p.progress)+'%'); } });
+  return _ex;
+}
+async function embed(text){
+  const ex=await getEx();
+  const out=await ex(String(text).slice(0,1600), { pooling:'mean', normalize:true });
+  return out.data;
+}
+function posts(){ try{ return window._chatBygIndeks?window._chatBygIndeks():[]; }catch(e){ return []; } }
+async function buildIndex(){
+  if(_mat&&_posts) return;
+  _posts=posts();
+  const key='vec_'+MODEL+'_'+_posts.length;
+  try{ const c=await idbGet(key); if(c&&c.byteLength===_posts.length*DIM*4){ _mat=new Float32Array(c); _stat(''); return; } }catch(e){}
+  await getEx();
+  const mat=new Float32Array(_posts.length*DIM);
+  for(let i=0;i<_posts.length;i++){
+    const p=_posts[i];
+    const txt='passage: '+((p.sektion?p.sektion+'. ':'')+(p.tekst||p.visText||''));
+    try{ const v=await embed(txt); mat.set(v.subarray?v.subarray(0,DIM):v, i*DIM); }catch(e){}
+    if(i%20===0) _stat('Froda læser lovteksterne … '+Math.round(100*i/_posts.length)+'%');
+  }
+  _mat=mat; _stat('');
+  try{ await idbSet(key, _mat.buffer.slice(0)); }catch(e){}
+}
+async function search(query,k){
+  await buildIndex();
+  const q=await embed('query: '+query);
+  const n=_posts.length, out=[];
+  for(let i=0;i<n;i++){ let dot=0; const off=i*DIM; for(let d=0;d<DIM;d++) dot+=q[d]*_mat[off+d]; out.push({i,score:dot}); }
+  out.sort((a,b)=>b.score-a.score);
+  return out.slice(0,k||5).map(o=>({post:_posts[o.i],score:o.score}));
+}
+window.froda={ search, buildIndex, ready:()=>!!_mat };
+</script>
 </body>
 </html>
