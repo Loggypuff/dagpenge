@@ -3861,52 +3861,49 @@ function _chatScroll(){ const b=document.getElementById('chatBeskeder'); if(b) b
   </div>
 </div>
 <script type="module">
-import { pipeline, env } from 'https://cdn.jsdelivr.net/npm/@xenova/transformers@2.17.2';
-env.allowLocalModels=false;
-const MODEL='Xenova/multilingual-e5-small';
 const DIM=384;
-let _ex=null,_mat=null,_posts=null;
+const _WSRC="import { pipeline, env } from 'https://cdn.jsdelivr.net/npm/@xenova/transformers@2.17.2';\nenv.allowLocalModels=false;\nconst DIM=384;\nlet ex=null;\nasync function getEx(){ if(ex) return ex; ex=await pipeline('feature-extraction','Xenova/multilingual-e5-small',{quantized:true,progress_callback:p=>{ if(p&&p.status==='progress'&&typeof p.progress==='number') postMessage({type:'progress',pct:Math.round(p.progress)}); }}); return ex; }\nasync function embed1(t){ const e=await getEx(); const o=await e(String(t).slice(0,1600),{pooling:'mean',normalize:true}); return o.data; }\nonmessage=async(ev)=>{\n  const d=ev.data, id=d.id;\n  try{\n    if(d.type==='embed'){ const v=await embed1(d.payload); postMessage({type:'result',id,vec:Array.from(v)}); }\n    else if(d.type==='embedBatch'){\n      const arr=d.payload, n=arr.length, flat=new Float32Array(n*DIM);\n      for(let i=0;i<n;i++){ const v=await embed1(arr[i]); flat.set(v.subarray?v.subarray(0,DIM):Array.prototype.slice.call(v,0,DIM), i*DIM); if(i%5===0||i===n-1) postMessage({type:'batchprogress',done:i+1,total:n}); }\n      postMessage({type:'batchresult',id,buf:flat.buffer},[flat.buffer]);\n    }\n  }catch(err){ postMessage({type:'error',id,error:String((err&&err.message)||err)}); }\n};\n";
+let _worker=null,_mat=null,_posts=null,_seq=0;const _pending={};
 const _stat=(s)=>{ try{ if(window._frodaStatus) window._frodaStatus(s); }catch(e){} };
-function _idb(mode,fn){ return new Promise((res,rej)=>{ const o=indexedDB.open('froda-db',1); o.onupgradeneeded=()=>{ try{o.result.createObjectStore('kv');}catch(e){} }; o.onsuccess=()=>{ try{ const tx=o.result.transaction('kv',mode); const st=tx.objectStore('kv'); fn(st,res,rej); }catch(e){ res(null); } }; o.onerror=()=>res(null); }); }
+function _rejectAll(err){ Object.keys(_pending).forEach(k=>{ try{_pending[k].rej(err);}catch(e){} delete _pending[k]; }); }
+function _getWorker(){
+  if(_worker) return _worker;
+  const blob=new Blob([_WSRC],{type:'text/javascript'});
+  _worker=new Worker(URL.createObjectURL(blob),{type:'module'});
+  _worker.onmessage=(e)=>{ const m=e.data;
+    if(m.type==='progress') _stat('Henter Frodas sprogmodel … '+m.pct+'%');
+    else if(m.type==='batchprogress') _stat('Froda læser lovteksterne … '+Math.round(100*m.done/m.total)+'%');
+    else if(m.type==='result'||m.type==='batchresult'){ const p=_pending[m.id]; if(p){ delete _pending[m.id]; p.res(m); } }
+    else if(m.type==='error'){ const p=_pending[m.id]; if(p){ delete _pending[m.id]; p.rej(new Error(m.error)); } }
+  };
+  _worker.onerror=()=>{ _rejectAll(new Error('worker-fejl')); };
+  return _worker;
+}
+function _ask(type,payload,timeout){ return new Promise((res,rej)=>{ const id=++_seq; _pending[id]={res,rej}; try{ _getWorker().postMessage({type,id,payload}); }catch(e){ delete _pending[id]; return rej(e); } if(timeout) setTimeout(()=>{ if(_pending[id]){ delete _pending[id]; rej(new Error('timeout')); } }, timeout); }); }
+function _idb(mode,fn){ return new Promise((res)=>{ try{ const o=indexedDB.open('froda-db',1); o.onupgradeneeded=()=>{ try{o.result.createObjectStore('kv');}catch(e){} }; o.onsuccess=()=>{ try{ const tx=o.result.transaction('kv',mode); fn(tx.objectStore('kv'),res); }catch(e){ res(null); } }; o.onerror=()=>res(null); }catch(e){ res(null); } }); }
 function idbGet(k){ return _idb('readonly',(st,res)=>{ const g=st.get(k); g.onsuccess=()=>res(g.result); g.onerror=()=>res(null); }); }
-function idbSet(k,v){ return _idb('readwrite',(st,res)=>{ st.put(v,k); res(true); }); }
-async function getEx(){
-  if(_ex) return _ex;
-  _stat('Vækker Froda — henter sproglig visdom (engangsdownload) …');
-  _ex=await pipeline('feature-extraction', MODEL, { quantized:true, progress_callback:(p)=>{ if(p&&p.status==='progress'&&typeof p.progress==='number') _stat('Henter Frodas sprogmodel … '+Math.round(p.progress)+'%'); } });
-  return _ex;
-}
-async function embed(text){
-  const ex=await getEx();
-  const out=await ex(String(text).slice(0,1600), { pooling:'mean', normalize:true });
-  return out.data;
-}
+function idbSet(k,v){ return _idb('readwrite',(st,res)=>{ try{ st.put(v,k); }catch(e){} res(true); }); }
 function posts(){ try{ return window._chatBygIndeks?window._chatBygIndeks():[]; }catch(e){ return []; } }
 async function buildIndex(){
   if(_mat&&_posts) return;
   _posts=posts();
-  const key='vec_'+MODEL+'_'+_posts.length;
+  const key='vec_e5s_'+_posts.length;
   try{ const c=await idbGet(key); if(c&&c.byteLength===_posts.length*DIM*4){ _mat=new Float32Array(c); _stat(''); return; } }catch(e){}
-  await getEx();
-  const mat=new Float32Array(_posts.length*DIM);
-  for(let i=0;i<_posts.length;i++){
-    const p=_posts[i];
-    const txt='passage: '+((p.sektion?p.sektion+'. ':'')+(p.tekst||p.visText||''));
-    try{ const v=await embed(txt); mat.set(v.subarray?v.subarray(0,DIM):v, i*DIM); }catch(e){}
-    if(i%20===0) _stat('Froda læser lovteksterne … '+Math.round(100*i/_posts.length)+'%');
-  }
-  _mat=mat; _stat('');
-  try{ await idbSet(key, _mat.buffer.slice(0)); }catch(e){}
+  const texts=_posts.map(p=>'passage: '+((p.sektion?p.sektion+'. ':'')+(p.tekst||p.visText||'')));
+  const m=await _ask('embedBatch', texts, 300000);
+  _mat=new Float32Array(m.buf);
+  _stat('');
+  try{ await idbSet(key,_mat.buffer.slice(0)); }catch(e){}
 }
 async function search(query,k){
   await buildIndex();
-  const q=await embed('query: '+query);
-  const n=_posts.length, out=[];
+  const m=await _ask('embed','query: '+query, 60000);
+  const q=m.vec, n=_posts.length, out=[];
   for(let i=0;i<n;i++){ let dot=0; const off=i*DIM; for(let d=0;d<DIM;d++) dot+=q[d]*_mat[off+d]; out.push({i,score:dot}); }
   out.sort((a,b)=>b.score-a.score);
   return out.slice(0,k||5).map(o=>({post:_posts[o.i],score:o.score}));
 }
-window.froda={ search, buildIndex, ready:()=>!!_mat };
+window.froda={search,buildIndex,ready:()=>!!_mat};
 </script>
 </body>
 </html>
