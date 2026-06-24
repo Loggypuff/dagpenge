@@ -422,6 +422,36 @@ mark.aktiv-match{background:var(--gold);color:#fff}
 .om-froda p{font-family:var(--read);font-size:1.02rem;line-height:1.7;color:#2c2a24;margin:0 0 14px}
 .om-froda .res-overskrift{margin-top:26px}
 .om-fod{margin-top:28px;font-size:.8rem;color:#7a6a4a;font-style:italic;border-top:1px solid #d9c9a3;padding-top:14px}
+.froda-nav .nav-bred{grid-column:1/-1}
+.arvid-box{max-width:680px;margin:0 auto}
+.arvid-lead{font-family:var(--read);font-size:1.02rem;line-height:1.65;color:#2c2a24;margin-bottom:18px}
+.arvid-soeg{display:flex;gap:8px;margin-bottom:12px}
+.arvid-soeg input{flex:1;border:2px solid var(--gold);border-radius:11px;padding:12px 15px;font-size:.95rem;font-family:inherit;background:#fffdf7;outline:none}
+.arvid-soeg input:focus{border-color:#33502f}
+.arvid-soeg button{background:#33502f;color:#fff;border:none;border-radius:11px;padding:0 20px;font-weight:600;cursor:pointer;font-family:var(--sans);white-space:nowrap}
+.arvid-soeg button:hover{background:#26401f}
+.arvid-eksempler{font-size:.85rem;color:#5a4a2a;margin-bottom:14px}
+.arvid-eksempler a{color:#2f5530;font-weight:600;cursor:pointer;text-decoration:underline}
+.res-grid{display:grid;grid-template-columns:1fr 1fr;gap:16px;align-items:start;max-width:1000px;margin:0 auto}
+.res-panel{background:rgba(255,255,255,.95);border:1px solid var(--line);border-radius:11px;overflow:hidden;box-shadow:var(--shadow);display:flex;flex-direction:column}
+.res-panel.res-bred{grid-column:1/-1}
+.res-panel-hd{background:linear-gradient(120deg,#33502f,#23391f);color:#fff;padding:11px 16px;display:flex;align-items:center;gap:10px;border-bottom:2px solid var(--gold)}
+.res-panel-ic{font-size:1.1rem}
+.res-panel-t{font-family:var(--fantasy);font-weight:600;font-size:1rem;letter-spacing:.02em}
+.res-panel-body{padding:16px}
+.res-panel-desc{font-size:.88rem;color:#54514a;line-height:1.55;margin-bottom:12px}
+.res-panel-body #linksIndhold .dok-kort:last-child{margin-bottom:0}
+@media(max-width:760px){.res-grid{grid-template-columns:1fr}}
+.arvid-resultater{margin-top:14px;display:flex;flex-direction:column;gap:10px}
+.arvid-status{font-size:.86rem;color:#5a4a2a}
+.arvid-antal{font-size:.8rem;color:#6b563a}
+.arvid-antal a,.arvid-status a{color:#2f5530;font-weight:600}
+.arvid-kort{display:block;background:#fffdf7;border:1px solid #e3d6b8;border-left:3px solid var(--gold);border-radius:8px;padding:11px 13px;text-decoration:none;transition:background .12s,border-color .12s}
+.arvid-kort:hover{background:#f7efdd;border-left-color:#33502f}
+.arvid-kort-titel{font-family:var(--fantasy);color:#2f5530;font-size:.95rem;font-weight:600;line-height:1.25}
+.arvid-kort-meta{font-size:.72rem;color:#7a6a4a;margin-top:3px}
+.arvid-kort-sum{font-size:.84rem;color:#3a3528;line-height:1.5;margin-top:5px}
+.arvid-kort-aabn{font-size:.74rem;color:#2f5530;font-weight:700;margin-top:6px}
 </style>
 </head>
 <body>
@@ -458,7 +488,7 @@ mark.aktiv-match{background:var(--gold);color:#fff}
           <div id="forsideResultater" class="hero-resultater"></div>
           <nav class="hero-nav froda-nav">
             <a class="hero-nav-link" onclick="visSektion('bek')"><span><span class="hero-nav-t">Lovgivning</span><span class="hero-nav-d">Bekendtgørelser &amp; vejledninger</span></span><span class="hero-nav-ar">→</span></a>
-            <a class="hero-nav-link" onclick="visSektion('res')"><span><span class="hero-nav-t">Ressourcer</span><span class="hero-nav-d">Egne dokumenter &amp; relevante links</span></span><span class="hero-nav-ar">→</span></a>
+            <a class="hero-nav-link" onclick="visSektion('res')"><span><span class="hero-nav-t">Ressourcer</span><span class="hero-nav-d">Afgørelser, links og egne dokumenter</span></span><span class="hero-nav-ar">→</span></a>
             <a class="hero-nav-link" onclick="visSektion('chat')"><span><span class="hero-nav-t">Chat med Froda</span><span class="hero-nav-d">Spørg og søg intelligent i teksterne</span></span><span class="hero-nav-ar">→</span></a>
             <a class="hero-nav-link" onclick="visSektion('om')"><span><span class="hero-nav-t">Om Froda</span><span class="hero-nav-d">Hvad er Froda, og hvem står bag</span></span><span class="hero-nav-ar">→</span></a>
           </nav>
@@ -491,17 +521,37 @@ mark.aktiv-match{background:var(--gold);color:#fff}
       </div>
     </div>
     <div class="sektion-indhold">
-      <h3 class="res-overskrift">Relevante links</h3>
-      <div id="linksIndhold"></div>
-      <h3 class="res-overskrift" style="margin-top:36px">Egne dokumenter</h3>
-      <p class="kat-desc" style="margin-bottom:18px">Upload dine egne PDF-filer og åbn dem direkte i programmet.</p>
-      <div class="upload-zone" id="uploadZone">
-        <input type="file" id="filUpload" accept=".pdf" multiple style="display:none">
-        <div class="upload-zone-ikon">📄</div>
-        <div class="upload-zone-tekst">Træk PDF-filer hertil, eller klik for at vælge</div>
-        <span class="upload-zone-knap">Vælg filer</span>
+      <div class="res-grid">
+        <div class="res-panel">
+          <div class="res-panel-hd"><span class="res-panel-ic">⚖️</span><span class="res-panel-t">Afgørelser (ARVID)</span></div>
+          <div class="res-panel-body">
+            <p class="res-panel-desc">Søg i Styrelsen for Arbejdsmarked og Rekrutterings database over afgørelser i klagesager om arbejdsløshedsforsikring og efterløn. Resultaterne åbnes i ARVID i en ny fane.</p>
+            <div class="arvid-soeg">
+              <input id="arvidInput" type="text" placeholder="Søg i afgørelser, fx »karens«…" onkeydown="arvidTast(event)" autocomplete="off">
+              <button onclick="arvidSoeg()">Søg i ARVID →</button>
+            </div>
+            <p class="arvid-eksempler">Prøv fx: <a onclick="arvidSoegOrd('karens')">karens</a> · <a onclick="arvidSoegOrd('selvforskyldt ledighed')">selvforskyldt ledighed</a> · <a onclick="arvidSoegOrd('rådighed')">rådighed</a> · <a onclick="arvidSoegOrd('g-dage')">g-dage</a></p>
+            <div id="arvidResultater" class="arvid-resultater"></div>
+          </div>
+        </div>
+        <div class="res-panel">
+          <div class="res-panel-hd"><span class="res-panel-ic">🔗</span><span class="res-panel-t">Relevante links</span></div>
+          <div class="res-panel-body"><div id="linksIndhold"></div></div>
+        </div>
+        <div class="res-panel res-bred">
+          <div class="res-panel-hd"><span class="res-panel-ic">📁</span><span class="res-panel-t">Egne dokumenter</span></div>
+          <div class="res-panel-body">
+            <p class="res-panel-desc">Upload dine egne PDF-filer og åbn dem direkte i programmet.</p>
+            <div class="upload-zone" id="uploadZone">
+              <input type="file" id="filUpload" accept=".pdf" multiple style="display:none">
+              <div class="upload-zone-ikon">📄</div>
+              <div class="upload-zone-tekst">Træk PDF-filer hertil, eller klik for at vælge</div>
+              <span class="upload-zone-knap">Vælg filer</span>
+            </div>
+            <div id="mineDokListe"></div>
+          </div>
+        </div>
       </div>
-      <div id="mineDokListe"></div>
     </div>
   </div>
 
@@ -3477,6 +3527,38 @@ function gaaTilbage(){
   window.scrollTo(0,0);
 }
 
+function _arvidUrl(q){ return 'https://arvid.star.dk/search?query='+encodeURIComponent(q)+'&sort_by=published_on&order_by=descending&from=1996-01-01'; }
+function arvidTast(ev){ if(ev.key==='Enter'){ ev.preventDefault(); arvidSoeg(); } }
+function arvidSoeg(){ const el=document.getElementById('arvidInput'); arvidSoegOrd(el?el.value:''); }
+function arvidSoegOrd(q){ q=String(q||'').trim(); const inp=document.getElementById('arvidInput'); if(inp&&q) inp.value=q; _arvidVis(q); }
+async function _arvidVis(q){
+  const box=document.getElementById('arvidResultater'); if(!box) return;
+  if(!q){ box.innerHTML=''; return; }
+  if(!(typeof PROXY_URL==='string' && PROXY_URL)){ window.open(_arvidUrl(q),'_blank','noopener'); return; }
+  box.innerHTML='<div class="arvid-status">↻ Søger i ARVID…</div>';
+  try{
+    const r=await fetch(PROXY_URL.replace(/\/$/,'')+'?arvid='+encodeURIComponent(q),{signal:AbortSignal.timeout(20000)});
+    if(!r.ok) throw new Error('proxy '+r.status);
+    const j=await r.json();
+    if(!j || !Array.isArray(j.results)){ window.open(_arvidUrl(q),'_blank','noopener'); box.innerHTML='<div class="arvid-status">Åbnede ARVID i en ny fane. (Inline-søgning virker, når din Worker er opdateret med ARVID-ruten.)</div>'; return; }
+    const res=j.results; const antal=(j.count!=null?j.count:res.length);
+    if(!res.length){ box.innerHTML='<div class="arvid-status">Ingen afgørelser fundet for »'+esc(q)+'«. <a href="'+_arvidUrl(q)+'" target="_blank" rel="noopener">Søg på ARVID →</a></div>'; return; }
+    let h='<div class="arvid-antal">'+antal+' afgørelser fundet · viser '+res.length+' · <a href="'+_arvidUrl(q)+'" target="_blank" rel="noopener">se alle på ARVID →</a></div>';
+    res.forEach(function(a){
+      const m=[a.type, a.classification, (a.authority&&(a.authority.long_name||a.authority.name)), a.journal_number, a.published_on].filter(Boolean).map(esc).join(' · ');
+      let sum=String(a.summary||'').replace(/<[^>]+>/g,' ').replace(/\s+/g,' ').trim();
+      if(sum.length>260) sum=sum.slice(0,260).trim()+'…';
+      h+='<a class="arvid-kort" href="https://arvid.star.dk/documents/'+a.id+'" target="_blank" rel="noopener">'
+        +'<div class="arvid-kort-titel">'+esc(a.title||('Afgørelse '+a.id))+'</div>'
+        +(m?'<div class="arvid-kort-meta">'+m+'</div>':'')
+        +(sum?'<div class="arvid-kort-sum">'+esc(sum)+'</div>':'')
+        +'<div class="arvid-kort-aabn">Åbn afgørelse på ARVID →</div></a>';
+    });
+    box.innerHTML=h;
+  }catch(e){
+    box.innerHTML='<div class="arvid-status">Kunne ikke hente fra ARVID lige nu. <a href="'+_arvidUrl(q)+'" target="_blank" rel="noopener">Søg direkte på ARVID →</a></div>';
+  }
+}
 function gaaTilForside(){
   history.replaceState(null,'',location.pathname+location.search);
   const v=document.getElementById('viewer');
