@@ -74,7 +74,7 @@ a:hover{color:var(--gold)}
 .hero.froda .hero-search{max-width:460px;margin:0 auto}
 .hero.froda .hero-search input{border:2px solid var(--gold);background:#fffdf7;box-shadow:0 8px 22px rgba(40,30,10,.16)}
 .hero.froda .hero-resultater{max-width:460px;margin:12px auto 0}
-.froda-nav{display:grid;grid-template-columns:repeat(3,1fr);gap:0 22px;max-width:none;margin:26px auto 0}
+.froda-nav{display:grid;grid-template-columns:repeat(2,1fr);gap:0 22px;max-width:none;margin:26px auto 0}
 .froda-nav .hero-nav-link{border-top:2px solid rgba(122,90,42,.5)}
 .froda-nav .hero-nav-link:hover{border-top-color:var(--gold)}
 .froda-nav .hero-nav-t{color:#2f5530;font-family:var(--fantasy);font-size:1.12rem;letter-spacing:.03em}
@@ -416,6 +416,12 @@ mark.aktiv-match{background:var(--gold);color:#fff}
 .hdr-tekst h1{font-size:1.04rem;line-height:1.2}
 .hdr-tekst p{font-size:.74rem;opacity:.92}
 .hdr{cursor:pointer}
+.om-froda{max-width:760px;margin:0 auto}
+.om-h1{font-family:var(--fantasy);color:#2f5530;font-size:2rem;margin:0 0 14px}
+.om-lead{font-family:var(--quote);font-style:italic;font-size:1.22rem;color:#5a3f23;line-height:1.5;margin-bottom:20px}
+.om-froda p{font-family:var(--read);font-size:1.02rem;line-height:1.7;color:#2c2a24;margin:0 0 14px}
+.om-froda .res-overskrift{margin-top:26px}
+.om-fod{margin-top:28px;font-size:.8rem;color:#7a6a4a;font-style:italic;border-top:1px solid #d9c9a3;padding-top:14px}
 </style>
 </head>
 <body>
@@ -454,6 +460,7 @@ mark.aktiv-match{background:var(--gold);color:#fff}
             <a class="hero-nav-link" onclick="visSektion('bek')"><span><span class="hero-nav-t">Lovgivning</span><span class="hero-nav-d">Bekendtgørelser &amp; vejledninger</span></span><span class="hero-nav-ar">→</span></a>
             <a class="hero-nav-link" onclick="visSektion('res')"><span><span class="hero-nav-t">Ressourcer</span><span class="hero-nav-d">Egne dokumenter &amp; relevante links</span></span><span class="hero-nav-ar">→</span></a>
             <a class="hero-nav-link" onclick="visSektion('chat')"><span><span class="hero-nav-t">Chat med Froda</span><span class="hero-nav-d">Spørg og søg intelligent i teksterne</span></span><span class="hero-nav-ar">→</span></a>
+            <a class="hero-nav-link" onclick="visSektion('om')"><span><span class="hero-nav-t">Om Froda</span><span class="hero-nav-d">Hvad er Froda, og hvem står bag</span></span><span class="hero-nav-ar">→</span></a>
           </nav>
         </div>
       </div>
@@ -511,6 +518,29 @@ mark.aktiv-match{background:var(--gold);color:#fff}
           <zapier-interfaces-chatbot-embed is-popup='false' chatbot-id='cmqrofcv5003w6trfjpy450q1' height='600px' width='100%'></zapier-interfaces-chatbot-embed>
         </div>
         <p class="froda-note">Svarene gives af en AI-chatbot — det er ikke juridisk rådgivning. Kontrollér altid i den fulde lovtekst.</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- SEKTION: Om Froda -->
+  <div id="sektionOm" class="hjem-sektion">
+    <div class="sektion-nav">
+      <button class="btn-sektion-tilbage" onclick="visTiles()">← Forside</button>
+      <span class="sektion-nav-titel">🌿&nbsp; Om Froda</span>
+    </div>
+    <div class="sektion-indhold">
+      <div class="om-froda">
+        <h2 class="om-h1">Om Froda</h2>
+        <p class="om-lead">Froda – <em>Frivilligt Ressourcearkiv om Dansk A-kasselov</em> – er et uafhængigt, frivilligt initiativ stiftet i 2026. Formålet er at samle lovgivning, vejledninger og andre ressourcer ét sted, så reglerne om a-kasse og dagpenge bliver lette at finde rundt i og forstå.</p>
+        <h3 class="res-overskrift">Hvorfor Froda?</h3>
+        <p>Reglerne på dagpengeområdet er spredt ud over mange bekendtgørelser og vejledninger, der løbende ændres. Det kan være svært at gennemskue, hvad der er gældende ret lige nu. Froda samler det hele i en overskuelig form og holder det opdateret med de nyeste udgaver direkte fra Retsinformation.</p>
+        <h3 class="res-overskrift">Hvem er det for?</h3>
+        <p>Froda henvender sig til alle, der arbejder med eller har interesse for a-kasse- og dagpengeområdet i Danmark – fx a-kassemedarbejdere, sagsbehandlere, rådgivere, undervisere, studerende, ledige og alle andre, der har brug for hurtigt at slå reglerne op.</p>
+        <h3 class="res-overskrift">Hvad finder du her?</h3>
+        <p>Bekendtgørelser og vejledninger struktureret efter emne, med krydshenvisninger mellem regel og vejledning. Altid den gældende udgave – siden tjekker automatisk mod Retsinformation. Dertil en søgefunktion og en chatbot, der hjælper dig med at finde svar, samt relevante links og mulighed for at samle dine egne dokumenter.</p>
+        <h3 class="res-overskrift">Vigtigt at vide</h3>
+        <p>Froda er et frit, uofficielt opslagsværktøj og er hverken en myndighed eller en a-kasse. Indholdet er ikke juridisk rådgivning. I konkrete sager bør du altid kontrollere mod den officielle tekst på Retsinformation.dk og søge vejledning hos din a-kasse eller den relevante myndighed.</p>
+        <p class="om-fod">Froda · Frivilligt Ressourcearkiv om Dansk A-kasselov · stiftet 2026</p>
       </div>
     </div>
   </div>
@@ -1753,7 +1783,7 @@ function visHome(){
 
 function visTiles(){
   document.getElementById('homeTiles').style.display='';
-  ['sektionBek','sektionRes','sektionChat'].forEach(id=>
+  ['sektionBek','sektionRes','sektionChat','sektionOm'].forEach(id=>
     document.getElementById(id).style.display='none');
   const fi=document.getElementById('forsideSoegInput'); if(fi) fi.value='';
   const fr=document.getElementById('forsideResultater'); if(fr){fr.className='hero-resultater';fr.innerHTML='';}
@@ -1762,9 +1792,9 @@ function visTiles(){
 
 function visSektion(s){
   document.getElementById('homeTiles').style.display='none';
-  ['sektionBek','sektionRes','sektionChat'].forEach(id=>
+  ['sektionBek','sektionRes','sektionChat','sektionOm'].forEach(id=>
     document.getElementById(id).style.display='none');
-  const ids={bek:'sektionBek',res:'sektionRes',chat:'sektionChat'};
+  const ids={bek:'sektionBek',res:'sektionRes',chat:'sektionChat',om:'sektionOm'};
   document.getElementById(ids[s]).style.display='block';
   if(s==='bek'&&!document.getElementById('bekIndhold').childElementCount) renderBekSektion();
   if(s==='res'){
