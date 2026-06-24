@@ -409,6 +409,8 @@ mark.aktiv-match{background:var(--gold);color:#fff}
 .froda-send{background:#33502f;color:#fff;border:none;border-radius:11px;padding:0 22px;font-weight:600;cursor:pointer;font-family:var(--sans);letter-spacing:.02em}
 .froda-send:hover{background:#26401f}
 .froda-note{font-size:.72rem;color:#8a7a5a;font-style:italic;margin-top:10px}
+.froda-bot-wrap{max-width:560px;margin:0 auto;border:1px solid #d9c9a3;border-radius:12px;overflow:hidden;box-shadow:0 8px 26px rgba(40,30,10,.12)}
+.froda-bot-wrap zapier-interfaces-chatbot-embed{display:block;width:100%}
 .froda-typer{display:inline-flex;gap:4px}.froda-typer i{width:6px;height:6px;border-radius:50%;background:#7a5a2a;opacity:.5;animation:frodaDot 1s infinite}.froda-typer i:nth-child(2){animation-delay:.2s}.froda-typer i:nth-child(3){animation-delay:.4s}
 @keyframes frodaDot{0%,60%,100%{opacity:.3;transform:translateY(0)}30%{opacity:1;transform:translateY(-3px)}}
 </style>
@@ -501,14 +503,11 @@ mark.aktiv-match{background:var(--gold);color:#fff}
     </div>
     <div class="sektion-indhold">
       <div class="froda-chat">
-        <p class="froda-chat-intro">Spørg Froda til råds om dagpengereglerne — han søger i selve lovteksterne og finder de mest relevante steder.</p>
-        <div id="frodaStatus"></div>
-        <div id="frodaMsgs" class="froda-msgs"></div>
-        <div class="froda-input-rk">
-          <input id="frodaInput" class="froda-input" type="text" placeholder="Stil et spørgsmål…" onkeydown="frodaChatTast(event)" autocomplete="off">
-          <button class="froda-send" onclick="frodaChatSend()">Spørg</button>
+        <p class="froda-chat-intro">Spørg Froda til råds om dagpengereglerne — chatbotten kender de gældende regler og svarer på dine spørgsmål.</p>
+        <div class="froda-bot-wrap">
+          <zapier-interfaces-chatbot-embed is-popup='false' chatbot-id='cmqrofcv5003w6trfjpy450q1' height='600px' width='100%'></zapier-interfaces-chatbot-embed>
         </div>
-        <p class="froda-note">Froda viser de mest relevante steder i lovteksterne — ikke juridisk rådgivning. Klik på et kort for at læse kilden.</p>
+        <p class="froda-note">Svarene gives af en AI-chatbot — det er ikke juridisk rådgivning. Kontrollér altid i den fulde lovtekst.</p>
       </div>
     </div>
   </div>
@@ -1769,7 +1768,6 @@ function visSektion(s){
     if(!document.getElementById('linksIndhold').childElementCount) renderLinksSektion();
     renderMineDok();
   }
-  if(s==='chat') frodaChatInit();
 }
 
 function aabLink(i){ const l=RELEVANTE_LINKS[i]; if(l&&l.url) window.open(l.url,'_blank'); }
@@ -2265,7 +2263,7 @@ function _vejSektionerForParagraf(vejId,paraNr){
       const refId='vs-'+flat[i].bi;
       const grp=[flat[i].b]; let j=i+1;
       // medtag ALT (stk-underafsnit, tekst, lister, eksempler) indtil næste ref for en ANDEN paragraf
-      while(j<flat.length && !(flat[j].b.t==='ref' && !_refParaNums(flat[j].b.x).has(num))){ grp.push(flat[j].b); j++; }
+      while(j<flat.length && !(flat[j].b.t==='ref' && _refParaNums(flat[j].b.x).size>0 && !_refParaNums(flat[j].b.x).has(num))){ grp.push(flat[j].b); j++; }
       while(grp.length && grp[grp.length-1].t==='theme') grp.pop();
       sektioner.push({refId, blocks:grp});
       i=j;
@@ -3220,11 +3218,10 @@ function renderStrukturetDok(data, dokMeta){
       let vejBtn='';
       if(_bekVejPair&&p.nr){
         const vRefId=_findVejRefId(_bekVejPair.vejId,p.nr);
-        if(vRefId){
-          vejBtn=`<button class="kryds-link" onclick="visVejPopup('${_bekVejPair.katId}',${_bekVejPair.vejDocIdx},'${_bekVejPair.vejId}','${esc(p.nr)}','${vRefId}')" title="Vis vejledningen til ${esc(p.nr)}">📖 VEJ</button>`;
-        } else {
-          vejBtn=`<button class="kryds-link kryds-ingen" onclick="ingenVejRef('${esc(p.nr)}')" title="${esc(p.nr)} er ikke specifikt forklaret i vejledningen">📖 VEJ</button>`;
-        }
+        const _maal=vRefId||'vch-0';
+        const _kls=vRefId?'kryds-link':'kryds-link kryds-ingen';
+        const _ttl=vRefId?('Vis vejledningen til '+p.nr):(p.nr+' er ikke specifikt forklaret \u2013 \u00e5bn hele vejledningen');
+        vejBtn=`<button class="${_kls}" onclick="visVejPopup('${_bekVejPair.katId}',${_bekVejPair.vejDocIdx},'${_bekVejPair.vejId}','${esc(p.nr)}','${_maal}')" title="${esc(_ttl)}">📖 VEJ</button>`;
       }
       html+=`<div class="para" id="${paraId}" data-para-nr="${esc(p.nr||'')}">`;
       if(p.nr){
@@ -3860,50 +3857,7 @@ function _chatScroll(){ const b=document.getElementById('chatBeskeder'); if(b) b
     <button class="chat-send" onclick="chatSend()" aria-label="Send">&#10148;</button>
   </div>
 </div>
-<script type="module">
-const DIM=384;
-const _WSRC="import { pipeline, env } from 'https://cdn.jsdelivr.net/npm/@xenova/transformers@2.17.2';\nenv.allowLocalModels=false;\nconst DIM=384;\nlet ex=null;\nasync function getEx(){ if(ex) return ex; ex=await pipeline('feature-extraction','Xenova/multilingual-e5-small',{quantized:true,progress_callback:p=>{ if(p&&p.status==='progress'&&typeof p.progress==='number') postMessage({type:'progress',pct:Math.round(p.progress)}); }}); return ex; }\nasync function embed1(t){ const e=await getEx(); const o=await e(String(t).slice(0,1600),{pooling:'mean',normalize:true}); return o.data; }\nonmessage=async(ev)=>{\n  const d=ev.data, id=d.id;\n  try{\n    if(d.type==='embed'){ const v=await embed1(d.payload); postMessage({type:'result',id,vec:Array.from(v)}); }\n    else if(d.type==='embedBatch'){\n      const arr=d.payload, n=arr.length, flat=new Float32Array(n*DIM);\n      for(let i=0;i<n;i++){ const v=await embed1(arr[i]); flat.set(v.subarray?v.subarray(0,DIM):Array.prototype.slice.call(v,0,DIM), i*DIM); if(i%5===0||i===n-1) postMessage({type:'batchprogress',done:i+1,total:n}); }\n      postMessage({type:'batchresult',id,buf:flat.buffer},[flat.buffer]);\n    }\n  }catch(err){ postMessage({type:'error',id,error:String((err&&err.message)||err)}); }\n};\n";
-let _worker=null,_mat=null,_posts=null,_seq=0;const _pending={};
-const _stat=(s)=>{ try{ if(window._frodaStatus) window._frodaStatus(s); }catch(e){} };
-function _rejectAll(err){ Object.keys(_pending).forEach(k=>{ try{_pending[k].rej(err);}catch(e){} delete _pending[k]; }); }
-function _getWorker(){
-  if(_worker) return _worker;
-  const blob=new Blob([_WSRC],{type:'text/javascript'});
-  _worker=new Worker(URL.createObjectURL(blob),{type:'module'});
-  _worker.onmessage=(e)=>{ const m=e.data;
-    if(m.type==='progress') _stat('Henter Frodas sprogmodel … '+m.pct+'%');
-    else if(m.type==='batchprogress') _stat('Froda læser lovteksterne … '+Math.round(100*m.done/m.total)+'%');
-    else if(m.type==='result'||m.type==='batchresult'){ const p=_pending[m.id]; if(p){ delete _pending[m.id]; p.res(m); } }
-    else if(m.type==='error'){ const p=_pending[m.id]; if(p){ delete _pending[m.id]; p.rej(new Error(m.error)); } }
-  };
-  _worker.onerror=()=>{ _rejectAll(new Error('worker-fejl')); };
-  return _worker;
-}
-function _ask(type,payload,timeout){ return new Promise((res,rej)=>{ const id=++_seq; _pending[id]={res,rej}; try{ _getWorker().postMessage({type,id,payload}); }catch(e){ delete _pending[id]; return rej(e); } if(timeout) setTimeout(()=>{ if(_pending[id]){ delete _pending[id]; rej(new Error('timeout')); } }, timeout); }); }
-function _idb(mode,fn){ return new Promise((res)=>{ try{ const o=indexedDB.open('froda-db',1); o.onupgradeneeded=()=>{ try{o.result.createObjectStore('kv');}catch(e){} }; o.onsuccess=()=>{ try{ const tx=o.result.transaction('kv',mode); fn(tx.objectStore('kv'),res); }catch(e){ res(null); } }; o.onerror=()=>res(null); }catch(e){ res(null); } }); }
-function idbGet(k){ return _idb('readonly',(st,res)=>{ const g=st.get(k); g.onsuccess=()=>res(g.result); g.onerror=()=>res(null); }); }
-function idbSet(k,v){ return _idb('readwrite',(st,res)=>{ try{ st.put(v,k); }catch(e){} res(true); }); }
-function posts(){ try{ return window._chatBygIndeks?window._chatBygIndeks():[]; }catch(e){ return []; } }
-async function buildIndex(){
-  if(_mat&&_posts) return;
-  _posts=posts();
-  const key='vec_e5s_'+_posts.length;
-  try{ const c=await idbGet(key); if(c&&c.byteLength===_posts.length*DIM*4){ _mat=new Float32Array(c); _stat(''); return; } }catch(e){}
-  const texts=_posts.map(p=>'passage: '+((p.sektion?p.sektion+'. ':'')+(p.tekst||p.visText||'')));
-  const m=await _ask('embedBatch', texts, 300000);
-  _mat=new Float32Array(m.buf);
-  _stat('');
-  try{ await idbSet(key,_mat.buffer.slice(0)); }catch(e){}
-}
-async function search(query,k){
-  await buildIndex();
-  const m=await _ask('embed','query: '+query, 60000);
-  const q=m.vec, n=_posts.length, out=[];
-  for(let i=0;i<n;i++){ let dot=0; const off=i*DIM; for(let d=0;d<DIM;d++) dot+=q[d]*_mat[off+d]; out.push({i,score:dot}); }
-  out.sort((a,b)=>b.score-a.score);
-  return out.slice(0,k||5).map(o=>({post:_posts[o.i],score:o.score}));
-}
-window.froda={search,buildIndex,ready:()=>!!_mat};
-</script>
+
+<script async type="module" src="https://interfaces.zapier.com/assets/web-components/zapier-interfaces/zapier-interfaces.esm.js"></script>
 </body>
 </html>
