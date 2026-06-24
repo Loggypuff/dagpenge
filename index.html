@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8"/>
 <meta name="viewport" content="width=device-width,initial-scale=1.0"/>
-<title>Viden og ressourcer om dagpengeregler - altid opdaret med nyeste lovgivning</title>
+<title>Dagpengeregler – Beskæftigelsesministeriet</title>
 <style>
 @import url('https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600;9..144,700&family=Inter:wght@400;500;600;700&family=Source+Serif+4:opsz,wght@8..60,400;8..60,500;8..60,600&family=Cinzel:wght@500;600;700&family=Cormorant+Garamond:ital,wght@0,600;1,500&display=swap');
 
@@ -413,17 +413,20 @@ mark.aktiv-match{background:var(--gold);color:#fff}
 .froda-bot-wrap zapier-interfaces-chatbot-embed{display:block;width:100%}
 .froda-typer{display:inline-flex;gap:4px}.froda-typer i{width:6px;height:6px;border-radius:50%;background:#7a5a2a;opacity:.5;animation:frodaDot 1s infinite}.froda-typer i:nth-child(2){animation-delay:.2s}.froda-typer i:nth-child(3){animation-delay:.4s}
 @keyframes frodaDot{0%,60%,100%{opacity:.3;transform:translateY(0)}30%{opacity:1;transform:translateY(-3px)}}
+.hdr-tekst h1{font-size:1.04rem;line-height:1.2}
+.hdr-tekst p{font-size:.74rem;opacity:.92}
+.hdr{cursor:pointer}
 </style>
 </head>
 <body>
 <div id="frodaBg"></div>
 
 <!-- ═══════════════ HEADER ═══════════════ -->
-<div class="hdr" id="globalHdr">
+<div class="hdr" id="globalHdr" onclick="gaaTilForside()" style="cursor:pointer" title="Til forsiden">
   <div class="hdr-logo">🌿</div>
   <div class="hdr-tekst">
-    <h1 id="hdrTitel">Froda</h1>
-    <p id="hdrDesc">Dit eventyrlige hjemsted for lovgivning og ressourcer</p>
+    <h1 id="hdrTitel">Velkommen til Froda lov</h1>
+    <p id="hdrDesc">For dig med interesse for dagpenge</p>
   </div>
 </div>
 
@@ -1743,8 +1746,8 @@ function visHome(){
     document.getElementById('viewer').classList.remove(c));
   document.getElementById('vejVersionBar').className='vej-version-bar skjult';
   _vejVersionKontekst=null;
-  document.getElementById('hdrTitel').textContent='Bekendtgørelser & Vejledninger';
-  document.getElementById('hdrDesc').textContent='Beskæftigelsesministeriet · Dagpengeregler';
+  document.getElementById('hdrTitel').textContent='Velkommen til Froda lov';
+  document.getElementById('hdrDesc').textContent='For dig med interesse for dagpenge';
   visTiles();
 }
 
@@ -3438,9 +3441,22 @@ function gaaTilbage(){
   document.getElementById('vejVersionBar').className='vej-version-bar skjult';
   _vejVersionKontekst=null;
   document.getElementById('home').style.display='block';
-  document.getElementById('hdrTitel').textContent='Bekendtgørelser & Vejledninger';
-  document.getElementById('hdrDesc').textContent='Beskæftigelsesministeriet · Dagpengeregler';
+  document.getElementById('hdrTitel').textContent='Velkommen til Froda lov';
+  document.getElementById('hdrDesc').textContent='For dig med interesse for dagpenge';
   visSektion('bek');
+  window.scrollTo(0,0);
+}
+
+function gaaTilForside(){
+  history.replaceState(null,'',location.pathname+location.search);
+  const v=document.getElementById('viewer');
+  if(v){ v.style.display='none'; ['pdf-modus','vej-pdf-modus','vej-iframe-modus'].forEach(c=>v.classList.remove(c)); }
+  const vb=document.getElementById('vejVersionBar'); if(vb) vb.className='vej-version-bar skjult';
+  _vejVersionKontekst=null;
+  document.getElementById('home').style.display='block';
+  document.getElementById('hdrTitel').textContent='Velkommen til Froda lov';
+  document.getElementById('hdrDesc').textContent='For dig med interesse for dagpenge';
+  visTiles();
   window.scrollTo(0,0);
 }
 
