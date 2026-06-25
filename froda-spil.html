@@ -16,7 +16,23 @@
   /* HUD */
   #hud{position:absolute;top:6px;left:8px;right:8px;display:flex;justify-content:space-between;align-items:flex-start;pointer-events:none;z-index:5;font-size:11px;text-shadow:1px 1px 0 #000;gap:6px;}
   #place-name{background:rgba(15,20,30,.72);padding:3px 8px;border-radius:4px;border:1px solid rgba(255,255,255,.15);letter-spacing:.5px;}
-  #objective{background:rgba(15,20,30,.72);padding:3px 8px;border-radius:4px;border:1px solid rgba(232,200,60,.4);color:#f0d878;text-align:right;max-width:62%;}
+  #objective{background:rgba(15,20,30,.72);padding:3px 8px;border-radius:4px;border:1px solid rgba(232,200,60,.4);color:#f0d878;text-align:right;max-width:52%;}
+  #timer{background:rgba(15,20,30,.78);padding:3px 9px;border-radius:4px;border:1px solid rgba(255,224,138,.35);color:#ffe08a;font-weight:bold;letter-spacing:1px;flex-shrink:0;}
+  .hud-left{display:flex;flex-direction:column;gap:3px;align-items:flex-start;}
+  #hud-hearts{font-size:14px;letter-spacing:1px;line-height:1;filter:drop-shadow(1px 1px 0 #000);}
+  /* leaderboard / score */
+  #ending{overflow-y:auto;}
+  #end-score{margin:4px 0 2px;}
+  .final-time{font-size:14px;color:#ffe08a;margin-bottom:8px;}
+  .name-row{display:flex;gap:8px;justify-content:center;align-items:center;flex-wrap:wrap;}
+  #lb-name{font-family:inherit;font-size:13px;padding:7px 9px;border-radius:6px;border:2px solid #8bac0f;background:#0f380f;color:#dfe6c4;width:150px;}
+  .name-row .btn{margin-top:0;padding:7px 14px;font-size:12px;}
+  #leaderboard{margin-top:10px;width:100%;max-width:320px;}
+  .lb-title{font-size:12px;color:#8bac0f;margin-bottom:5px;letter-spacing:1px;}
+  .lb-tag{font-size:9px;color:#0f380f;background:#8bac0f;border-radius:3px;padding:1px 5px;letter-spacing:0;vertical-align:middle;}
+  .lb-row{display:flex;justify-content:space-between;font-size:12px;padding:3px 8px;border-bottom:1px solid rgba(255,255,255,.08);color:#cfd8b0;}
+  .lb-row.me{background:rgba(139,172,15,.20);color:#fff;border-radius:3px;}
+  .lb-empty{font-size:11px;color:#7d8a55;}
   /* overlays */
   .overlay{position:absolute;inset:0;display:none;flex-direction:column;z-index:20;}
   .overlay.show{display:flex;}
@@ -40,6 +56,7 @@
   #intro-textwrap{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:14px 22px 18px;overflow:auto;}
   #intro-textwrap h1{margin-bottom:10px;}
   #intro-textwrap p{margin-bottom:8px;}
+  .intro-btnrow{display:flex;gap:10px;justify-content:center;align-items:center;flex-wrap:wrap;}
   /* BATTLE bottom panel (Pokémon-style) */
   #battleui{justify-content:flex-end;background:transparent;pointer-events:none;}
   #battleui .bbox{
@@ -86,7 +103,11 @@
       <canvas id="screen" width="256" height="192"></canvas>
 
       <div id="hud" style="display:none;">
-        <div id="place-name">—</div>
+        <div class="hud-left">
+          <div id="place-name">—</div>
+          <div id="hud-hearts"></div>
+        </div>
+        <div id="timer">00:00</div>
         <div id="objective">—</div>
       </div>
 
@@ -108,7 +129,10 @@
         <div id="intro-textwrap">
           <h1 id="intro-title">Froda og Arbejdsløshedsringen</h1>
           <p id="intro-text">En lille hobbit. En tung ring. En farefuld færd gennem dagpengelandet.</p>
-          <button class="btn" id="intro-btn">Begynd ▶</button>
+          <div class="intro-btnrow">
+            <button class="btn" id="intro-btn">Begynd ▶</button>
+            <button class="btn" id="intro-board-btn" style="background:#2b3344;border-color:#ffd24a;color:#ffd24a;">🏆 Highscore</button>
+          </div>
           <div class="small">Gå med piletaster / WASD eller knapperne nedenfor · Tal/kæmp med MELLEMRUM, ENTER eller Space-knappen</div>
         </div>
       </div>
@@ -131,7 +155,16 @@
       <div id="ending" class="overlay panel">
         <h1 id="end-title">★ SEJR ★</h1>
         <p id="end-text"></p>
+        <div id="end-score"></div>
+        <div id="leaderboard"></div>
         <button class="btn" id="end-btn">Spil igen</button>
+      </div>
+
+      <!-- Toplista (kan åbnes fra menuen) -->
+      <div id="board" class="overlay panel">
+        <h1 style="color:#ffd24a;">🏆 Hurtigste tider</h1>
+        <div id="board-list" style="width:100%;max-width:320px;"></div>
+        <button class="btn" id="board-back">Tilbage</button>
       </div>
 
       <!-- Non-blocking banner -->
@@ -242,7 +275,7 @@ const THEMES=[
  9 tallgrass 10 rock 11 sign 12 mushroom 13 deadtree 14 grave 15 lava
  16 crate 17 haystack 18 huthut 19 reed 20 lantern 21 banner 22 sickle 23 flowerbed 24 fort 25 cliff
 */
-const SOLID=new Set([2,3,4,7,10,13,14,15,16,17,18,24,25,26,27]);
+const SOLID=new Set([2,3,4,7,10,13,14,16,17,18,24,25,26,27]); // 15=lava er IKKE solid — man kan gå på den og dø
 
 /* ---------- KORT-BYGGERE ---------- */
 function grid(W,H,f){const m=[];for(let r=0;r<H;r++)m.push(new Array(W).fill(f));return m;}
@@ -311,19 +344,15 @@ function buildTown(idx){
     door=houseN(3,3,4,3,24); connN(door);               // krypt nord-venstre
     npcs=[[13,7,'villager'],[22,12,'villager']];
     props=[{t:'lantern',x:9,y:8},{t:'lantern',x:23,y:14},{t:'deadtree',x:15,y:15}];
-  } else { // MAFIALAND — vulkan i MIDTEN, bjerge hele vejen rundt
+  } else { // MAFIALAND — lava-gauntlet: lang, snæver, snoet sti gennem dødelig lava
     border(m,26);
-    rectFill(m,4,3,W-8,2,15); rectFill(m,5,15,W-10,2,15);  // lava-floder (kan ikke betrædes)
-    rectFill(m,1,midY-1,W-2,3,1);
-    const cx=Math.floor(W/2)-2;                           // ~12
-    rectFill(m,cx,7,4,3,24);                              // fæstningssokkel ved vulkanfod
-    door=[cx+2,9]; m[9][cx+2]=5;                          // Den Røde Mesters indgang
-    for(let r=10;r<=midY+1;r++){m[r][cx+2]=1;m[r][cx+1]=1;} // sti ned til vejen
-    m[4][cx+1]=1;m[5][cx+1]=1;                            // lava-overgang
-    scatter(0.08,[22,21,10]);
-    m[8][4]=21;m[8][W-5]=21;m[14][6]=22;m[12][W-6]=22;
-    npcs=[[6,7,'red'],[W-7,13,'red'],[9,13,'red'],[18,6,'red']];
-    props=[{t:'volcano',x:cx-2,y:1}];                     // vulkan centreret over fæstningen
+    rectFill(m,1,2,W-2,H-4,15);                            // hele det indre er lava (dødelig)
+    rectFill(m,1,8,8,5,1);                                 // sikker indgangsplads (gangsteren møder dig her)
+    function seg(x0,y0,x1,y1){ if(x0===x1){for(let y=Math.min(y0,y1);y<=Math.max(y0,y1);y++){m[y][x0]=1;if(x0+1<W-1)m[y][x0+1]=1;}} else {for(let x=Math.min(x0,x1);x<=Math.max(x0,x1);x++){m[y0][x]=1;if(m[y0+1])m[y0+1][x]=1;}} }
+    seg(7,10,7,4); seg(7,4,20,4); seg(20,4,20,15); seg(20,15,12,15); seg(12,15,12,10); seg(12,10,14,10); // 2-bred snoet sti
+    rectFill(m,12,7,4,3,24); door=[14,9]; m[9][14]=5; m[10][14]=1;  // vulkanfæstning + Røde Mesters dør for enden
+    npcs=[[7,6,'red'],[20,9,'red'],[15,15,'red']];
+    props=[{t:'volcano',x:10,y:1}];                        // vulkanen rejser sig over fæstningen
   }
   m[spawn[1]][spawn[0]]=1; m[spawn[1]][1]=1;
   return {W,H,tiles:m,spawn,door,gate,npcs,props};
@@ -335,7 +364,9 @@ const game={
   state:STATE.INTRO, townIdx:0, town:null, mapW:0, mapH:0,
   cleared:[false,false,false,false,false,false],
   player:{x:0,y:0,dir:'down',moving:false,frame:0,animT:0},
-  hasRing:true, t:0, dialogQueue:[], dialogOnDone:null, mafiaDuelDone:false
+  hasRing:true, t:0, dialogQueue:[], dialogOnDone:null, mafiaDuelDone:false,
+  startMs:0, finalMs:0, elapsedMs:0,
+  hearts:4, maxHearts:4
 };
 const cam={x:0,y:0};
 const cutscene={active:false,x:0,y:0,tx:0,dir:'left',frame:0,animT:0,onDone:null};
@@ -343,6 +374,7 @@ const cutscene={active:false,x:0,y:0,tx:0,dir:'left',frame:0,animT:0,onDone:null
 /* ---------- INPUT ---------- */
 const keys={};
 window.addEventListener('keydown',e=>{
+  if(e.target && (e.target.tagName==='INPUT'||e.target.tagName==='TEXTAREA')) return; // lad navnefeltet styre tasterne
   const k=e.key.toLowerCase();
   if(['arrowup','arrowdown','arrowleft','arrowright',' ','w','a','s','d','enter'].includes(k))e.preventDefault();
   keys[k]=true;
@@ -399,12 +431,15 @@ function showBanner(title,sub){
   if(bannerTimer)clearTimeout(bannerTimer);
   bannerTimer=setTimeout(()=>{bannerEl.style.opacity='0';bannerEl.style.transform='translate(-50%,-50%) scale(.9)';},3400);
 }
+const heartsEl=document.getElementById('hud-hearts');
+function renderHudHearts(){ if(heartsEl) heartsEl.innerHTML='❤'.repeat(Math.max(0,game.hearts))+'🖤'.repeat(Math.max(0,game.maxHearts-game.hearts)); }
 function updateHUD(){
   const m=MASTERS[game.townIdx];
   placeNameEl.textContent=m.town;
   objectiveEl.textContent=game.cleared[game.townIdx]
     ? "Mål: gå mod øst-porten ▶"
     : `Mål: find ${m.landmark} (markør !) og udfordr ${m.short}`;
+  renderHudHearts();
 }
 
 /* ---------- DIALOG ---------- */
@@ -471,7 +506,7 @@ const battle={
   masterHP:5,masterMax:5,frodaHP:3,frodaMax:3,
   dispMHP:5,dispFHP:3,
   shake:0,flash:0,flashWho:null,lunge:0,lungeWho:null,sink:0,sinkWho:null,
-  msg:'', duel:false, spec:null, foeName:'', introTitle:'', introSub:'', _lose:false
+  msg:'', duel:false, spec:null, foeName:'', introTitle:'', introSub:'', _lose:false, order:[], correctPos:0
 };
 /* Den røde mafiagangster + duel-spørgsmål (foreningsfrihed) */
 const GANGSTER_SPEC={robe:"#33343c",robe2:"#222329",hat:"#c01818",skin:"#d8a890",beard:"#2a2024",acc:"#c01818",hatStyle:"tyrant"};
@@ -494,7 +529,7 @@ function startBattle(idx){
   battle.idx=idx;battle.phase='intro';battle.introT=0;
   battle.queue=m.questions.slice();battle.current=null;battle.answered=false;
   battle.masterMax=m.questions.length;battle.masterHP=m.questions.length;
-  battle.frodaMax=3;battle.frodaHP=3;
+  battle.frodaMax=game.maxHearts;battle.frodaHP=game.hearts;
   battle.dispMHP=battle.masterHP;battle.dispFHP=battle.frodaHP;
   battle.shake=0;battle.flash=0;battle.flashWho=null;battle.lunge=0;battle.lungeWho=null;battle.sink=0;battle.sinkWho=null;
   battle.duel=false;battle.spec=MSPEC[idx];battle.foeName=m.short;battle.introTitle=m.master;battle.introSub="vil teste dig om "+m.theme+"!";battle._lose=false;
@@ -512,7 +547,7 @@ function startMafiaEncounter(){
 }
 function startGangsterWalk(onDone){
   const p=game.player;
-  cutscene.x=Math.min(p.x+200,(game.mapW-2)*TILE);
+  cutscene.x=Math.min(p.x+96,(game.mapW-2)*TILE);
   cutscene.y=p.y;
   cutscene.tx=p.x+26;
   cutscene.dir='left';cutscene.frame=0;cutscene.animT=0;cutscene.onDone=onDone;cutscene.active=true;
@@ -534,7 +569,7 @@ function startDuel(){
   battle.idx=5;battle.duel=true;battle.phase='intro';battle.introT=0;
   battle.queue=MAFIA_DUEL.questions.slice();battle.current=null;battle.answered=false;
   battle.masterMax=MAFIA_DUEL.questions.length;battle.masterHP=battle.masterMax;
-  battle.frodaMax=3;battle.frodaHP=3;battle.dispMHP=battle.masterHP;battle.dispFHP=battle.frodaHP;
+  battle.frodaMax=game.maxHearts;battle.frodaHP=game.hearts;battle.dispMHP=battle.masterHP;battle.dispFHP=battle.frodaHP;
   battle.shake=0;battle.flash=0;battle.flashWho=null;battle.lunge=0;battle.lungeWho=null;battle.sink=0;battle.sinkWho=null;
   battle.spec=GANGSTER_SPEC;battle.foeName="Gangster";battle.introTitle="Rød gangster";battle.introSub="spærrer vejen og presser dig!";battle._lose=false;
   game.state=STATE.BATTLE;battleui.classList.add('show');
@@ -560,6 +595,25 @@ function loseGame(){
   endTitle.textContent="✖ DU TABTE ✖";endTitle.style.color="#ff3020";
   endText.innerHTML="Du gav efter for presset og meldte dig ind i Den Røde Mafia. Nu går du selv rundt med rød hat — og friheden til at vælge din egen vej, og dit job, er tabt.<br><br>Foreningsfrihed betyder, at <b>du</b> bestemmer, om og hvor du organiserer dig — ingen kan tvinge dig. Prøv igen, og stå fast næste gang.";
   endBtn.textContent="Prøv igen ⟲";
+  showLeaderboard(false);
+}
+function gameOverHearts(){
+  if(game.state===STATE.END)return;
+  game.state=STATE.END;battleui.classList.remove('show');hud.style.display='none';
+  endingOverlay.classList.add('show');
+  endTitle.style.color="#ff3020";endTitle.textContent="✖ FRODA ER FALDET ✖";
+  endText.innerHTML="Froda mistede sit sidste hjerte og kunne ikke fortsætte. Forkerte svar tærer på kræfterne — og mistede hjerter kommer ikke igen.<br><br>Læs reglerne grundigt, og prøv igen fra begyndelsen.";
+  endBtn.textContent="Start forfra ⟲";
+  showLeaderboard(false);
+}
+function lavaDeath(){
+  if(game.state===STATE.END)return;
+  game.state=STATE.END;battleui.classList.remove('show');hud.style.display='none';
+  endingOverlay.classList.add('show');
+  endTitle.style.color="#ff3020";endTitle.textContent="✖ DU FALDT I LAVAEN ✖";
+  endText.innerHTML="Du trådte ved siden af stien og forsvandt i den glødende lava!<br><br>Mafialands gauntlet kræver fast og forsigtigt fodarbejde. Gå langsomt langs den snørklede sti — og hold dig fra lavaen.";
+  endBtn.textContent="Prøv igen ⟲";
+  showLeaderboard(false);
 }
 function askQuestion(){
   battle.current=battle.queue.shift();
@@ -567,10 +621,15 @@ function askQuestion(){
   const q=battle.current;
   bOpts.innerHTML='';
   bOpts.style.gridTemplateColumns = battle.duel ? '1fr' : '';   // lange valg i duel = én kolonne
-  q.a.forEach((opt,i)=>{
+  // randomiseret rækkefølge, så svarenes placering ikke kan huskes
+  const order=q.a.map((_,k)=>k);
+  for(let k=order.length-1;k>0;k--){const j=(Math.random()*(k+1))|0;const tmp=order[k];order[k]=order[j];order[j]=tmp;}
+  battle.order=order;
+  battle.correctPos=order.indexOf(battle.duel?q.firm:q.correct);
+  order.forEach((orig,pos)=>{
     const b=document.createElement('button');b.className='opt';
-    b.innerHTML=`<span class="key">${String.fromCharCode(65+i)}</span><span>${opt}</span>`;
-    b.onclick=()=>answer(i);bOpts.appendChild(b);
+    b.innerHTML=`<span class="key">${pos+1}</span><span>${q.a[orig]}</span>`;
+    b.onclick=()=>answer(pos);bOpts.appendChild(b);
   });
   bFb.classList.remove('show');bNext.classList.remove('show');
   bMsg.textContent=q.q;
@@ -582,8 +641,8 @@ function answer(i){
   btns.forEach(b=>b.disabled=true);
   if(battle.duel){
     const dq=battle.current;
-    if(i===dq.firm){
-      btns[i].classList.add('correct');
+    btns[battle.correctPos].classList.add('correct');
+    if(i===battle.correctPos){
       battle.masterHP=Math.max(0,battle.masterHP-1);
       battle.lunge=1;battle.lungeWho='froda';battle.flash=1;battle.flashWho='master';battle.shake=7;sfx.hit();
       bVerdict.textContent="✊ Du står fast!";bVerdict.style.color="#1f8a1f";
@@ -597,8 +656,8 @@ function answer(i){
     bNextBtn.focus();return;
   }
   const m=MASTERS[battle.idx],q=battle.current;
-  btns[q.correct].classList.add('correct');
-  const right=(i===q.correct);
+  btns[battle.correctPos].classList.add('correct');
+  const right=(i===battle.correctPos);
   if(!right)btns[i].classList.add('wrong');
   if(right){
     battle.masterHP=Math.max(0,battle.masterHP-1);
@@ -606,15 +665,15 @@ function answer(i){
     sfx.hit();
     bVerdict.textContent="✔ Rigtigt! Du rammer mesteren!";bVerdict.style.color="#1f8a1f";
   }else{
-    battle.frodaHP=Math.max(0,battle.frodaHP-1);
+    game.hearts=Math.max(0,game.hearts-1);battle.frodaHP=game.hearts;
     battle.queue.push(q); // stil spørgsmålet igen senere
     battle.lunge=1;battle.lungeWho='master';battle.flash=1;battle.flashWho='froda';battle.shake=8;
     sfx.hurt();
-    bVerdict.textContent="✘ Forkert! Mesteren rammer dig!";bVerdict.style.color="#c0392b";
+    bVerdict.textContent="✘ Forkert! Du mister et hjerte!";bVerdict.style.color="#c0392b";
   }
   bExpl.textContent=q.e;bKilde.textContent=q.kilde||m.kilde;
   bFb.classList.add('show');bNext.classList.add('show');
-  bNextBtn.textContent = (battle.frodaHP<=0)?"Du besvimer ⟲":(battle.masterHP<=0?"Sejr! ▶":"Videre ▶");
+  bNextBtn.textContent = (game.hearts<=0)?"Froda dør... ⟲":(battle.masterHP<=0?"Sejr! ▶":"Videre ▶");
   bNextBtn.focus();
 }
 bNextBtn.onclick=battleNext;
@@ -625,12 +684,10 @@ function battleNext(){
     askQuestion();return;
   }
   const m=MASTERS[battle.idx];
-  if(battle.frodaHP<=0){
+  if(game.hearts<=0){
     battle.sink=1;battle.sinkWho='froda';sfx.faint();
     battleui.classList.remove('show');
-    setTimeout(()=>{
-      showDialog([{who:m.master,text:"Du besvimede! Men giv ikke op — læs reglerne og udfordr mig igen."}],()=>startBattle(battle.idx));
-    },700);
+    setTimeout(()=>gameOverHearts(),800);
     return;
   }
   if(battle.masterHP<=0){
@@ -739,7 +796,7 @@ function drawIntroArt(kind){
   }
 }
 function showIntroScene(){const s=introScenes[introIdx];introTitle.textContent=s.title;introText.textContent=s.text;setIntroImage(s);introBtn.textContent=introIdx<introScenes.length-1?"Videre ▶":"Begynd færden ▶";}
-introBtn.onclick=()=>{introIdx++;if(introIdx>=introScenes.length){introOverlay.classList.remove('show');hud.style.display='flex';game.state=STATE.PLAY;loadTown(0);}else showIntroScene();};
+introBtn.onclick=()=>{introIdx++;if(introIdx>=introScenes.length){introOverlay.classList.remove('show');hud.style.display='flex';game.state=STATE.PLAY;game.hearts=game.maxHearts;game.startMs=Date.now();loadTown(0);}else showIntroScene();};
 
 /* ---------- ENDING ---------- */
 const endingOverlay=document.getElementById('ending');
@@ -752,13 +809,92 @@ function endingSequence(){
   ],showEnd);
 }
 function showEnd(){
+  game.finalMs = game.startMs ? (Date.now()-game.startMs) : game.elapsedMs;
   game.state=STATE.END;hud.style.display='none';endingOverlay.classList.add('show');
   endTitle.style.color="";
   endTitle.textContent="★ RINGEN ER ØDELAGT ★";
   endText.innerHTML="Arbejdsløshedsringen er smeltet, og forbandelsen er brudt. Froda vender hjem til Grønhøj — hvor et nyt arbejde og en varm hytte venter.<br><br>Og nu kender han dagpengereglerne bedre end nogen anden i landet.<br><br><b>Tak fordi du spillede!</b>";
   endBtn.textContent="Spil igen ⟲";
+  showLeaderboard(true);
 }
 endBtn.onclick=()=>location.reload();
+
+/* ---------- TIMER + SCOREBOARD ----------
+   FÆLLES ONLINE-SCOREBOARD via Google Sheets (vises inde i spillet):
+     1) Opret et Google Sheet.
+     2) Udvidelser -> Apps Script. Slet evt. indhold, og indsæt koden fra
+        filen "froda-scoreboard-apps-script.gs".
+     3) Klik Deploy -> Ny udrulning -> type "Web app".
+        Kør som: Mig.  Hvem har adgang: Alle (Anyone).  -> Udrul.
+     4) Kopiér web app-URL'en (slutter på /exec) og indsæt den i SHEET_API nedenfor.
+   Lader du SHEET_API stå tom, bruges en lokal toplista pr. browser (ingen opsætning).  */
+const SHEET_API='https://script.google.com/macros/s/AKfycbwKeA95MELmBwQHjRWdhBFC2cP0-gHOlX_13woVv6U9i2bk4SQmFMchWr_TiIDO38Sa/exec'; // fælles online-scoreboard (Google Sheet) — sat op
+const timerEl=document.getElementById('timer');
+const lbEl=document.getElementById('leaderboard');
+const scoreEl=document.getElementById('end-score');
+const LB_KEY='frodaLeaderboard';
+function fmtTime(ms){const s=Math.max(0,Math.floor(ms/1000));const mm=String(Math.floor(s/60)).padStart(2,'0');const ss=String(s%60).padStart(2,'0');return mm+':'+ss;}
+function esc(t){return String(t).replace(/[<>&]/g,c=>({'<':'&lt;','>':'&gt;','&':'&amp;'}[c]));}
+function loadScores(){try{return JSON.parse(localStorage.getItem(LB_KEY))||[];}catch(e){return [];}}
+function persistScores(a){try{localStorage.setItem(LB_KEY,JSON.stringify(a));}catch(e){}}
+// JSONP: læs/skriv til Google Sheet uden at forlade spillet og uden CORS-problemer
+function jsonp(url){return new Promise((resolve,reject)=>{
+  const cb='frodaCb_'+Math.random().toString(36).slice(2);
+  const s=document.createElement('script');let done=false;
+  function cleanup(){try{delete window[cb];}catch(e){window[cb]=undefined;}if(s.parentNode)s.parentNode.removeChild(s);}
+  window[cb]=d=>{done=true;resolve(d);cleanup();};
+  s.onerror=()=>{if(!done){cleanup();reject(new Error('net'));}};
+  s.src=url+(url.indexOf('?')>=0?'&':'?')+'callback='+cb;
+  setTimeout(()=>{if(!done){cleanup();reject(new Error('timeout'));}},8000);
+  document.body.appendChild(s);
+});}
+async function getScores(){
+  if(SHEET_API){ try{const r=await jsonp(SHEET_API+'?action=list'); if(Array.isArray(r))return r;}catch(e){} }
+  return loadScores();
+}
+async function addScore(name,ms){
+  if(SHEET_API){ try{const r=await jsonp(SHEET_API+'?action=add&name='+encodeURIComponent(name)+'&ms='+ms); if(Array.isArray(r))return r;}catch(e){} }
+  const arr=loadScores();arr.push({name,ms});persistScores(arr);return arr;
+}
+function renderBoardInto(el,scores,hl){
+  if(!el)return;
+  const tag=SHEET_API?'<span class="lb-tag">online</span>':'<span class="lb-tag">lokal</span>';
+  const top=(scores||[]).slice().sort((a,b)=>a.ms-b.ms).slice(0,10);
+  if(!top.length){el.innerHTML='<div class="lb-title">🏆 Hurtigste tider '+tag+'</div><div class="lb-empty">Ingen tider endnu — bliv den første!</div>';return;}
+  el.innerHTML='<div class="lb-title">🏆 Hurtigste tider '+tag+'</div>'+top.map((s,i)=>
+    `<div class="lb-row${hl&&s.name===hl.name&&s.ms===hl.ms?' me':''}"><span>${i+1}. ${esc(s.name)}</span><span>${fmtTime(s.ms)}</span></div>`).join('');
+}
+function renderBoardData(scores,hl){ renderBoardInto(lbEl,scores,hl); }
+// Toplista fra menuen
+const boardOverlay=document.getElementById('board');
+const boardListEl=document.getElementById('board-list');
+document.getElementById('intro-board-btn').onclick=()=>{
+  boardListEl.innerHTML='<div class="lb-title">🏆 Hurtigste tider</div><div class="lb-empty">Henter toplista…</div>';
+  boardOverlay.classList.add('show');
+  getScores().then(s=>renderBoardInto(boardListEl,s,null));
+};
+document.getElementById('board-back').onclick=()=>boardOverlay.classList.remove('show');
+function showLeaderboard(win){
+  lbEl.innerHTML='<div class="lb-title">🏆 Hurtigste tider</div><div class="lb-empty">Henter toplista…</div>';
+  if(win){
+    scoreEl.innerHTML=`<div class="final-time">Din tid: <b>${fmtTime(game.finalMs)}</b></div>`+
+      `<div class="name-row"><input id="lb-name" maxlength="14" placeholder="Skriv dit navn" autocomplete="off"><button class="btn" id="lb-save">Gem tid</button></div>`;
+    const inp=document.getElementById('lb-name'),btn=document.getElementById('lb-save');
+    setTimeout(()=>{if(inp)inp.focus();},60);
+    btn.onclick=()=>{
+      btn.disabled=true;btn.textContent='Gemmer…';
+      const name=((inp.value||'').trim().slice(0,14))||'Anonym';
+      addScore(name,game.finalMs).then(arr=>{
+        scoreEl.innerHTML=`<div class="final-time">Din tid: <b>${fmtTime(game.finalMs)}</b> — gemt! 🎉</div>`;
+        renderBoardData(arr,{name,ms:game.finalMs});
+      });
+    };
+    inp.addEventListener('keydown',e=>{e.stopPropagation();if(e.key==='Enter')btn.click();});
+  } else {
+    scoreEl.innerHTML='';
+  }
+  getScores().then(arr=>renderBoardData(arr,null));
+}
 
 /* ============ RENDER: OVERWORLD ============ */
 function drawTileAt(code,sx,sy,th){
@@ -951,6 +1087,15 @@ function drawFrodaBack(x,y,s,flashAmt,sunk){
   ctx.restore();
   if(flashAmt>0){ctx.fillStyle=`rgba(255,80,80,${flashAmt*0.6})`;ctx.fillRect(x-7*s,y-7*s,14*s,20*s);}
 }
+function drawHearts(x,y,cur,max){
+  for(let i=0;i<max;i++){
+    const hx=x+i*16, on=i<cur;
+    ctx.fillStyle=on?"#e0303a":"#bdbda8";
+    ctx.beginPath();ctx.arc(hx+4,y+4,3.1,0,6.3);ctx.arc(hx+9,y+4,3.1,0,6.3);ctx.fill();
+    ctx.beginPath();ctx.moveTo(hx+1,y+5);ctx.lineTo(hx+6.5,y+11);ctx.lineTo(hx+12,y+5);ctx.closePath();ctx.fill();
+    if(on){ctx.fillStyle="#ff8b97";ctx.fillRect(hx+3,y+2,2,2);}
+  }
+}
 function hpBox(x,y,w,name,ratio,isPlayer){
   ctx.fillStyle="#f4f4dc";ctx.fillRect(x,y,w,26);
   ctx.strokeStyle="#20242c";ctx.lineWidth=2;ctx.strokeRect(x+1,y+1,w-2,24);
@@ -1001,9 +1146,11 @@ function renderBattle(){
 
   ctx.restore();
 
-  // HP boxes
+  // HP-bokse: mester = bjælke, Froda = hjerter
   hpBox(8,8,118,battle.foeName||MASTERS[battle.idx].short,battle.dispMHP/battle.masterMax,false);
-  hpBox(130,76,118,"Froda",battle.dispFHP/battle.frodaMax,true);
+  ctx.fillStyle="#f4f4dc";ctx.fillRect(130,76,118,26);ctx.strokeStyle="#20242c";ctx.lineWidth=2;ctx.strokeRect(131,77,116,24);
+  ctx.fillStyle="#20242c";ctx.font="bold 8px monospace";ctx.textAlign="left";ctx.fillText("Froda",136,87);
+  drawHearts(176,80,battle.frodaHP,battle.frodaMax);
 
   // intro flash
   if(battle.phase==='intro'){
@@ -1033,6 +1180,8 @@ function updatePlay(dt){
   if(dx){const nx=p.x+dx;if(canMove(nx,p.y))p.x=nx;}
   if(dy){const ny=p.y+dy;if(canMove(p.x,ny))p.y=ny;}
   if(p.moving){p.animT+=dt;if(p.animT>130){p.animT=0;p.frame^=1;}}else p.frame=0;
+  // lava-død: hvis spillerens midte er over en lavaflise, dør man helt
+  if(tileAt(Math.floor((p.x+8)/TILE),Math.floor((p.y+8)/TILE))===15){ lavaDeath(); return; }
   checkGate();
 }
 
@@ -1042,6 +1191,7 @@ function loop(now){
   requestAnimationFrame(loop);
   const dt=Math.min(50,now-last);last=now;game.t++;
   try{
+    if(game.startMs && game.state!==STATE.INTRO && game.state!==STATE.END){ game.elapsedMs=Date.now()-game.startMs; if(timerEl)timerEl.textContent=fmtTime(game.elapsedMs); }
     if(game.state===STATE.PLAY)updatePlay(dt);
     if(game.state===STATE.CUTSCENE)updateCutscene(dt);
     if(game.state===STATE.BATTLE)updateBattle(dt);
