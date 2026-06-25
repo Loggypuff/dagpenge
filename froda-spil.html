@@ -386,24 +386,37 @@ window.addEventListener('keydown',e=>{
   }
 });
 window.addEventListener('keyup',e=>{keys[e.key.toLowerCase()]=false;});
+let _lastAction=0;
 function handleAction(){
+  const now=Date.now(); if(now-_lastAction<220) return; _lastAction=now; // undgå dobbelt-udløsning (mobil)
   if(game.state===STATE.DIALOG)advanceDialog();
   else if(game.state===STATE.PLAY)tryInteract();
   else if(game.state===STATE.BATTLE && battle.answered)battleNext();
 }
-/* on-screen controls */
+/* on-screen controls — brug KUN én event-model (ellers fyrer ét tryk 2-3 gange på mobil) */
 const dirKeyMap={up:'arrowup',down:'arrowdown',left:'arrowleft',right:'arrowright'};
 function bindHold(btn){
   if(!btn)return; const dir=btn.dataset.key;
   const press=e=>{e.preventDefault();if(dir==='action'){handleAction();return;}keys[dirKeyMap[dir]]=true;btn.classList.add('held');};
   const rel=e=>{if(e)e.preventDefault();if(dir==='action')return;keys[dirKeyMap[dir]]=false;btn.classList.remove('held');};
-  ['pointerdown','mousedown'].forEach(ev=>btn.addEventListener(ev,press));
-  ['pointerup','pointerleave','pointercancel','mouseup'].forEach(ev=>btn.addEventListener(ev,rel));
-  btn.addEventListener('touchstart',press,{passive:false});
-  btn.addEventListener('touchend',rel,{passive:false});
+  if(window.PointerEvent){
+    btn.addEventListener('pointerdown',press);
+    btn.addEventListener('pointerup',rel);
+    btn.addEventListener('pointerleave',rel);
+    btn.addEventListener('pointercancel',rel);
+  } else {
+    btn.addEventListener('touchstart',press,{passive:false});
+    btn.addEventListener('touchend',rel,{passive:false});
+    btn.addEventListener('mousedown',press);
+    btn.addEventListener('mouseup',rel);
+    btn.addEventListener('mouseleave',rel);
+  }
 }
 document.querySelectorAll('.cbtn').forEach(bindHold);
 bindHold(document.getElementById('abtn'));
+// sikkerhedsnet: slip alle retningstaster når en finger/mus slippes (undgår "fast" bevægelse)
+function releaseAllDirs(){['arrowup','arrowdown','arrowleft','arrowright'].forEach(k=>keys[k]=false);document.querySelectorAll('.cbtn').forEach(b=>b.classList.remove('held'));}
+['pointerup','pointercancel','touchend','mouseup'].forEach(ev=>window.addEventListener(ev,releaseAllDirs));
 
 /* ---------- AUDIO (små blips) ---------- */
 let actx=null;
