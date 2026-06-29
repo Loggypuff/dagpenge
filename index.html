@@ -456,6 +456,51 @@ mark.aktiv-match{background:var(--gold);color:#fff}
 .froda-nav .nav-spil .hero-nav-t,.froda-nav .nav-spil .hero-nav-d{text-align:center}
 .spil-wrap{max-width:900px;margin:0 auto;border:1px solid var(--gold);border-radius:12px;overflow:hidden;box-shadow:0 12px 34px rgba(40,30,10,.25);background:#0b0e14;height:72vh;min-height:500px}
 .spil-frame{display:block;width:111.2%;height:111.2%;transform:scale(.9);transform-origin:top left;border:0}
+.stat-emner{max-width:1000px;margin:0 auto;display:flex;flex-direction:column;gap:18px}
+.stat-intro{font-family:var(--read);font-size:1rem;line-height:1.6;color:#2c2a24;background:rgba(255,255,255,.6);border:1px solid #d9c9a3;border-radius:10px;padding:12px 16px}
+.stat-chart{margin:0 0 14px}
+.stat-chart img{width:100%;height:auto;display:block;border:1px solid #e3d6b8;border-radius:8px;background:#fff}
+.stat-fallback{display:none;font-size:.85rem;color:#7a5a2a;background:#fffaf0;border:1px dashed #d9c9a3;border-radius:8px;padding:12px}
+.stat-chart figcaption{font-size:.78rem;color:#6b563a;margin-top:5px}
+.stat-links{display:flex;flex-wrap:wrap;gap:8px;margin-top:8px}
+.stat-link{display:inline-block;background:#fffdf7;border:1px solid #d9c9a3;border-radius:8px;padding:8px 12px;font-size:.84rem;color:#2f5530;font-weight:600;text-decoration:none}
+.stat-link:hover{background:#f7efdd;border-color:var(--gold)}
+.stat-note{font-size:.78rem;color:#7a6a4a;line-height:1.5;font-style:italic}
+.stat-noegle{background:linear-gradient(135deg,#2f5530,#23391f);color:#f4eede;border:1px solid var(--gold);border-radius:12px;padding:16px 18px;margin:4px 0 16px}
+.sn-hd{font-family:var(--fantasy,serif);font-size:.95rem;letter-spacing:.03em;color:#e9dbb8;margin-bottom:10px}
+.sn-row{display:flex;flex-wrap:wrap;align-items:center;gap:18px 26px}
+.sn-main .sn-tal{font-family:var(--fantasy,serif);font-size:2.5rem;line-height:1;font-weight:700;color:#fff}
+.sn-cmp .sn-tal2{font-size:1.5rem;font-weight:700;color:#e9dbb8;line-height:1}
+.sn-lab,.sn-lab2{font-size:.78rem;color:#c9d8bf;margin-top:5px}
+.sn-diff{font-size:1.05rem;font-weight:700;padding:7px 14px;border-radius:20px;background:rgba(255,255,255,.12)}
+.sn-diff.op{color:#ffb4a2}.sn-diff.ned{color:#bfe6b6}
+.sn-note{font-size:.72rem;color:#bcae8e;margin-top:12px;line-height:1.45}
+.stat-chart-wrap{position:relative;height:300px;background:rgba(255,255,255,.6);border:1px solid #e3d6b8;border-radius:8px;padding:8px;margin-top:6px}
+.stat-cap{font-size:.78rem;color:#6b563a;margin:5px 0 14px}
+.lm-ctrl{margin:4px 0 12px}
+.lm-row{margin:8px 0}
+.lm-lab{font-size:.78rem;font-weight:700;color:#2f5530;margin-right:8px}
+.lm-chips{display:flex;flex-wrap:wrap;gap:6px;margin-top:6px}
+.lm-chip{font-size:.75rem;padding:5px 10px;border-radius:14px;border:1px solid #d9c9a3;background:#fffdf7;color:#5a4a2a;cursor:pointer;transition:.12s}
+.lm-chip.on{background:#2f5530;border-color:#2f5530;color:#fff}
+.lm-mini{margin-top:8px;display:flex;gap:8px}
+.lm-mini button{font-size:.74rem;padding:4px 10px;border:1px solid #cdbb92;background:rgba(255,255,255,.7);border-radius:8px;color:#3a5a32;cursor:pointer}
+.lm-mini button:hover{border-color:var(--gold)}
+.lm-inline{display:flex;flex-wrap:wrap;gap:18px;align-items:center}
+.lm-inline select{padding:5px 8px;border:1px solid #d9c9a3;border-radius:8px;background:#fffdf7;color:#2c2a24;font-size:.82rem;margin-left:4px}
+.lm-tabel-wrap{overflow:auto;max-height:430px;border:1px solid #e3d6b8;border-radius:8px;margin-top:10px;background:#fffdf7}
+.lm-tabel{border-collapse:collapse;width:100%;font-size:.8rem}
+.lm-tabel th{position:sticky;top:0;background:#2f5530;color:#f4eede;padding:7px 10px;text-align:right;cursor:pointer;white-space:nowrap;font-weight:600;z-index:1}
+.lm-tabel th:first-child{text-align:left}
+.lm-tabel td{padding:6px 10px;text-align:right;border-top:1px solid #efe6cf;white-space:nowrap}
+.lm-td-lab{text-align:left!important;color:#2f5530;font-weight:600}
+.lm-tabel tbody tr:nth-child(even){background:rgba(176,141,87,.06)}
+.lm-tabel tbody tr:hover{background:rgba(47,85,48,.07)}
+.mb-total td{border-top:2px solid var(--gold);font-weight:700;background:rgba(47,85,48,.08)}
+.mb-tabs{display:flex;flex-wrap:wrap;gap:6px;margin:4px 0 10px}
+.mb-tab{font-size:.78rem;padding:6px 12px;border-radius:8px;border:1px solid #d9c9a3;background:#fffdf7;color:#3a5a32;cursor:pointer;font-weight:600}
+.mb-tab.on{background:#2f5530;border-color:#2f5530;color:#fff}
+.mb-note{font-size:.72rem;color:#7a6a4a;margin-top:8px;line-height:1.45;font-style:italic}
 </style>
 </head>
 <body>
@@ -495,7 +540,8 @@ mark.aktiv-match{background:var(--gold);color:#fff}
             <a class="hero-nav-link" onclick="visSektion('res')"><span><span class="hero-nav-t">Ressourcer</span><span class="hero-nav-d">Afgørelser, links og egne dokumenter</span></span><span class="hero-nav-ar">→</span></a>
             <a class="hero-nav-link" onclick="visSektion('chat')"><span><span class="hero-nav-t">Chat med Froda</span><span class="hero-nav-d">Spørg og søg intelligent i teksterne</span></span><span class="hero-nav-ar">→</span></a>
             <a class="hero-nav-link" onclick="visSektion('om')"><span><span class="hero-nav-t">Om Froda</span><span class="hero-nav-d">Hvad er Froda, og hvem står bag</span></span><span class="hero-nav-ar">→</span></a>
-            <a class="hero-nav-link nav-bred nav-spil" href="froda-spil.html" target="_blank" rel="noopener"><span><span class="hero-nav-t">Kan du hjælpe Froda – prøv spillet</span><span class="hero-nav-d">Et lille eventyr om Froda og reglerne</span></span></a>
+            <a class="hero-nav-link" onclick="visSektion('stat')"><span><span class="hero-nav-t">Statistik</span><span class="hero-nav-d">Tal om ledighed, beskæftigelse og a-kasser</span></span><span class="hero-nav-ar">→</span></a>
+            <a class="hero-nav-link" href="froda-spil.html" target="_blank" rel="noopener"><span><span class="hero-nav-t">Froda spillet</span><span class="hero-nav-d">Et lille eventyr om Froda og reglerne</span></span><span class="hero-nav-ar">→</span></a>
           </nav>
         </div>
       </div>
@@ -596,6 +642,132 @@ mark.aktiv-match{background:var(--gold);color:#fff}
         <h3 class="res-overskrift">Vigtigt at vide</h3>
         <p>Froda er et frit, uofficielt opslagsværktøj og er hverken en myndighed eller en a-kasse. Indholdet er ikke juridisk rådgivning. I konkrete sager bør du altid kontrollere mod den officielle tekst på Retsinformation.dk og søge vejledning hos din a-kasse eller den relevante myndighed.</p>
         <p class="om-fod">Froda · Frivilligt Ressourcearkiv om Dansk A-kasselov · stiftet 2026</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- SEKTION: Statistik -->
+  <div id="sektionStat" class="hjem-sektion">
+    <div class="sektion-nav">
+      <button class="btn-sektion-tilbage" onclick="visTiles()">← Forside</button>
+      <span class="sektion-nav-titel">📊&nbsp; Statistik</span>
+    </div>
+    <div class="sektion-indhold">
+      <div class="stat-emner">
+        <p class="stat-intro">Tal om arbejdsmarkedet, ledighed, beskæftigelse og a-kasser — opdelt i emner. Graferne hentes live fra Danmarks Statistik. Froda er ikke en officiel statistikmyndighed; tallene er vejledende — se altid den oprindelige kilde.</p>
+        <div class="res-panel">
+          <div class="res-panel-hd"><span class="res-panel-ic">📉</span><span class="res-panel-t">Ledighed</span></div>
+          <div class="res-panel-body">
+            <p class="res-panel-desc">Bruttoledigheden (fuldtidsledige) viser antallet af ledige omregnet til fuldtidspersoner. Nedenfor ses udviklingen over tid og fordelingen på regioner. Kilde: Danmarks Statistik, tabel AUS08.</p>
+            <div class="stat-noegle" id="statNoegle">
+              <div class="sn-hd">Fuldtidsledige (bruttoledige) — seneste måned</div>
+              <div class="sn-row">
+                <div class="sn-main"><div class="sn-tal" id="snTal">–</div><div class="sn-lab" id="snLab">indlæser tal …</div></div>
+                <div class="sn-cmp"><div class="sn-tal2" id="snTal2">–</div><div class="sn-lab" id="snLab2">samme måned året før</div></div>
+                <div class="sn-diff" id="snDiff"></div>
+              </div>
+              <div class="sn-note">Bruttoledige = a-dagpenge + jobparate kontanthjælpsmodtagere. Faktiske tal, hele landet. Kilde: Danmarks Statistik (AUS08).</div>
+            </div>
+            <div class="stat-chart-wrap"><canvas id="chLedAntal"></canvas></div>
+            <p class="stat-cap">Fuldtidsledige (sæsonkorrigeret), hele landet — måned for måned siden 2010.</p>
+            <div class="stat-chart-wrap"><canvas id="chLedPct"></canvas></div>
+            <p class="stat-cap">Bruttoledighed i pct. af arbejdsstyrken (sæsonkorrigeret).</p>
+            <div class="stat-chart-wrap"><canvas id="chRegAntal"></canvas></div>
+            <p class="stat-cap">Fuldtidsledige pr. region, seneste måned (faktiske tal).</p>
+            <div class="stat-chart-wrap"><canvas id="chRegPct"></canvas></div>
+            <p class="stat-cap">Ledighed i pct. af arbejdsstyrken pr. region, seneste måned.</p>
+            <div class="stat-fallback" id="statFejl">Kunne ikke hente live-data lige nu. <a href="https://www.statistikbanken.dk/AUS08" target="_blank" rel="noopener">Åbn tabellen hos Danmarks Statistik →</a></div>
+            <div class="stat-links">
+              <a class="stat-link" href="https://www.statistikbanken.dk/AUS08" target="_blank" rel="noopener">AUS08 – Fuldtidsledige (Statistikbanken)</a>
+              <a class="stat-link" href="https://www.dst.dk/da/Statistik/emner/arbejde-og-indkomst/beskaeftigelse-og-arbejdsloeshed/arbejdsloese" target="_blank" rel="noopener">DST: Arbejdsløse</a>
+            </div>
+          </div>
+        </div>
+        <div class="res-panel">
+          <div class="res-panel-hd"><span class="res-panel-ic">📊</span><span class="res-panel-t">Ledige på A-dagpenge pr. a-kasse</span></div>
+          <div class="res-panel-body">
+            <p class="res-panel-desc">Leg med de historiske tal for antal ledige på A-dagpenge fordelt på a-kasse — måned for måned (2007–2026). Vælg a-kasser, periode og opløsning, og sortér tabellen ved at klikke på en kolonne. Kilde: Jobindsats (STAR).</p>
+            <div class="lm-ctrl">
+              <div class="lm-row">
+                <label class="lm-lab">A-kasser</label>
+                <div class="lm-chips" id="lmChips"></div>
+                <div class="lm-mini"><button type="button" onclick="lmAlle(true)">Vælg alle</button><button type="button" onclick="lmAlle(false)">Ryd</button></div>
+              </div>
+              <div class="lm-row lm-inline">
+                <span><label class="lm-lab">Fra år</label><select id="lmFra" onchange="lmRender()"></select></span>
+                <span><label class="lm-lab">Til år</label><select id="lmTil" onchange="lmRender()"></select></span>
+                <span><label class="lm-lab">Opløsning</label><select id="lmGran" onchange="lmRender()"><option value="m">Månedlig</option><option value="y">Årligt gennemsnit</option></select></span>
+              </div>
+            </div>
+            <div class="stat-chart-wrap" style="height:340px"><canvas id="lmChart"></canvas></div>
+            <div class="lm-tabel-wrap"><table class="lm-tabel" id="lmTabel"></table></div>
+            <div class="stat-links"><a class="stat-link" href="https://jobindsats.dk/databank/" target="_blank" rel="noopener">Jobindsats: Databank</a></div>
+          </div>
+        </div>
+        <div class="res-panel">
+          <div class="res-panel-hd"><span class="res-panel-ic">👥</span><span class="res-panel-t">Beskæftigelse</span></div>
+          <div class="res-panel-body">
+            <p class="res-panel-desc">Beskæftigelsen dækker antallet af personer i arbejde (lønmodtagere og selvstændige) samt beskæftigelsesfrekvenser. Se de officielle tabeller og figurer hos Danmarks Statistik.</p>
+            <div class="stat-links">
+              <a class="stat-link" href="https://www.dst.dk/da/Statistik/emner/arbejde-og-indkomst/beskaeftigelse-og-arbejdsloeshed" target="_blank" rel="noopener">DST: Beskæftigelse og arbejdsløshed</a>
+              <a class="stat-link" href="https://www.statistikbanken.dk/" target="_blank" rel="noopener">Statistikbanken (alle tabeller)</a>
+            </div>
+          </div>
+        </div>
+        <div class="res-panel">
+          <div class="res-panel-hd"><span class="res-panel-ic">🏛️</span><span class="res-panel-t">A-kasser</span></div>
+          <div class="res-panel-body">
+            <p class="res-panel-desc">A-kassernes medlemstal opgøres månedligt af Styrelsen for Arbejdsmarked og Rekruttering (STAR) ud fra afregningen af statsbidrag — fordelt på forsikringsaktive, efterlønsmodtagere og bidragsfrie medlemmer.</p>
+            <div class="stat-links">
+              <a class="stat-link" href="https://star.dk/viden-og-tal/a-kassernes-medlemstal" target="_blank" rel="noopener">STAR: A-kassernes medlemstal</a>
+              <a class="stat-link" href="https://www.a-kasser.dk/statistik/index.html" target="_blank" rel="noopener">a-kasser.dk: Statistik</a>
+              <a class="stat-link" href="https://danskeakasser.dk/viden-analyser" target="_blank" rel="noopener">Danske A-kasser: Viden & analyser</a>
+            </div>
+          </div>
+        </div>
+        <div class="res-panel">
+          <div class="res-panel-hd"><span class="res-panel-ic">🧾</span><span class="res-panel-t">A-kassernes medlemstal &amp; bidrag</span></div>
+          <div class="res-panel-body">
+            <p class="res-panel-desc">Afregnede medlems- og efterlønsbidrag pr. 1. januar 2026, fordelt på a-kasse. Klik rundt på kategorierne, vælg enkelte a-kasser, og sortér ved at klikke på en kolonne. Kilde: STAR.</p>
+            <div class="mb-tabs" id="mbTabs"></div>
+            <div class="lm-row"><label class="lm-lab">A-kasser</label><div class="lm-chips" id="mbChips"></div><div class="lm-mini"><button type="button" onclick="mbAlle(true)">Vælg alle</button><button type="button" onclick="mbAlle(false)">Ryd</button></div></div>
+            <div class="lm-tabel-wrap"><table class="lm-tabel" id="mbTabel"></table></div>
+            <p class="mb-note" id="mbNote"></p>
+            <div class="stat-links"><a class="stat-link" href="https://star.dk/viden-og-tal/a-kassernes-medlemstal" target="_blank" rel="noopener">STAR: A-kassernes medlemstal</a></div>
+          </div>
+        </div>
+        <div class="res-panel">
+          <div class="res-panel-hd"><span class="res-panel-ic">💳</span><span class="res-panel-t">Dagpenge & ydelser</span></div>
+          <div class="res-panel-body">
+            <p class="res-panel-desc">Detaljerede tal om dagpengemodtagere, ydelser og beskæftigelsesindsatser findes i STAR's databank Jobindsats (kommune- og a-kasse-opdelt). Live-hentning herfra kræver en API-nøgle og kan tilføjes via en server.</p>
+            <div class="stat-links">
+              <a class="stat-link" href="https://jobindsats.dk/databank/" target="_blank" rel="noopener">Jobindsats: Databank</a>
+              <a class="stat-link" href="https://jobindsats.dk/databank/arbejdsmarked/status-pa-arbejdsmarkedet/ledighed/ledighed-faktiske-antal-ledige-og-fuldtidsledige/" target="_blank" rel="noopener">Jobindsats: Ledige og fuldtidsledige</a>
+            </div>
+          </div>
+        </div>
+        <div class="res-panel">
+          <div class="res-panel-hd"><span class="res-panel-ic">🌍</span><span class="res-panel-t">International sammenligning</span></div>
+          <div class="res-panel-body">
+            <p class="res-panel-desc">Sammenlign dansk ledighed med resten af EU via Eurostat (harmoniseret, internationalt sammenlignelig ledighedsprocent).</p>
+            <div class="stat-links">
+              <a class="stat-link" href="https://ec.europa.eu/eurostat/databrowser/view/une_rt_m/default/table" target="_blank" rel="noopener">Eurostat: Ledighed pr. måned (une_rt_m)</a>
+              <a class="stat-link" href="https://ec.europa.eu/eurostat/databrowser/view/tps00203/default/table" target="_blank" rel="noopener">Eurostat: Samlet ledighedsprocent (tps00203)</a>
+            </div>
+          </div>
+        </div>
+        <div class="res-panel">
+          <div class="res-panel-hd"><span class="res-panel-ic">🏷️</span><span class="res-panel-t">Priser & medlemskab</span></div>
+          <div class="res-panel-body">
+            <p class="res-panel-desc">Der findes intet officielt pris-API; hver a-kasse fastsætter selv sit kontingent (kun statsbidrag + ATP-delen er fælles). Sammenlign aktuelle priser på de uafhængige sammenligningssider.</p>
+            <div class="stat-links">
+              <a class="stat-link" href="https://www.a-kasser.dk/pris.html" target="_blank" rel="noopener">a-kasser.dk: Prisoversigt</a>
+              <a class="stat-link" href="https://www.find-a-kasse-priser.dk/" target="_blank" rel="noopener">find-a-kasse-priser.dk</a>
+              <a class="stat-link" href="https://fagforeninger.dk/a-kasse-priser/" target="_blank" rel="noopener">fagforeninger.dk: A-kasse priser</a>
+            </div>
+          </div>
+        </div>
+        <p class="stat-note">Kilder: Danmarks Statistik (data under CC BY 4.0), Styrelsen for Arbejdsmarked og Rekruttering (STAR/Jobindsats), Eurostat m.fl. Graferne opdateres automatisk, når kilderne offentliggør nye tal.</p>
       </div>
     </div>
   </div>
@@ -1838,7 +2010,7 @@ function visHome(){
 
 function visTiles(){
   document.getElementById('homeTiles').style.display='';
-  ['sektionBek','sektionRes','sektionChat','sektionOm'].forEach(id=>
+  ['sektionBek','sektionRes','sektionChat','sektionOm','sektionStat'].forEach(id=>
     document.getElementById(id).style.display='none');
   const fi=document.getElementById('forsideSoegInput'); if(fi) fi.value='';
   const fr=document.getElementById('forsideResultater'); if(fr){fr.className='hero-resultater';fr.innerHTML='';}
@@ -1847,14 +2019,142 @@ function visTiles(){
 
 function visSektion(s){
   document.getElementById('homeTiles').style.display='none';
-  ['sektionBek','sektionRes','sektionChat','sektionOm'].forEach(id=>
+  ['sektionBek','sektionRes','sektionChat','sektionOm','sektionStat'].forEach(id=>
     document.getElementById(id).style.display='none');
-  const ids={bek:'sektionBek',res:'sektionRes',chat:'sektionChat',om:'sektionOm'};
+  const ids={bek:'sektionBek',res:'sektionRes',chat:'sektionChat',om:'sektionOm',stat:'sektionStat'};
   document.getElementById(ids[s]).style.display='block';
   if(s==='bek'&&!document.getElementById('bekIndhold').childElementCount) renderBekSektion();
   if(s==='res'){
     if(!document.getElementById('linksIndhold').childElementCount) renderLinksSektion();
     renderMineDok();
+  }
+  if(s==='stat') _initStats();
+}
+
+const LEDIGE={"enhed":"Antal ledige personer på A-dagpenge","perioder":["Jan 2007","Feb 2007","Mar 2007","Apr 2007","Maj 2007","Jun 2007","Jul 2007","Aug 2007","Sep 2007","Okt 2007","Nov 2007","Dec 2007","Jan 2008","Feb 2008","Mar 2008","Apr 2008","Maj 2008","Jun 2008","Jul 2008","Aug 2008","Sep 2008","Okt 2008","Nov 2008","Dec 2008","Jan 2009","Feb 2009","Mar 2009","Apr 2009","Maj 2009","Jun 2009","Jul 2009","Aug 2009","Sep 2009","Okt 2009","Nov 2009","Dec 2009","Jan 2010","Feb 2010","Mar 2010","Apr 2010","Maj 2010","Jun 2010","Jul 2010","Aug 2010","Sep 2010","Okt 2010","Nov 2010","Dec 2010","Jan 2011","Feb 2011","Mar 2011","Apr 2011","Maj 2011","Jun 2011","Jul 2011","Aug 2011","Sep 2011","Okt 2011","Nov 2011","Dec 2011","Jan 2012","Feb 2012","Mar 2012","Apr 2012","Maj 2012","Jun 2012","Jul 2012","Aug 2012","Sep 2012","Okt 2012","Nov 2012","Dec 2012","Jan 2013","Feb 2013","Mar 2013","Apr 2013","Maj 2013","Jun 2013","Jul 2013","Aug 2013","Sep 2013","Okt 2013","Nov 2013","Dec 2013","Jan 2014","Feb 2014","Mar 2014","Apr 2014","Maj 2014","Jun 2014","Jul 2014","Aug 2014","Sep 2014","Okt 2014","Nov 2014","Dec 2014","Jan 2015","Feb 2015","Mar 2015","Apr 2015","Maj 2015","Jun 2015","Jul 2015","Aug 2015","Sep 2015","Okt 2015","Nov 2015","Dec 2015","Jan 2016","Feb 2016","Mar 2016","Apr 2016","Maj 2016","Jun 2016","Jul 2016","Aug 2016","Sep 2016","Okt 2016","Nov 2016","Dec 2016","Jan 2017","Feb 2017","Mar 2017","Apr 2017","Maj 2017","Jun 2017","Jul 2017","Aug 2017","Sep 2017","Okt 2017","Nov 2017","Dec 2017","Jan 2018","Feb 2018","Mar 2018","Apr 2018","Maj 2018","Jun 2018","Jul 2018","Aug 2018","Sep 2018","Okt 2018","Nov 2018","Dec 2018","Jan 2019","Feb 2019","Mar 2019","Apr 2019","Maj 2019","Jun 2019","Jul 2019","Aug 2019","Sep 2019","Okt 2019","Nov 2019","Dec 2019","Jan 2020","Feb 2020","Mar 2020","Apr 2020","Maj 2020","Jun 2020","Jul 2020","Aug 2020","Sep 2020","Okt 2020","Nov 2020","Dec 2020","Jan 2021","Feb 2021","Mar 2021","Apr 2021","Maj 2021","Jun 2021","Jul 2021","Aug 2021","Sep 2021","Okt 2021","Nov 2021","Dec 2021","Jan 2022","Feb 2022","Mar 2022","Apr 2022","Maj 2022","Jun 2022","Jul 2022","Aug 2022","Sep 2022","Okt 2022","Nov 2022","Dec 2022","Jan 2023","Feb 2023","Mar 2023","Apr 2023","Maj 2023","Jun 2023","Jul 2023","Aug 2023","Sep 2023","Okt 2023","Nov 2023","Dec 2023","Jan 2024","Feb 2024","Mar 2024","Apr 2024","Maj 2024","Jun 2024","Jul 2024","Aug 2024","Sep 2024","Okt 2024","Nov 2024","Dec 2024","Jan 2025","Feb 2025","Mar 2025","Apr 2025","Maj 2025","Jun 2025","Jul 2025","Aug 2025","Sep 2025","Okt 2025","Nov 2025","Dec 2025","Jan 2026","Feb 2026","Mar 2026","Apr 2026","Maj 2026"],"akasser":{"A-kassen A&Til":[6957,6640,6366,6110,6029,5854,5970,5723,4954,4618,4255,4205,4333,3903,3586,3331,3242,3163,3338,3278,3019,2793,2731,3054,3454,3710,4092,4042,4251,4754,5084,5261,4932,4900,4824,5140,5534,5479,5716,5606,5476,5651,5999,6264,5579,5325,5322,5417,5728,5916,5912,5858,6053,6128,6457,6635,6016,5853,5719,5939,6499,6591,6572,6499,6435,6740,7376,7337,6550,6486,6271,6553,7307,7014,6652,6656,6334,6598,7043,7026,6103,5971,5739,6114,6926,6537,6336,6057,5904,6685,7064,6977,6146,5841,5438,5787,6756,6360,6384,5956,5770,6749,6885,6642,5771,5479,5213,5550,6464,6097,5801,5555,5673,6294,6661,6573,5688,5413,5241,5622,6564,6500,6072,5605,5683,6504,6889,6809,5853,5650,5471,5657,6462,6334,6120,5818,5677,6356,6954,6930,5903,5830,5643,5934,7062,6836,6591,6225,6063,7021,7648,7543,6514,6381,6148,6509,7818,7624,8524,9043,9334,10395,10818,10342,9077,8674,8376,8691,10227,10159,9703,9216,8262,9032,9341,8870,7427,6955,6539,6526,7790,7225,6645,6316,5971,6907,7501,7294,6168,5902,5860,6025,7531,7372,7070,6785,6596,7658,8282,8099,6768,6519,6496,6604,8042,7711,7289,6970,6601,7550,8125,7796,6511,6350,6162,6310,7693,7318,6925,6524,6253,7282,8019,7425,6421,6201,6018,6237,7638,7303,7046,6928,6208],"A-kassen Ase":[6202,5926,5684,5206,4828,4478,4159,4148,3885,3837,3687,3726,3996,3756,3512,3165,2937,2766,2629,2675,2731,2830,3025,3546,4344,4569,4949,5088,5128,5263,5212,5402,5489,5808,5964,6374,7191,7196,7325,6966,6460,6293,6163,6291,6204,6253,6470,6908,7326,7221,7194,6739,6529,6402,6289,6503,6385,6524,6745,7172,7837,7989,7802,7355,7194,7036,6970,7209,6943,7264,7432,7880,8669,8241,7867,7324,6816,6440,6384,6414,6160,6432,6492,6913,7554,7215,6968,6489,6198,6043,6023,6067,5825,5940,5914,6563,7226,6886,6851,6318,5863,5815,5756,5762,5532,5646,5870,6325,7062,6658,6381,5938,5592,5436,5327,5547,5315,5430,5605,5979,6683,6602,6326,5660,5492,5361,5445,5666,5503,5707,5789,6149,6842,6455,6489,5940,5503,5329,5329,5536,5197,5407,5478,5740,6375,6086,5894,5405,5207,5025,5175,5391,5216,5387,5638,5939,6623,6366,7941,8766,8843,8544,8175,7873,7460,7517,7515,7874,8570,8795,8238,7754,6808,6407,6166,6005,5445,5149,4935,4842,5245,4997,4576,4234,3931,3779,3836,3904,3747,3889,4087,4375,5069,5096,4935,4820,4636,4661,4791,4891,4711,4836,5077,5301,6201,6053,5743,5451,5198,5188,5300,5457,5415,5482,5564,5762,6497,6339,6123,5700,5577,5558,5688,5756,5482,5500,5571,5943,6927,7047,6538,6159,5025],"A-kassen Frie":[2389,2261,2211,2158,2072,1931,1873,1865,1730,1718,1624,1568,1629,1475,1342,1276,1182,1110,1048,1093,1063,1129,1159,1288,1482,1584,1816,1989,2115,2193,2293,2452,2510,2626,2782,2938,3210,3207,3339,3295,3193,3203,3142,3322,3241,3255,3328,3433,3667,3646,3644,3562,3532,3423,3374,3498,3413,3478,3501,3604,3857,3889,3877,3847,3765,3690,3643,3709,3548,3598,3625,3674,3853,3620,3474,3282,3026,2859,2802,2776,2633,2590,2496,2611,2723,2549,2467,2293,2213,2167,2127,2136,2067,2100,2065,2132,2217,2114,2091,2000,1913,1887,1842,1848,1793,1762,1738,1767,1854,1702,1652,1568,1520,1490,1485,1531,1474,1449,1474,1512,1606,1579,1552,1472,1478,1487,1474,1502,1408,1443,1455,1483,1572,1524,1536,1438,1397,1391,1385,1441,1337,1326,1320,1349,1445,1453,1429,1389,1384,1363,1368,1445,1373,1366,1347,1378,1482,1426,1610,1867,1965,1955,1936,1937,1888,1903,1872,1922,2073,2060,1990,1934,1773,1716,1676,1654,1496,1391,1313,1242,1322,1256,1202,1167,1096,1098,1094,1127,1070,1078,1100,1095,1256,1257,1245,1223,1180,1186,1184,1265,1210,1247,1269,1262,1445,1428,1447,1402,1344,1350,1467,1510,1436,1438,1422,1494,1666,1694,1718,1691,1663,1668,1738,1786,1702,1720,1740,1838,2073,2096,1994,1904,1802],"A-kassen for Journalistik, Komm. og Sprog":[1772,1684,1686,1628,1586,1599,1677,1642,1484,1485,1440,1390,1414,1338,1239,1174,1181,1190,1219,1219,1206,1139,1104,1212,1330,1352,1504,1527,1622,1856,1910,1964,1917,1914,1986,2052,2168,2126,2150,2140,2150,2188,2271,2363,2220,2217,2271,2276,2270,2227,2209,2168,2240,2221,2265,2289,2185,2148,2161,2188,2285,2269,2215,2200,2219,2203,2350,2360,2212,2200,2168,2198,2264,2076,2002,1922,1852,1846,1896,1893,1748,1736,1714,1806,1880,1768,1754,1732,1747,1841,1987,1959,1819,1748,1662,1718,1839,1750,1786,1745,1702,1843,1888,1894,1696,1621,1596,1637,1748,1674,1666,1656,1695,1813,1941,1926,1763,1711,1725,1801,2000,1968,1889,1785,1765,1870,2081,2083,1902,1844,1780,1823,1958,1887,1837,1760,1716,1935,2145,2121,1879,1864,1798,1724,2000,1980,1893,1803,1756,1874,2151,2149,1922,1876,1883,1925,2143,2057,2345,2569,2691,2835,2991,2918,2658,2535,2470,2474,2773,2764,2656,2563,2320,2371,2512,2326,2011,1837,1773,1737,1922,1839,1805,1695,1588,1656,1891,1844,1645,1593,1549,1633,1864,1878,1849,1810,1743,1855,2123,2088,1874,1866,1797,1810,2030,2013,1953,1930,1987,2057,2319,2230,1943,1915,1865,1944,2291,2175,2096,2004,1916,2020,2217,2090,1841,1841,1766,1859,2096,2052,1935,1902,1729],"Akademikernes A-kasse":[5869,5811,5518,5265,4984,4829,5791,5624,4763,4465,4079,3878,3945,3921,3641,3393,3226,3124,3845,3882,3573,3406,3223,3431,3849,4238,4890,4843,5078,6010,6993,7260,6969,7042,7089,7290,7661,7718,7937,7845,7709,7822,8798,9082,8328,8151,8108,8001,8211,8395,8288,8060,8107,8178,9121,9284,8657,8425,8266,8312,8790,8861,8725,8531,8511,9097,10197,10092,9219,9089,8845,8875,9419,8946,8556,8460,7989,8473,9288,9188,8322,8247,7883,8184,8789,8315,8068,7719,7615,8568,9281,9170,8497,8142,7704,7858,8388,8029,8054,7618,7315,8775,9353,9212,8390,8055,7704,7919,8567,8427,8112,7873,7773,9223,10553,10703,9698,9316,8866,9365,10121,9917,9423,8851,8711,10676,12069,12190,10948,10473,9860,9925,10398,10438,9989,9483,9106,11012,12817,12694,11351,11005,10332,10343,11341,11235,10752,10245,9894,12348,14328,13927,12333,12017,11259,11116,12480,12242,12580,13054,13296,15920,17797,17184,15429,14533,13556,13208,14417,14199,13326,12411,11279,13951,15450,14557,12050,10895,9806,8970,10122,9861,9115,8421,7884,10868,12604,12051,9653,8887,8296,8080,9589,9577,9107,8573,8242,11308,13310,13016,10684,9989,9392,9117,10830,10792,10278,9927,9480,12269,14301,14018,11686,11015,10447,10198,11922,11644,11081,10596,10139,13302,15338,14754,12859,12199,11539,11360,13040,13504,13205,13036,12011],"BUPL A-kasse":[3651,3760,3627,3373,3127,3037,3776,3557,2833,2596,2284,2178,2170,1992,1830,1545,1450,1527,2002,1888,1435,1259,1144,1257,1400,1470,1481,1390,1344,1642,2071,2059,1806,1671,1542,1598,1691,1821,1864,1820,1758,1896,2483,2598,2303,2226,2178,2237,2350,2716,2794,2687,2845,2967,3567,3724,3353,3188,3045,3103,3199,3506,3361,3287,3184,3264,3915,3810,3316,3185,2998,3012,3315,3374,3212,3155,2875,3104,3646,3515,2888,2715,2530,2705,3290,3002,2862,2755,2709,3359,3833,3737,3236,2978,2635,2781,3567,3302,3176,2966,2836,3675,3891,3678,3148,2888,2656,2862,3571,3346,3055,2807,2817,3378,3795,3608,3142,2889,2616,2717,3439,3292,2933,2697,2641,3138,3652,3477,2963,2686,2405,2355,3016,2769,2516,2305,2245,2824,3241,2985,2442,2226,1993,1917,2596,2461,2239,2088,2043,2709,3176,2967,2489,2321,2114,2112,2785,2611,2434,2504,2335,3068,3424,2921,2443,2136,1902,1855,2519,2482,2209,2029,1834,2309,2544,2114,1707,1505,1312,1219,1740,1599,1417,1234,1146,1650,1909,1576,1243,1093,995,924,1581,1439,1258,1165,1129,1650,1909,1560,1233,1134,1086,1055,1607,1449,1254,1189,1145,1597,1809,1578,1313,1196,1108,1042,1715,1518,1315,1183,1146,1575,1803,1470,1203,1100,995,964,1498,1357,1163,1032,924],"CA A-kasse":[1537,1430,1409,1351,1269,1229,1326,1289,1168,1133,1052,964,998,878,831,808,788,745,900,928,929,942,922,969,1149,1164,1406,1410,1525,1759,1935,2044,1948,2181,2219,2259,2379,2288,2331,2304,2269,2323,2500,2666,2389,2366,2374,2344,2412,2396,2370,2313,2395,2393,2580,2746,2622,2574,2581,2643,2835,2785,2785,2805,2856,2961,3280,3365,3127,3142,3121,3163,3315,3157,3105,3120,2949,3049,3245,3276,2997,2984,2962,3121,3229,3107,3117,2992,2976,3242,3448,3511,3301,3173,3130,3180,3329,3126,3206,3106,3037,3412,3545,3538,3219,3137,3049,3137,3265,3220,3132,3113,3102,3662,4026,4059,3652,3565,3405,3368,3400,3260,3092,2913,2948,3507,3905,3856,3389,3380,3219,3158,3174,3099,3035,2901,2846,3531,3945,3904,3309,3281,3136,3041,3233,3174,3105,2954,2955,3700,4142,4138,3477,3420,3247,3141,3335,3290,3475,3659,3823,5019,5606,5467,4775,4468,4122,3992,4077,4012,3810,3600,3268,4082,4328,4046,3237,2910,2629,2479,2557,2395,2289,2146,2072,2878,3355,3144,2336,2223,2105,2094,2310,2272,2215,2154,2188,3038,3468,3404,2686,2633,2493,2459,2658,2617,2532,2532,2504,3271,3696,3614,2942,2844,2708,2578,2800,2767,2703,2582,2572,3376,3781,3594,3050,2939,2753,2731,2929,2954,2913,2910,2683],"Det Faglige Hus A-kasse":[2364,2318,2214,2025,1930,1835,1798,1829,1677,1669,1622,1703,1942,1771,1675,1586,1483,1461,1448,1541,1625,1777,1979,2629,3372,3779,4339,4431,4516,4657,4495,4820,4984,5273,5526,5883,6696,6743,6885,6433,5980,5829,5551,5816,5692,5819,6002,6380,6938,6876,6945,6469,6327,6241,6092,6277,6137,6263,6497,6837,7536,7667,7565,7166,6895,6821,6704,6861,6674,6945,7056,7460,8149,7673,7426,7091,6241,5945,5800,5826,5666,5761,5862,6219,6697,6340,6111,5680,5492,5347,5283,5417,5298,5345,5349,5927,6526,6190,6169,5777,5454,5550,5340,5393,5204,5273,5495,5838,6587,6299,6014,5617,5395,5337,5235,5484,5222,5435,5600,6019,6717,6531,6243,5617,5552,5200,5523,5808,5538,5780,6041,6415,7083,6909,7015,6473,6116,5929,5825,6109,5810,6146,6307,6644,7458,7207,7054,6534,6342,6152,6285,6534,6268,6631,6867,7360,8239,7970,10275,11279,11183,10731,10136,9826,9302,9326,9365,9863,10868,11040,10471,9790,8639,8222,7950,7887,7180,6866,6604,6578,7336,6974,6733,6251,5928,5911,5840,6122,6014,6355,6634,7112,8428,8186,8138,7648,7614,7615,7587,7880,7614,7873,8261,8495,10179,9689,9410,9016,8552,8382,8485,8654,8238,8608,8780,9083,10433,9833,9612,9002,8760,8736,8885,8931,8565,8675,8659,9014,10748,10775,9986,9371,8573],"Din Faglige A-Kasse":[3597,3281,3052,3415,2902,2169,2127,2020,1999,1996,2113,2389,2691,2438,2224,2021,1759,1617,1537,1854,2188,2351,2720,3364,4196,4453,5006,5221,5075,5059,4745,5153,5461,6091,6763,7452,8338,8448,8955,8610,7806,7238,6322,6369,6408,6732,7190,7477,8006,7951,7972,7345,6740,6053,5168,5144,5204,5383,5708,6065,7066,7068,7078,6589,6038,5443,4868,4797,4857,5117,5219,5455,6210,5826,5699,5607,4747,4148,3650,3674,3745,4053,4292,4598,5175,4810,4778,4833,3882,3472,3074,3166,3255,3381,3457,3952,4486,4214,4233,3881,3377,3145,2615,2483,2391,2464,2700,3113,3618,3363,3218,2987,2598,2282,2027,2079,2060,2237,2434,2711,3442,3053,3060,2513,2264,1993,1873,1909,1841,1916,2075,2267,2641,2536,2557,2398,1967,1771,1667,1790,1750,1879,2003,2244,2522,2441,2397,2196,2001,1845,1778,1870,1895,2050,2171,2415,2787,2539,3636,4416,4114,3507,2946,2695,2497,2412,2438,2581,2910,2852,2739,2525,2110,1884,1794,1782,1591,1559,1537,1614,1778,1675,1592,1426,1298,1215,1212,1265,1252,1322,1474,1656,1979,2084,2060,1864,1705,1799,1978,2178,2219,2242,2266,1965,2345,2539,2449,2012,1676,1934,1902,1512,1827,1936,1945,2006,2247,2062,2012,1769,1621,1436,1379,1458,1406,1451,1498,1541,1846,1871,1825,1693,1506],"Din Sundhedsfaglige A-kasse":[1010,1107,957,803,687,630,797,790,651,511,388,359,440,474,414,364,390,408,495,498,393,334,281,305,432,583,595,510,445,492,746,789,683,590,529,483,605,909,1057,992,872,918,1383,1597,1556,1424,1335,1284,1457,2225,2220,1998,1900,1862,2174,2375,2253,2128,2004,1942,2340,2666,2449,2110,1814,1912,2044,2051,1861,1652,1463,1353,2088,2141,1841,1582,1434,1970,2019,1951,1777,1657,1493,1496,2505,2257,1941,1655,1433,2044,1994,1852,1635,1417,1252,1217,2392,2148,1870,1652,1430,2142,1912,1857,1686,1475,1320,1308,2516,2198,1857,1600,1456,2091,1965,1823,1603,1390,1254,1182,2460,2035,1657,1386,1310,2174,2032,1903,1637,1424,1291,1229,2530,2006,1660,1442,1269,2147,1958,1771,1484,1330,1239,1208,2557,1955,1678,1445,1323,2272,2112,1890,1610,1501,1353,1337,2747,2145,2049,2195,2151,3184,2889,2439,1949,1648,1428,1353,2542,2034,1609,1319,1115,2021,2049,1716,1378,1188,1007,879,2030,1593,1224,1119,996,2050,2122,1805,1312,1140,1062,1051,2305,1879,1570,1406,1263,2366,2497,2191,1674,1459,1380,1350,2669,2359,2001,1814,1668,2758,2801,2514,1951,1716,1584,1542,2770,2430,1969,1732,1578,2613,2662,2307,1767,1493,1417,1336,2558,2121,1818,1664,1437],"FOAs A-kasse":[10158,9410,9041,8613,8194,7784,7358,7263,6648,6528,6133,5882,6010,5464,5019,4549,4367,4163,3929,4111,4149,4083,4067,4104,4391,4243,4519,4432,4436,4727,4474,4873,5069,5411,5629,5795,6167,5903,6074,6108,6183,6426,6288,7095,7141,7512,8223,8182,8639,8447,8692,8603,9249,9175,8755,9529,9758,10022,10560,10695,11200,10530,10593,10431,10575,10522,10335,10538,10405,10792,11203,11270,11731,10659,10419,10209,9926,9755,9417,9520,9541,9765,10055,10351,10584,9567,9536,9207,9308,9221,8785,9009,9284,9226,9351,9587,9779,8718,9038,8532,8397,8658,7926,8101,8209,8504,8927,8863,9171,8452,8262,7948,8008,7544,7188,7441,7415,7552,7604,7434,7923,7225,6829,6568,6665,6551,5961,6264,6194,6427,6478,6363,6601,5870,5822,5594,5363,5016,4577,4814,4801,4952,4947,4898,5032,4554,4423,4167,4259,4207,4106,4426,4406,4619,4705,4555,4732,4367,4723,5358,5506,5551,5294,5027,4844,4882,4712,4610,4773,4476,4392,4347,4048,3873,3881,3832,3607,3493,3197,2909,3164,2891,2910,2944,2845,2781,2803,2825,2777,2853,2860,2721,3072,2884,2977,2992,2958,2915,2972,3072,3069,3208,3175,3127,3401,3266,3292,3333,3241,3198,3129,3290,3317,3492,3328,3225,3564,3348,3390,3274,3164,3099,3125,3271,3176,3215,3096,2992,3234,3026,3044,3029,2730],"Faglig Fælles (3F) A-kasse":[37489,35809,33518,28230,25353,23269,21214,22055,20522,21320,22109,25704,29233,27198,24633,21369,18968,17566,16315,17639,18810,21230,24753,33161,42069,45987,49666,49181,46704,45274,40267,41640,42192,44476,47542,53978,62918,63864,63718,55405,46823,44436,40628,41433,40589,41238,44236,52069,56210,54465,52278,44452,40054,37825,34623,35130,34302,35073,36866,42517,47452,50289,46713,40943,37394,35074,32303,32793,31169,33156,35027,41478,46269,42564,41105,37924,29482,25230,22713,23248,22763,23679,24854,28732,32961,31418,28878,24090,21608,19696,17821,18463,18707,19384,20275,24716,27975,26750,25699,22106,19243,17958,15902,16399,16000,16718,18177,21257,24902,23269,21289,17982,15792,14484,13234,13898,13803,14927,16061,19124,22040,21480,20144,16318,15045,13754,12122,13135,13198,14175,15412,17881,20180,20240,20518,15991,13719,12497,11680,12436,12368,13610,14813,17378,19680,19132,17695,15130,13859,12787,12236,12734,12731,13976,15236,17899,19830,19123,24529,24775,23216,21381,18799,18000,17474,18073,19059,21700,24045,26360,22574,19593,16495,14700,13213,12815,12083,11853,11911,13010,14801,13990,12757,10876,9750,9428,8892,9311,9338,10211,11536,13782,16118,15655,14845,12715,11770,11083,10427,10835,10573,11577,12669,14478,18714,16501,15063,13396,11929,10804,10539,10720,10183,10781,11615,13063,15340,15082,13830,12042,11041,10177,9776,9905,9658,10347,10874,12395,16598,17676,14115,11924,10315],"HK /Danmarks A-kasse":[19778,18432,17736,16834,15975,15173,14843,14576,13316,12896,12138,11681,12213,11063,10385,9739,9251,8814,8702,8909,8616,8625,8470,9046,10283,10550,11352,11904,12482,13163,13652,14694,14867,15271,15420,15852,17025,16633,16901,16739,16417,16500,16523,17778,16873,16921,17183,16633,17370,17163,17175,16635,17004,16548,16594,17174,16626,16270,16159,16097,17454,16712,16781,16620,16561,16658,17423,17549,16727,16873,16631,16455,17284,16046,15507,15360,14141,13681,13686,14139,13297,13006,12680,13109,13655,12864,12833,12280,12116,12553,12716,13212,12763,12063,11580,11685,12731,12103,12476,11760,11395,11985,11618,11989,11194,10946,10654,10599,11621,11123,10823,10489,10364,10528,10831,11322,10497,10221,9969,9968,11103,10864,10481,9908,9969,10239,10668,11121,10229,10178,9914,9730,10625,10401,10281,9970,9741,9935,10124,10598,9572,9624,9401,9385,10307,10102,10014,9630,9571,9875,10304,10507,9773,9710,9407,9457,10528,10371,11174,12277,12864,13430,13651,13633,12655,12345,11792,11733,12784,12682,12199,11742,10635,10463,10495,10313,9155,8559,7900,7254,7837,7667,7432,7081,6689,6690,6922,7068,6401,6311,6256,6167,7293,7216,7263,6992,6769,7098,7472,7568,6949,6882,6727,6636,7752,7681,7643,7515,7232,7368,7797,7906,7201,7135,6943,6826,7874,7754,7615,7339,7180,7510,7842,7826,7023,6851,6594,6496,7584,7617,7622,7552,7270],"I alt":[140709,134012,127064,116731,108915,102624,103051,101049,90704,89596,85916,88980,95751,88834,81283,73596,68681,65711,66779,68496,68892,71722,76102,90358,109923,118688,130761,131720,131563,137236,133966,139856,140145,146463,151713,163510,182024,182304,184288,172086,158111,155757,153910,160172,153003,154527,160419,170084,180260,178982,176127,162483,158326,154387,152723,156871,150837,152438,155220,164600,179878,182126,176099,165764,159414,157761,160257,160348,150911,155215,156206,165976,180522,169075,162174,155625,137455,132109,132353,132078,123976,125394,124943,134397,147111,139052,132849,122606,116932,120286,121454,121729,116018,118469,112308,122660,135503,134723,126998,116630,109337,116811,114362,112576,105258,105826,105426,112117,126237,120625,113519,105398,101488,105458,107969,108957,101493,102623,101527,107984,122151,119194,111879,100960,98931,103294,106879,107879,100084,101574,100271,104787,115855,113164,110449,100356,94382,98743,102908,103723,95040,97766,96499,100890,113389,110439,105102,97274,94321,100513,106937,107079,99286,101394,100544,105410,118728,115236,133087,143414,143884,149633,150555,143584,132384,129283,126423,130362,144277,145575,135893,126496,112502,115588,116805,110876,97417,91306,85795,83947,94566,89586,84144,77782,72517,80226,85432,83552,74704,74433,75470,78704,93873,91754,88956,83673,80788,89436,95304,94884,85453,85505,85912,87644,105577,100893,96302,91825,87095,93961,100733,98872,89424,89214,88316,90084,105073,101124,96648,90524,87020,94581,100966,97896,89357,88364,86528,89207,106761,106952,99712,94795,86120],"Ingen a-kasse":[null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null],"Kristelig A-Kasse":[14123,13175,12521,11341,10369,9664,9188,9134,8248,8201,7937,8356,9159,8373,7699,6944,6495,6326,6190,6564,6725,6971,7604,9243,11332,12136,13526,13275,13357,14323,13649,14445,14533,15327,16061,17423,19421,19280,19616,18215,16838,16712,16241,17275,16454,16705,17618,18663,19954,19662,19488,17929,17487,17271,16872,17581,16910,17363,17775,18938,20930,20988,20338,19054,18339,18240,18014,18277,17068,17518,17556,18811,20529,19149,18403,17501,15309,14422,14294,14410,13536,13868,14091,15371,16664,15705,15000,13635,12976,12932,12870,13212,12676,12732,12613,13789,15141,14273,14121,12767,11978,12307,11800,11848,11210,11306,11428,12254,13620,12891,12274,11334,10890,10875,10773,11124,10417,10591,10665,11329,12731,12390,11904,10786,10569,10255,10344,10577,9792,10129,10284,10942,11918,11597,11426,10253,9697,9426,9368,9671,9185,9561,9663,10332,11296,10964,10467,9600,9365,9305,9386,9574,9246,9588,9875,10554,11556,11215,13957,15018,15062,14583,13934,13650,12807,12740,12903,13506,14603,14742,13856,12964,11558,10787,10392,10177,9343,8929,8488,8562,9441,8871,8405,7815,7194,7107,7106,7186,6817,7196,7516,7866,9059,8645,8639,8242,7844,7835,7788,8053,7705,7874,8022,8332,9840,9412,9050,8688,8221,8051,8348,8376,8043,8183,8217,8553,9687,9372,9066,8521,8205,8172,8290,8252,7944,7960,7876,8300,9630,9478,8897,8339,7624],"Lederne A-kasse":[1992,1862,1812,1727,1649,1576,1590,1530,1402,1395,1302,1308,1359,1257,1184,1097,1013,960,926,947,1045,994,1033,1200,1510,1716,2119,2175,2393,2815,2901,3184,3301,3428,3521,3657,3965,3857,3979,3950,3806,3761,3784,3989,3737,3711,3845,3712,3821,3770,3794,3653,3752,3535,3482,3550,3400,3465,3508,3551,3933,3687,3714,3635,3647,3637,3836,3725,3682,3775,3807,3853,4103,3881,3834,3826,3601,3506,3471,3518,3422,3403,3401,3626,3647,3413,3363,3202,3164,3073,3061,3113,3095,2987,2929,3010,3260,3075,3242,2958,2989,3029,2953,2937,2810,2774,2733,2803,3005,2854,2841,2764,2807,2684,2679,2798,2687,2731,2718,2781,2977,2928,2805,2678,2767,2734,2819,2924,2793,2804,2732,2791,2929,2862,2926,2794,2801,2739,2838,2987,2829,2941,2909,2965,3168,3115,3166,3020,3045,3015,3125,3226,3071,3133,3144,3258,3538,3404,3878,4410,4745,4706,4791,4800,4672,4600,4543,4554,4742,4654,4541,4425,4021,3788,3731,3654,3295,3092,2863,2761,2844,2698,2628,2499,2392,2321,2416,2537,2397,2392,2407,2408,2677,2637,2645,2635,2631,2690,2859,3020,2899,2902,2869,2897,3145,3099,3126,3152,3183,3164,3352,3495,3363,3397,3339,3356,3697,3569,3596,3548,3535,3544,3704,3810,3703,3770,3684,3728,4098,4086,4111,4167,4041],"Lærernes A-kasse":[3360,3797,3041,3004,2972,3086,4708,3656,2847,3011,2185,2110,2078,2463,1685,1537,1502,1781,2830,1986,1482,1811,1103,1203,1241,1808,1168,1248,1275,1803,3060,2293,1901,2276,1651,1699,1655,2103,1529,1587,1623,1980,3431,3018,2508,2815,2244,2296,2167,2533,2057,2085,2202,2888,4243,4204,3543,3843,3128,3257,3186,3489,2744,2769,2760,3328,5110,4401,3537,3808,3159,3178,3151,3274,2640,2643,2577,3403,4885,3828,2911,3097,2187,2297,2207,2621,1767,1763,1821,3362,4824,3549,2152,6054,1543,2353,1591,8361,1336,1257,1281,2978,4168,2365,1670,2699,1338,1458,1385,2473,1212,1165,1336,2737,3985,2485,1856,2866,1604,1732,1788,2824,1546,1511,1554,2615,3883,2525,1996,2788,1686,1765,1746,2630,1588,1498,1561,2506,3718,2598,2014,2732,1779,1823,1839,2631,1644,1675,1762,2760,3939,3048,2568,3058,2189,2219,2233,2877,2277,2440,2486,3598,5140,3391,2844,2657,2249,2265,2409,2377,2271,2165,2030,3153,3843,2593,2121,1907,1692,1613,1744,1606,1540,1487,1447,2608,3372,2237,1826,1701,1557,1520,1708,1663,1513,1477,1523,2688,3411,2631,2126,1969,1812,1784,1945,1815,1716,1640,1670,2604,3516,2760,2220,2081,1949,1832,1982,1854,1749,1741,1752,2697,3521,2538,2075,1897,1649,1605,1740,1639,1543,1531,1483],"Magistrenes A-kasse":[6044,5700,5508,5403,5337,5310,5580,5289,4649,4501,4223,4166,4292,3906,3664,3498,3435,3459,3639,3424,3095,3077,2898,3152,3375,3283,3369,3417,3431,3974,4122,4096,3852,3907,3912,4160,4375,4132,4129,4145,4183,4398,4574,4576,4198,4191,4282,4371,4575,4471,4431,4421,4594,4640,4847,4816,4539,4547,4608,4737,4969,4811,4695,4737,4815,4971,5426,5224,4817,4942,4877,5048,5230,4941,4742,4681,4593,4653,5033,4892,4458,4404,4295,4447,4586,4309,4317,4273,4238,4623,5074,5004,4677,4606,4381,4563,4732,4474,4486,4365,4332,4921,5131,5025,4680,4558,4379,4537,4848,4742,4692,4592,4671,5017,5548,5792,5470,5314,5200,5375,5619,5486,5283,5031,5051,5405,6171,5990,5693,5596,5387,5525,5646,5515,5341,5146,5054,5431,6183,6088,5592,5588,5295,5343,5635,5609,5390,5167,5145,5572,6455,6363,5846,5817,5512,5501,5866,5684,6025,6395,6624,7106,7973,7702,7027,6831,6510,6455,6952,6833,6627,6394,5953,6522,7240,6735,5745,5321,4943,4697,4996,4836,4665,4397,4136,4802,5709,5417,4678,4387,4236,4118,4649,4614,4469,4346,4313,5025,5960,5802,4929,4814,4580,4497,4966,4816,4650,4540,4423,5121,6227,5926,5035,4880,4657,4564,5073,4808,4595,4427,4289,4949,5914,5634,4934,4735,4505,4448,4834,4710,4539,4473,4206],"Metalarbejdernes A-Kasse":[3587,3235,3131,2822,2569,2353,2219,2232,1960,2007,2018,2132,2345,2100,2016,1923,1997,1618,1602,1754,2619,3008,3923,3671,5400,6557,8694,9603,10055,10158,8554,9262,9752,10099,10521,10841,11766,11437,11497,10898,9818,9247,8423,8706,8478,8654,9025,9298,9752,9310,9054,8257,8011,7468,6818,6843,6539,6678,7093,7579,8216,8049,8003,7440,6945,6513,6095,6137,5865,6286,6568,6897,7509,6835,6436,6249,5318,4678,4336,4265,4105,4254,4313,4631,5073,4639,4449,4057,3737,3526,3362,3511,3486,3682,3743,4145,4626,4321,4372,4044,3580,3475,3231,3259,3134,3229,3355,3611,3886,3604,3354,3093,2830,2728,2605,2744,2548,2746,2804,2938,3300,3182,2952,2613,2481,2301,2133,2284,2110,2281,2403,2518,2751,2629,2617,2422,2143,1947,1877,2009,1896,2062,2201,2346,2597,2430,2370,2175,2093,1942,1972,2191,2106,2208,2316,2475,2827,2775,3650,4641,4610,4360,4005,3971,3687,3529,3434,3475,3888,3855,3672,3358,2848,2566,2424,2416,2165,1958,1840,1819,1921,1785,1718,1544,1406,1298,1331,1443,1329,1342,1439,1529,1784,1772,1701,1565,1565,1427,1385,1465,1436,1498,1605,1620,2009,1927,1814,1916,1751,1676,1613,1731,1627,1698,1735,1738,2022,1895,1781,1664,1634,1555,1661,1693,1608,1646,1671,1762,2156,2093,1949,1849,1639],"Min A-kasse":[4275,3996,3858,3505,3364,3182,3088,2999,2748,2727,2599,2613,2741,2498,2341,2122,2054,1941,1878,1969,2069,2050,2147,2559,2961,3049,3514,3370,3453,3919,3853,4047,4021,4240,4334,4624,4909,4742,4800,4633,4405,4452,4423,4710,4410,4423,4609,4565,4679,4650,4701,4515,4547,4385,4349,4463,4303,4657,4788,4866,5284,5194,5176,5014,4877,4861,5119,5050,4851,5014,5043,5166,5503,5164,5033,4949,4484,4358,4417,4455,4222,4249,4258,4471,4689,4510,4440,4259,4194,4273,4376,4341,4238,4147,4029,4195,4589,4447,4429,4161,3983,4304,4280,4223,3887,3877,3863,3928,4397,4289,4168,3963,3906,4057,4160,4242,3814,3730,3710,3828,4333,4259,4145,3820,3832,3934,4070,4141,3866,3811,3738,3807,4129,4086,3963,3733,3616,3773,3839,3862,3423,3550,3506,3527,3895,3889,3874,3613,3493,3613,3909,3880,3531,3503,3426,3460,3859,3859,4573,5047,5194,5417,5744,5612,5131,4974,4883,4938,5376,5497,5515,5116,4636,4680,4662,4486,3907,3673,3407,3260,3507,3458,3312,3105,2855,3048,3193,3205,2819,2784,2791,2793,3307,3340,3357,3279,3174,3306,3521,3554,3112,3089,3096,3074,3544,3530,3486,3431,3341,3443,3615,3525,3222,3186,3136,3147,3507,3424,3371,3241,3147,3279,3442,3380,3135,3107,3013,3022,3439,3467,3471,3402,3133],"Socialpædagogernes A-Kasse":[2098,2122,2012,1840,1721,1665,1772,1695,1441,1331,1214,1159,1175,1121,1019,922,807,817,902,897,824,733,666,682,801,848,873,775,796,918,1050,1045,979,951,900,911,981,1108,1170,1099,1091,1177,1415,1555,1420,1428,1462,1388,1501,1718,1801,1750,1825,1840,1994,2048,1969,1918,1901,1860,2053,2202,2110,1992,1926,1974,2187,2088,1904,1838,1710,1689,1957,2019,1880,1811,1633,1758,1899,1900,1729,1640,1533,1568,2005,1940,1780,1660,1647,2017,2087,2030,1882,1704,1537,1574,2153,2040,1942,1730,1594,1980,1957,1881,1751,1620,1514,1433,2007,1922,1793,1593,1559,1895,1907,1801,1686,1545,1459,1493,2055,1996,1754,1570,1558,1790,1802,1795,1632,1536,1413,1404,1850,1664,1527,1406,1321,1564,1577,1524,1365,1357,1307,1233,1631,1507,1392,1280,1234,1456,1544,1481,1342,1300,1225,1214,1605,1585,1592,1675,1726,1975,1991,1764,1571,1408,1300,1242,1541,1525,1427,1298,1152,1339,1348,1226,1058,963,884,817,1149,1093,991,907,828,1028,1140,1056,914,867,838,791,1162,1131,990,910,896,1126,1189,1137,980,940,920,875,1193,1137,1065,997,981,1136,1231,1104,952,885,831,826,1157,1091,1024,936,890,973,1044,920,849,795,733,717,1027,996,925,883,748],"Teknikernes A-Kasse":[2428,2238,2136,2053,1970,1942,2179,2112,1758,1622,1493,1484,1566,1421,1321,1220,1139,1144,1396,1426,1283,1166,1138,1272,1533,1600,1872,1882,2074,2468,2891,3064,2969,2969,2983,3091,3365,3304,3310,3290,3245,3300,3563,3660,3264,3150,3104,3141,3214,3212,3097,2974,2922,2931,3048,3048,2716,2630,2597,2685,2942,2871,2789,2728,2653,2807,3053,2968,2573,2531,2422,2503,2663,2471,2340,2271,2125,2230,2427,2361,1950,1882,1812,2026,2271,2165,2083,1975,1954,2241,2363,2292,1979,1819,1720,1927,2200,2042,2037,1931,1868,2223,2369,2241,1882,1794,1715,1916,2141,2022,1923,1761,1704,1903,2044,1977,1683,1565,1513,1706,1850,1823,1789,1658,1596,1806,1963,1920,1599,1546,1438,1600,1804,1713,1686,1591,1524,1684,1861,1855,1533,1495,1429,1516,1720,1678,1635,1533,1527,1672,1798,1795,1569,1532,1482,1586,1715,1706,1840,2026,2116,2368,2515,2432,2194,2092,1994,2071,2188,2177,2068,1953,1718,1722,1766,1672,1416,1303,1215,1159,1320,1277,1188,1118,1065,1103,1184,1135,968,907,872,964,1132,1157,1110,1072,1049,1107,1191,1175,1002,954,920,906,1062,1059,1041,974,968,1040,1161,1156,999,996,981,995,1136,1147,1077,1008,958,1060,1137,1096,956,922,877,919,1068,1084,1073,1047,1033],"Uoplyst":[29,18,26,25,28,29,18,21,21,29,21,25,22,24,23,13,15,11,9,14,13,14,12,10,19,9,11,7,8,9,9,9,10,12,15,10,4,6,6,6,6,7,5,9,11,11,10,9,13,12,11,10,11,13,11,10,7,8,10,13,15,13,14,12,11,9,9,7,6,4,5,5,4,4,null,null,3,3,null,3,3,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null]}};
+const MEDLEM={"pr":"1. januar 2026","kilde":"Styrelsen for Arbejdsmarked og Rekruttering (STAR)","kategorier":[{"id":"total","navn":"Medlemsbidrag i alt","tabel":"Tabel 2.0","beskrivelse":"Antal afregnede medlemsbidrag i alt og antal indberettede kontingentfritagne medlemmer.","kolonner":["Fuldtid","Deltid","I alt","Kontingentfritagne"],"rows":[["D10 Jour., Kom. & Sprog",[22563,141,22704,1941]],["D14 Socialpædagogernes",[31490,127,31617,2762]],["D15 Faglig Fælles A-kasse",[196115,1235,197350,9492]],["D17 FOAs A-kasse",[124461,821,125282,5343]],["D18 Lærernes a-kasse",[67502,128,67630,2841]],["D22 Det Faglige Hus",[194439,1588,196027,8567]],["D24 Metalarbejderne",[58918,23,58941,5393]],["D40 Din Faglige A-kasse",[44320,39,44359,3942]],["D53 HK/Danmark",[158748,1388,160136,16948]],["D57 Min A-kasse",[74623,343,74966,4891]],["D67 Lederne A-kasse",[124299,41,124340,176]],["D72 Teknikernes A-kasse",[18668,50,18718,2086]],["D73 Kristelig A-kasse",[135913,1762,137675,5677]],["D76 Din Sundhedsfaglige",[91774,489,92263,5266]],["D81 BUPL A-kasse",[54384,358,54742,4858]],["D83 A-kassen Frie",[46266,285,46551,550]],["D86 Akademikernes A-kasse",[269762,850,270612,43709]],["D88 Magistrenes A-kasse",[68723,441,69164,14998]],["D92 A-kassen A&Til",[135788,792,136580,19625]],["D94 A-kassen Ase",[132803,0,132803,1536]],["D98 CA A-kasse",[56606,159,56765,10620]],["I alt",[2108165,11060,2119225,171221]]]},{"id":"ydelse","navn":"Fordelt på ydelseskategorier","tabel":"Tabel 2.0.1","beskrivelse":"Antal afregnede medlemsbidrag i alt – fordelt på ydelseskategorier.","kolonner":["Dagpengeforsikrede","Efterlønsmodtagere","I alt"],"rows":[["D10 Jour., Kom. & Sprog",[22481,223,22704]],["D14 Socialpædagogernes",[30956,661,31617]],["D15 Faglig Fælles A-kasse",[194667,2683,197350]],["D17 FOAs A-kasse",[121387,3895,125282]],["D18 Lærernes a-kasse",[66778,852,67630]],["D22 Det Faglige Hus",[195529,498,196027]],["D24 Metalarbejderne",[58590,351,58941]],["D40 Din Faglige A-kasse",[44046,313,44359]],["D53 HK/Danmark",[157690,2446,160136]],["D57 Min A-kasse",[74552,414,74966]],["D67 Lederne A-kasse",[123807,533,124340]],["D72 Teknikernes A-kasse",[18494,224,18718]],["D73 Kristelig A-kasse",[136684,991,137675]],["D76 Din Sundhedsfaglige",[90962,1301,92263]],["D81 BUPL A-kasse",[53325,1417,54742]],["D83 A-kassen Frie",[46209,342,46551]],["D86 Akademikernes A-kasse",[270244,368,270612]],["D88 Magistrenes A-kasse",[68948,216,69164]],["D92 A-kassen A&Til",[135619,961,136580]],["D94 A-kassen Ase",[131959,844,132803]],["D98 CA A-kasse",[56711,54,56765]],["I alt",[2099638,19587,2119225]]]},{"id":"dagpenge","navn":"Dagpengeforsikrede","tabel":"Tabel 2.2","beskrivelse":"Antal afregnede medlemsbidrag for dagpengeforsikrede i alt og antal kontingentfritagne.","kolonner":["Fuldtid","Deltid","I alt","Kontingentfritagne"],"rows":[["D10 Jour., Kom. & Sprog",[22341,140,22481,1941]],["D14 Socialpædagogernes",[30830,126,30956,2762]],["D15 Faglig Fælles A-kasse",[193455,1212,194667,9492]],["D17 FOAs A-kasse",[120591,796,121387,5343]],["D18 Lærernes a-kasse",[66651,127,66778,2841]],["D22 Det Faglige Hus",[193946,1583,195529,8567]],["D24 Metalarbejderne",[58567,23,58590,5393]],["D40 Din Faglige A-kasse",[44007,39,44046,3942]],["D53 HK/Danmark",[156348,1342,157690,16948]],["D57 Min A-kasse",[74210,342,74552,4891]],["D67 Lederne A-kasse",[123766,41,123807,176]],["D72 Teknikernes A-kasse",[18444,50,18494,2086]],["D73 Kristelig A-kasse",[134942,1742,136684,5677]],["D76 Din Sundhedsfaglige",[90478,484,90962,5266]],["D81 BUPL A-kasse",[52978,347,53325,4858]],["D83 A-kassen Frie",[45926,283,46209,550]],["D86 Akademikernes A-kasse",[269394,850,270244,43709]],["D88 Magistrenes A-kasse",[68509,439,68948,14998]],["D92 A-kassen A&Til",[134837,782,135619,19625]],["D94 A-kassen Ase",[131959,0,131959,1536]],["D98 CA A-kasse",[56552,159,56711,10620]],["I alt",[2088731,10907,2099638,171221]]]},{"id":"unge","navn":"Unge under 25 år (ungeindsats)","tabel":"Tabel 2.3","beskrivelse":"Unge under 25 år omfattet af ungeindsatsen.","kolonner":["Fuldtid","Deltid","I alt"],"rows":[["D10 Jour., Kom. & Sprog",[0,0,0]],["D14 Socialpædagogernes",[0,0,0]],["D15 Faglig Fælles A-kasse",[81,0,81]],["D17 FOAs A-kasse",[3,0,3]],["D18 Lærernes a-kasse",[0,0,0]],["D22 Det Faglige Hus",[38,2,40]],["D24 Metalarbejderne",[0,0,0]],["D40 Din Faglige A-kasse",[0,0,0]],["D53 HK/Danmark",[0,0,0]],["D57 Min A-kasse",[1,0,1]],["D67 Lederne A-kasse",[0,0,0]],["D72 Teknikernes A-kasse",[0,0,0]],["D73 Kristelig A-kasse",[13,3,16]],["D76 Din Sundhedsfaglige",[0,0,0]],["D81 BUPL A-kasse",[0,0,0]],["D83 A-kassen Frie",[3,0,3]],["D86 Akademikernes A-kasse",[0,0,0]],["D88 Magistrenes A-kasse",[0,0,0]],["D92 A-kassen A&Til",[0,0,0]],["D94 A-kassen Ase",[0,0,0]],["D98 CA A-kasse",[0,0,0]],["I alt",[139,5,144]]]},{"id":"senior","navn":"Seniormedlemskaber","tabel":"Tabel 2.4","beskrivelse":"Antal seniormedlemskaber.","kolonner":["Fuldtid"],"rows":[["D10 Jour., Kom. & Sprog",[21]],["D14 Socialpædagogernes",[0]],["D15 Faglig Fælles A-kasse",[39]],["D17 FOAs A-kasse",[0]],["D18 Lærernes a-kasse",[67]],["D22 Det Faglige Hus",[278]],["D24 Metalarbejderne",[133]],["D40 Din Faglige A-kasse",[0]],["D53 HK/Danmark",[0]],["D57 Min A-kasse",[0]],["D67 Lederne A-kasse",[47]],["D72 Teknikernes A-kasse",[0]],["D73 Kristelig A-kasse",[516]],["D76 Din Sundhedsfaglige",[28]],["D81 BUPL A-kasse",[0]],["D83 A-kassen Frie",[0]],["D86 Akademikernes A-kasse",[255]],["D88 Magistrenes A-kasse",[0]],["D92 A-kassen A&Til",[31]],["D94 A-kassen Ase",[123]],["D98 CA A-kasse",[15]],["I alt",[1553]]]},{"id":"efterloen","navn":"Efterlønsbidrag","tabel":"Tabel 2.5","beskrivelse":"Antal afregnede efterlønsbidrag.","kolonner":["Fuldtid","Deltid","I alt"],"rows":[["D10 Jour., Kom. & Sprog",[2016,8,2024]],["D14 Socialpædagogernes",[4624,10,4634]],["D15 Faglig Fælles A-kasse",[20582,72,20654]],["D17 FOAs A-kasse",[16426,71,16497]],["D18 Lærernes a-kasse",[11010,11,11021]],["D22 Det Faglige Hus",[8013,50,8063]],["D24 Metalarbejderne",[7961,0,7961]],["D40 Din Faglige A-kasse",[4985,0,4985]],["D53 HK/Danmark",[19344,150,19494]],["D57 Min A-kasse",[5528,21,5549]],["D67 Lederne A-kasse",[8666,2,8668]],["D72 Teknikernes A-kasse",[2557,4,2561]],["D73 Kristelig A-kasse",[9654,84,9738]],["D76 Din Sundhedsfaglige",[11264,64,11328]],["D81 BUPL A-kasse",[9367,41,9408]],["D83 A-kassen Frie",[3399,10,3409]],["D86 Akademikernes A-kasse",[12420,37,12457]],["D88 Magistrenes A-kasse",[5957,25,5982]],["D92 A-kassen A&Til",[8277,31,8308]],["D94 A-kassen Ase",[9170,2,9172]],["D98 CA A-kasse",[3390,10,3400]],["I alt",[184610,703,185313]]]}]};
+// ---- Ledige-modul (JSON) ----
+const _PAL=['#2f5530','#b08d57','#7a8a3f','#9c5a2f','#3f6b8a','#8a3f6b','#5a7a5a','#c2a05a','#6b6b3f','#a83f3f','#3f8a7a','#8a7a3f','#5b4636','#9ec977'];
+const _MNUM={'Jan':1,'Feb':2,'Mar':3,'Apr':4,'Maj':5,'Jun':6,'Jul':7,'Aug':8,'Sep':9,'Okt':10,'Nov':11,'Dec':12};
+function _pYear(p){return +p.split(' ')[1];}
+function _pkey(p){const x=p.split(' ');return x.length===2?(+x[1]*100+(_MNUM[x[0]]||0)):(+p*100);}
+let _lmSort={col:0,dir:1}, _lmChart=null;
+function lmInit(){
+  if(window._lmDone)return; const chips=document.getElementById('lmChips'); if(!chips)return; window._lmDone=true;
+  Object.keys(LEDIGE.akasser).sort((a,b)=>a.localeCompare(b,'da')).forEach(a=>{
+    const b=document.createElement('button'); b.type='button'; b.className='lm-chip'+(a==='I alt'?' on':''); b.textContent=a;
+    b.onclick=()=>{ b.classList.toggle('on'); lmRender(); }; chips.appendChild(b);
+  });
+  const yrs=[...new Set(LEDIGE.perioder.map(p=>p.split(' ')[1]))].sort();
+  const fra=document.getElementById('lmFra'), til=document.getElementById('lmTil');
+  yrs.forEach(y=>{ fra.add(new Option(y,y)); til.add(new Option(y,y)); });
+  fra.value=yrs[Math.max(0,yrs.length-11)]; til.value=yrs[yrs.length-1];
+  lmRender();
+}
+function lmAlle(on){ document.querySelectorAll('#lmChips .lm-chip').forEach(b=>b.classList.toggle('on',on)); lmRender(); }
+function lmSort(i){ if(_lmSort.col===i)_lmSort.dir*=-1; else {_lmSort.col=i;_lmSort.dir=1;} lmRender(); }
+function lmRender(){
+  const fra=+document.getElementById('lmFra').value, til=+document.getElementById('lmTil').value, gran=document.getElementById('lmGran').value;
+  const lo=Math.min(fra,til), hi=Math.max(fra,til);
+  const idx=[]; LEDIGE.perioder.forEach((p,i)=>{const y=_pYear(p); if(y>=lo&&y<=hi) idx.push(i);});
+  const sel=[...document.querySelectorAll('#lmChips .lm-chip.on')].map(b=>b.textContent);
+  let labels, series;
+  if(gran==='y'){
+    const years=[]; for(let y=lo;y<=hi;y++)years.push(String(y)); labels=years;
+    series=sel.map(a=>{const arr=LEDIGE.akasser[a]; return years.map(y=>{const vs=idx.filter(i=>_pYear(LEDIGE.perioder[i])==+y).map(i=>arr[i]).filter(v=>v!=null); return vs.length?Math.round(vs.reduce((s,v)=>s+v,0)/vs.length):null;});});
+  } else {
+    labels=idx.map(i=>LEDIGE.perioder[i]); series=sel.map(a=>idx.map(i=>LEDIGE.akasser[a][i]));
+  }
+  if(window.Chart){
+    const ds=sel.map((a,k)=>({label:a,data:series[k],borderColor:_PAL[k%_PAL.length],backgroundColor:'transparent',borderWidth:2,pointRadius:0,tension:.2,spanGaps:true}));
+    if(_lmChart)_lmChart.destroy();
+    _lmChart=new Chart(document.getElementById('lmChart'),{type:'line',data:{labels,datasets:ds},options:{responsive:true,maintainAspectRatio:false,interaction:{mode:'index',intersect:false},plugins:{legend:{display:sel.length<=8,labels:{boxWidth:12,font:{size:10}}}},scales:{x:{ticks:{maxTicksLimit:12,autoSkip:true,color:'#6b563a',font:{size:9}},grid:{display:false}},y:{ticks:{color:'#6b563a',font:{size:10}},grid:{color:'rgba(0,0,0,.06)'}}}}});
+  }
+  let rows=labels.map((lab,r)=>[lab,...sel.map((a,k)=>series[k][r])]);
+  const c=_lmSort.col, dir=_lmSort.dir;
+  rows.sort((A,B)=>{ if(c===0)return (_pkey(A[0])-_pkey(B[0]))*dir; const a=A[c]==null?-Infinity:A[c], b=B[c]==null?-Infinity:B[c]; return (a-b)*dir; });
+  let h='<thead><tr>'+['Periode'].concat(sel).map((hd,i)=>'<th onclick="lmSort('+i+')">'+hd+(_lmSort.col===i?(_lmSort.dir>0?' ▲':' ▼'):'')+'</th>').join('')+'</tr></thead><tbody>';
+  rows.forEach(rw=>{ h+='<tr><td class="lm-td-lab">'+rw[0]+'</td>'+rw.slice(1).map(v=>'<td>'+(v==null?'–':v.toLocaleString('da-DK'))+'</td>').join('')+'</tr>'; });
+  document.getElementById('lmTabel').innerHTML=h+'</tbody>';
+}
+// ---- Medlemsbidrag-modul (PDF) ----
+let _mbKat=0, _mbSort={col:0,dir:1}, _mbSel=new Set();
+function mbInit(){
+  if(window._mbDone)return; const tabs=document.getElementById('mbTabs'); if(!tabs)return; window._mbDone=true;
+  MEDLEM.kategorier.forEach((k,i)=>{ const b=document.createElement('button'); b.type='button'; b.className='mb-tab'+(i===0?' on':''); b.textContent=k.navn; b.onclick=()=>{_mbKat=i;_mbSort={col:0,dir:1};document.querySelectorAll('#mbTabs .mb-tab').forEach((x,j)=>x.classList.toggle('on',j===i));mbRender();}; tabs.appendChild(b); });
+  const chips=document.getElementById('mbChips');
+  MEDLEM.kategorier[0].rows.filter(r=>r[0]!=='I alt').forEach(r=>{ _mbSel.add(r[0]); const b=document.createElement('button'); b.type='button'; b.className='lm-chip on'; b.textContent=r[0]; b.dataset.k=r[0]; b.onclick=()=>{ if(_mbSel.has(r[0]))_mbSel.delete(r[0]); else _mbSel.add(r[0]); b.classList.toggle('on'); mbRender(); }; chips.appendChild(b); });
+  mbRender();
+}
+function mbAlle(on){ document.querySelectorAll('#mbChips .lm-chip').forEach(b=>{ b.classList.toggle('on',on); if(on)_mbSel.add(b.dataset.k); else _mbSel.delete(b.dataset.k); }); mbRender(); }
+function mbSort(i){ if(_mbSort.col===i)_mbSort.dir*=-1; else {_mbSort.col=i;_mbSort.dir=1;} mbRender(); }
+function mbRender(){
+  const k=MEDLEM.kategorier[_mbKat]; const cols=['A-kasse'].concat(k.kolonner);
+  let body=k.rows.filter(r=>r[0]!=='I alt' && _mbSel.has(r[0]));
+  const c=_mbSort.col, dir=_mbSort.dir;
+  body.sort((A,B)=>{ if(c===0)return A[0].localeCompare(B[0],'da')*dir; return ((A[1][c-1]||0)-(B[1][c-1]||0))*dir; });
+  const total=k.rows.find(r=>r[0]==='I alt');
+  let h='<thead><tr>'+cols.map((hd,i)=>'<th onclick="mbSort('+i+')">'+hd+(_mbSort.col===i?(_mbSort.dir>0?' ▲':' ▼'):'')+'</th>').join('')+'</tr></thead><tbody>';
+  body.forEach(r=>{ h+='<tr><td class="lm-td-lab">'+r[0]+'</td>'+r[1].map(v=>'<td>'+v.toLocaleString('da-DK')+'</td>').join('')+'</tr>'; });
+  if(total) h+='<tr class="mb-total"><td class="lm-td-lab">I alt (alle a-kasser)</td>'+total[1].map(v=>'<td>'+v.toLocaleString('da-DK')+'</td>').join('')+'</tr>';
+  document.getElementById('mbTabel').innerHTML=h+'</tbody>';
+  document.getElementById('mbNote').textContent=k.tabel+' · '+k.beskrivelse+' Opgørelse pr. '+MEDLEM.pr+'. Kilde: '+MEDLEM.kilde+'.';
+}
+// ===== Statistik: DST live-data + Chart.js =====
+let _statLoaded=false;
+function _loadChartJs(){return new Promise((res,rej)=>{if(window.Chart)return res();const sc=document.createElement('script');sc.src='https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js';sc.onload=()=>res();sc.onerror=()=>rej(new Error('chartjs'));document.head.appendChild(sc);});}
+function _q(o){return Object.keys(o).map(k=>encodeURIComponent(k)+'='+encodeURIComponent(o[k])).join('&');}
+async function _dstCSV(path){
+  try{const r=await fetch('https://api.statbank.dk/v1/'+path);if(r.ok)return await r.text();}catch(e){}
+  try{if(typeof PROXY_URL!=='undefined'&&PROXY_URL){const r=await fetch(PROXY_URL+'?dst='+encodeURIComponent(path));if(r.ok)return await r.text();}}catch(e){}
+  throw new Error('dst-fetch');
+}
+function _parseCSV(t){const L=t.replace(/^﻿/,'').trim().split(/\r?\n/);const h=L[0].split(';').map(x=>x.trim());return L.slice(1).map(l=>{const c=l.split(';');const o={};h.forEach((k,i)=>o[k]=(c[i]||'').trim());return o;});}
+function _num(v){return parseFloat(String(v).replace(/\./g,'').replace(',','.'));}
+function _fmt(n){return Math.round(n).toLocaleString('da-DK');}
+const _MND=['','januar','februar','marts','april','maj','juni','juli','august','september','oktober','november','december'];
+function _mndAar(tid){const m=/(\d{4})M(\d{2})/.exec(tid);return m?(_MND[+m[2]]+' '+m[1]):tid;}
+const _GRON='#2f5530',_GULD='#b08d57';
+function _lineChart(id,labels,data,farve){const el=document.getElementById(id);if(!el||!window.Chart)return;new Chart(el,{type:'line',data:{labels,datasets:[{data,borderColor:farve||_GRON,backgroundColor:'rgba(47,85,48,.12)',borderWidth:2,fill:true,pointRadius:0,tension:.25}]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false}},scales:{x:{ticks:{maxTicksLimit:9,autoSkip:true,color:'#6b563a',font:{size:10}},grid:{display:false}},y:{ticks:{color:'#6b563a',font:{size:10}},grid:{color:'rgba(0,0,0,.06)'}}}}});}
+function _barChart(id,labels,data,farve){const el=document.getElementById(id);if(!el||!window.Chart)return;new Chart(el,{type:'bar',data:{labels,datasets:[{data,backgroundColor:farve||_GRON,borderColor:_GULD,borderWidth:1}]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false}},scales:{x:{ticks:{color:'#3a3a32',font:{size:11}},grid:{display:false}},y:{ticks:{color:'#6b563a',font:{size:10}},grid:{color:'rgba(0,0,0,.06)'}}}}});}
+async function _initStats(){
+  if(_statLoaded)return;_statLoaded=true;
+  try{ await _loadChartJs(); }catch(e){}
+  try{ mbInit(); }catch(e){}
+  try{ lmInit(); }catch(e){}
+  const fejl=document.getElementById('statFejl');
+  try{
+    await _loadChartJs();
+    const aRows=_parseCSV(await _dstCSV('data/AUS08/CSV?'+_q({'OMRÅDE':'000','SAESONFAK':'9,10,24','Tid':'>=2010M01'})));
+    const antalSK=aRows.filter(r=>r.SAESONFAK==='Sæsonkorrigeret');
+    const pctSK=aRows.filter(r=>/pct/i.test(r.SAESONFAK)&&/korrigeret/i.test(r.SAESONFAK));
+    const fakt=aRows.filter(r=>/faktiske/i.test(r.SAESONFAK)&&!/pct/i.test(r.SAESONFAK)).sort((x,y)=>x.TID<y.TID?-1:1);
+    if(fakt.length){
+      const nu=fakt[fakt.length-1];
+      const m=/(\d{4})M(\d{2})/.exec(nu.TID);const fjor=m?(((+m[1])-1)+'M'+m[2]):null;
+      const fr=fakt.find(r=>r.TID===fjor);
+      document.getElementById('snTal').textContent=_fmt(_num(nu.INDHOLD));
+      document.getElementById('snLab').textContent=_mndAar(nu.TID)+', hele landet';
+      if(fr){
+        document.getElementById('snTal2').textContent=_fmt(_num(fr.INDHOLD));
+        document.getElementById('snLab2').textContent='samme måned året før ('+_mndAar(fr.TID)+')';
+        const d=(_num(nu.INDHOLD)-_num(fr.INDHOLD))/_num(fr.INDHOLD)*100;
+        const up=d>=0;const de=document.getElementById('snDiff');
+        de.textContent=(up?'▲ +':'▼ ')+d.toLocaleString('da-DK',{maximumFractionDigits:1})+' % på et år';
+        de.className='sn-diff '+(up?'op':'ned');
+      }
+    }
+    _lineChart('chLedAntal',antalSK.map(r=>r.TID),antalSK.map(r=>_num(r.INDHOLD)),_GRON);
+    _lineChart('chLedPct',pctSK.map(r=>r.TID),pctSK.map(r=>_num(r.INDHOLD)),_GULD);
+    const bRows=_parseCSV(await _dstCSV('data/AUS08/CSV?'+_q({'OMRÅDE':'084,085,083,082,081','SAESONFAK':'22,24','Tid':'(-n+1)'})));
+    const kort=x=>x.replace(/^Region\s+/,'');
+    const rAntal=bRows.filter(r=>!/pct/i.test(r.SAESONFAK));
+    const rPct=bRows.filter(r=>/pct/i.test(r.SAESONFAK));
+    _barChart('chRegAntal',rAntal.map(r=>kort(r.OMRÅDE)),rAntal.map(r=>_num(r.INDHOLD)),_GRON);
+    _barChart('chRegPct',rPct.map(r=>kort(r.OMRÅDE)),rPct.map(r=>_num(r.INDHOLD)),_GULD);
+  }catch(e){
+    if(fejl)fejl.style.display='block';
+    const sl=document.getElementById('snLab');if(sl)sl.textContent='kunne ikke hente tal lige nu';
   }
 }
 
